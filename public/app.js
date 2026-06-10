@@ -1,68 +1,269 @@
 (function () {
   const STORAGE_KEY = "cvlite.resumeDraft.v1";
+  const SETTINGS_KEY = "cvlite.settings.v1";
   const $ = (selector) => document.querySelector(selector);
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
+  const I18N = {
+    fa: {
+      appTitle: "رزومه‌ساز محلی",
+      language: "زبان",
+      theme: "تم",
+      themeSystem: "سیستم",
+      themeLight: "روشن",
+      themeDark: "تیره",
+      import: "Import",
+      importTitle: "Import JSON or Markdown",
+      downloadPdf: "دانلود PDF",
+      templateSection: "قالب خروجی",
+      pageSize: "اندازه صفحه",
+      basicsSection: "اطلاعات اصلی",
+      sectionsSection: "بخش‌ها",
+      preview: "Preview",
+      saved: "ذخیره شد",
+      resume: "رزومه",
+      uploadPhoto: "آپلود عکس",
+      remove: "حذف",
+      add: "افزودن",
+      hidden: "مخفی",
+      moveUp: "↑",
+      moveDown: "↓",
+      noItems: "هنوز آیتمی اضافه نشده است.",
+      noCustom: "بخش سفارشی ندارید.",
+      customSections: "بخش‌های سفارشی",
+      addSection: "افزودن بخش",
+      removeSection: "حذف بخش",
+      addItem: "افزودن آیتم",
+      items: "موارد",
+      sectionTitle: "عنوان بخش",
+      title: "عنوان",
+      subtitle: "زیرعنوان",
+      periodLabel: "زمان",
+      summary: "Summary",
+      firstName: "نام",
+      lastName: "نام خانوادگی",
+      headline: "تیتر حرفه‌ای",
+      email: "ایمیل",
+      phone: "تلفن",
+      location: "مکان",
+      linkedin: "لینکدین",
+      website: "وب‌سایت",
+      extra: "اطلاعات اضافه",
+      experience: "سوابق کاری",
+      education: "تحصیلات",
+      skills: "مهارت‌ها",
+      projects: "پروژه‌ها",
+      certifications: "دوره‌ها و گواهی‌ها",
+      languages: "زبان‌ها",
+      interests: "علایق",
+      publications: "انتشارات",
+      achievements: "دستاوردها",
+      organization: "سازمان",
+      roleTitle: "عنوان",
+      period: "بازه زمانی",
+      degree: "مدرک/رشته",
+      description: "توضیح",
+      skillGroup: "گروه مهارت",
+      level: "سطح",
+      projectName: "نام",
+      link: "لینک",
+      issuer: "صادرکننده",
+      date: "تاریخ",
+      languageName: "زبان",
+      fluency: "سطح متنی",
+      numericLevel: "سطح ۱ تا ۵",
+      publisher: "محل انتشار",
+      imported: "Import شد",
+      importFailed: "Import ناموفق بود",
+      buildingPdf: "در حال ساخت PDF...",
+      pdfFailed: "ساخت PDF ناموفق بود.",
+      pdfReady: "PDF آماده شد"
+    },
+    en: {
+      appTitle: "Local Resume Builder",
+      language: "Language",
+      theme: "Theme",
+      themeSystem: "System",
+      themeLight: "Light",
+      themeDark: "Dark",
+      import: "Import",
+      importTitle: "Import JSON or Markdown",
+      downloadPdf: "Download PDF",
+      templateSection: "Output Template",
+      pageSize: "Page Size",
+      basicsSection: "Basics",
+      sectionsSection: "Sections",
+      preview: "Preview",
+      saved: "Saved",
+      resume: "Resume",
+      uploadPhoto: "Upload Photo",
+      remove: "Remove",
+      add: "Add",
+      hidden: "Hidden",
+      moveUp: "↑",
+      moveDown: "↓",
+      noItems: "No items yet.",
+      noCustom: "No custom sections yet.",
+      customSections: "Custom Sections",
+      addSection: "Add Section",
+      removeSection: "Remove Section",
+      addItem: "Add Item",
+      items: "Items",
+      sectionTitle: "Section Title",
+      title: "Title",
+      subtitle: "Subtitle",
+      periodLabel: "Period",
+      summary: "Summary",
+      firstName: "First Name",
+      lastName: "Last Name",
+      headline: "Professional Headline",
+      email: "Email",
+      phone: "Phone",
+      location: "Location",
+      linkedin: "LinkedIn",
+      website: "Website",
+      extra: "Extra Information",
+      experience: "Experience",
+      education: "Education",
+      skills: "Skills",
+      projects: "Projects",
+      certifications: "Courses & Certifications",
+      languages: "Languages",
+      interests: "Interests",
+      publications: "Publications",
+      achievements: "Achievements",
+      organization: "Organization",
+      roleTitle: "Role",
+      period: "Period",
+      degree: "Degree / Field",
+      description: "Description",
+      skillGroup: "Skill Group",
+      level: "Level",
+      projectName: "Name",
+      link: "Link",
+      issuer: "Issuer",
+      date: "Date",
+      languageName: "Language",
+      fluency: "Fluency",
+      numericLevel: "Level 1 to 5",
+      publisher: "Publisher",
+      imported: "Imported",
+      importFailed: "Import failed",
+      buildingPdf: "Building PDF...",
+      pdfFailed: "PDF export failed.",
+      pdfReady: "PDF is ready"
+    }
+  };
+
+  let settings = loadSettings();
   let state = {
     resume: loadDraft(),
     templateId: "dark-sidebar",
     pageSize: "A4"
   };
 
-  const schemas = {
-    experience: {
-      title: "سوابق کاری",
+  function getSchemas() {
+    return {
+      experience: {
+      title: t("experience"),
       empty: () => ({ id: id(), hidden: false, organization: "", title: "", period: "", location: "", bullets: [] }),
-      fields: [["organization", "سازمان"], ["title", "عنوان"], ["period", "بازه زمانی"], ["location", "مکان"]],
+      fields: [["organization", t("organization")], ["title", t("roleTitle")], ["period", t("period")], ["location", t("location")]],
       list: "bullets"
     },
     education: {
-      title: "تحصیلات",
+      title: t("education"),
       empty: () => ({ id: id(), hidden: false, organization: "", degree: "", period: "", location: "", description: "" }),
-      fields: [["organization", "دانشگاه"], ["degree", "مدرک/رشته"], ["period", "بازه زمانی"], ["location", "مکان"]],
-      textarea: [["description", "توضیح"]]
+      fields: [["organization", t("organization")], ["degree", t("degree")], ["period", t("period")], ["location", t("location")]],
+      textarea: [["description", t("description")]]
     },
     skills: {
-      title: "مهارت‌ها",
+      title: t("skills"),
       empty: () => ({ id: id(), hidden: false, name: "", level: "", keywords: [] }),
-      fields: [["name", "گروه مهارت"], ["level", "سطح"]],
+      fields: [["name", t("skillGroup")], ["level", t("level")]],
       list: "keywords"
     },
     projects: {
-      title: "پروژه‌ها",
+      title: t("projects"),
       empty: () => ({ id: id(), hidden: false, name: "", period: "", website: "", bullets: [] }),
-      fields: [["name", "نام"], ["period", "بازه زمانی"], ["website", "لینک"]],
+      fields: [["name", t("projectName")], ["period", t("period")], ["website", t("link")]],
       list: "bullets"
     },
     certifications: {
-      title: "دوره‌ها و گواهی‌ها",
+      title: t("certifications"),
       empty: () => ({ id: id(), hidden: false, title: "", issuer: "", date: "", description: "" }),
-      fields: [["title", "عنوان"], ["issuer", "صادرکننده"], ["date", "تاریخ"]],
-      textarea: [["description", "توضیح"]]
+      fields: [["title", t("title")], ["issuer", t("issuer")], ["date", t("date")]],
+      textarea: [["description", t("description")]]
     },
     languages: {
-      title: "زبان‌ها",
+      title: t("languages"),
       empty: () => ({ id: id(), hidden: false, language: "", fluency: "", level: "4" }),
-      fields: [["language", "زبان"], ["fluency", "سطح متنی"], ["level", "سطح ۱ تا ۵"]]
+      fields: [["language", t("languageName")], ["fluency", t("fluency")], ["level", t("numericLevel")]]
     },
     interests: {
-      title: "علایق",
+      title: t("interests"),
       empty: () => ({ id: id(), hidden: false, name: "", keywords: [] }),
-      fields: [["name", "نام"]],
+      fields: [["name", t("projectName")]],
       list: "keywords"
     },
     publications: {
-      title: "انتشارات",
+      title: t("publications"),
       empty: () => ({ id: id(), hidden: false, title: "", publisher: "", date: "", description: "" }),
-      fields: [["title", "عنوان"], ["publisher", "محل انتشار"], ["date", "تاریخ"]],
-      textarea: [["description", "توضیح"]]
+      fields: [["title", t("title")], ["publisher", t("publisher")], ["date", t("date")]],
+      textarea: [["description", t("description")]]
     },
     achievements: {
-      title: "دستاوردها",
+      title: t("achievements"),
       empty: () => ({ id: id(), hidden: false, title: "", description: "" }),
-      fields: [["title", "عنوان"]],
-      textarea: [["description", "توضیح"]]
+      fields: [["title", t("title")]],
+      textarea: [["description", t("description")]]
+      }
+    };
+  }
+
+  function t(key) {
+    return I18N[settings.language]?.[key] || I18N.en[key] || key;
+  }
+
+  function loadSettings() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "{}");
+      return {
+        language: saved.language || (navigator.language && navigator.language.toLowerCase().startsWith("fa") ? "fa" : "en"),
+        theme: saved.theme || "system"
+      };
+    } catch {
+      return {
+        language: navigator.language && navigator.language.toLowerCase().startsWith("fa") ? "fa" : "en",
+        theme: "system"
+      };
     }
-  };
+  }
+
+  function saveSettings() {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  }
+
+  function resolvedTheme() {
+    return settings.theme === "system" ? (prefersDark.matches ? "dark" : "light") : settings.theme;
+  }
+
+  function applySettings() {
+    document.documentElement.lang = settings.language;
+    document.documentElement.dir = settings.language === "fa" ? "rtl" : "ltr";
+    document.documentElement.dataset.theme = resolvedTheme();
+    document.documentElement.dataset.themeMode = settings.theme;
+    $("#language-select").value = settings.language;
+    $("#theme-select").value = settings.theme;
+  }
+
+  function renderStaticText() {
+    document.querySelectorAll("[data-i18n]").forEach((node) => {
+      node.textContent = t(node.dataset.i18n);
+    });
+    document.querySelectorAll("[data-i18n-title]").forEach((node) => {
+      node.title = t(node.dataset.i18nTitle);
+    });
+  }
 
   function id() {
     return Math.random().toString(36).slice(2, 10);
@@ -71,15 +272,35 @@
   function loadDraft() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      return saved ? CVLite.normalizeResume(JSON.parse(saved)) : CVLite.emptyResume();
+      return saved ? migrateLegacyDefault(CVLite.normalizeResume(JSON.parse(saved))) : CVLite.emptyResume();
     } catch {
       return CVLite.emptyResume();
     }
   }
 
+  function migrateLegacyDefault(resume) {
+    const basics = resume.basics || {};
+    const fingerprint = hashString([
+      basics.email,
+      basics.phone,
+      basics.linkedin,
+      String(basics.firstName || "").toUpperCase(),
+      String(basics.lastName || "").toUpperCase()
+    ].join("|"));
+    return fingerprint === 1349005522 ? CVLite.emptyResume() : resume;
+  }
+
+  function hashString(value) {
+    let hash = 0;
+    for (const char of String(value || "")) {
+      hash = ((hash << 5) - hash + char.charCodeAt(0)) | 0;
+    }
+    return hash;
+  }
+
   function saveDraft() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.resume));
-    setStatus("ذخیره شد");
+    setStatus(t("saved"));
   }
 
   function setStatus(text, danger = false) {
@@ -89,6 +310,8 @@
   }
 
   function render() {
+    applySettings();
+    renderStaticText();
     renderTemplateTabs();
     renderBasics();
     renderSections();
@@ -116,25 +339,25 @@
 
   function renderBasics() {
     const fields = [
-      ["firstName", "نام"],
-      ["lastName", "نام خانوادگی"],
-      ["headline", "تیتر حرفه‌ای"],
-      ["email", "ایمیل"],
-      ["phone", "تلفن"],
-      ["location", "مکان"],
-      ["linkedin", "لینکدین"],
-      ["website", "وب‌سایت"],
-      ["extra", "اطلاعات اضافه"]
+      ["firstName", t("firstName")],
+      ["lastName", t("lastName")],
+      ["headline", t("headline")],
+      ["email", t("email")],
+      ["phone", t("phone")],
+      ["location", t("location")],
+      ["linkedin", t("linkedin")],
+      ["website", t("website")],
+      ["extra", t("extra")]
     ];
 
     $("#basics-editor").innerHTML = `
       <div class="photo-tools">
         <div class="avatar-preview">${state.resume.basics.photo ? `<img src="${escapeAttr(state.resume.basics.photo)}" alt="">` : ""}</div>
-        <label class="secondary-button">آپلود عکس<input id="photo-input" type="file" accept="image/*"></label>
-        <button class="ghost-button" id="remove-photo" type="button">حذف</button>
+        <label class="secondary-button">${t("uploadPhoto")}<input id="photo-input" type="file" accept="image/*"></label>
+        <button class="ghost-button" id="remove-photo" type="button">${t("remove")}</button>
       </div>
       ${fields.map(([key, label]) => inputField(`basics.${key}`, label, state.resume.basics[key] || "")).join("")}
-      ${textareaField("summary", "Summary", state.resume.summary || "")}
+      ${textareaField("summary", t("summary"), state.resume.summary || "")}
     `;
 
     $("#photo-input").addEventListener("change", handlePhoto);
@@ -147,17 +370,18 @@
 
   function renderSections() {
     const root = $("#sections-editor");
+    const schemas = getSchemas();
     root.innerHTML = Object.entries(schemas).map(([key, schema]) => renderArraySection(key, schema)).join("") + renderCustomEditor();
     bindFields(root);
-    bindSectionButtons(root);
+    bindSectionButtons(root, schemas);
   }
 
   function renderArraySection(key, schema) {
     const items = state.resume[key] || [];
     return `<details class="editor-section" open>
-      <summary><span>${schema.title}</span><button type="button" class="mini-button" data-add="${key}">افزودن</button></summary>
+      <summary><span>${schema.title}</span><button type="button" class="mini-button" data-add="${key}">${t("add")}</button></summary>
       <div class="items">
-        ${items.map((item, index) => renderItem(key, schema, item, index)).join("") || `<p class="empty-note">هنوز آیتمی اضافه نشده است.</p>`}
+        ${items.map((item, index) => renderItem(key, schema, item, index)).join("") || `<p class="empty-note">${t("noItems")}</p>`}
       </div>
     </details>`;
   }
@@ -165,11 +389,11 @@
   function renderItem(key, schema, item, index) {
     return `<article class="edit-item">
       <div class="item-toolbar">
-        <label><input type="checkbox" data-path="${key}.${index}.hidden" ${item.hidden ? "checked" : ""}> مخفی</label>
+        <label><input type="checkbox" data-path="${key}.${index}.hidden" ${item.hidden ? "checked" : ""}> ${t("hidden")}</label>
         <div>
-          <button type="button" class="mini-button" data-move="${key}:${index}:-1">↑</button>
-          <button type="button" class="mini-button" data-move="${key}:${index}:1">↓</button>
-          <button type="button" class="mini-button danger-text" data-remove="${key}:${index}">حذف</button>
+          <button type="button" class="mini-button" data-move="${key}:${index}:-1">${t("moveUp")}</button>
+          <button type="button" class="mini-button" data-move="${key}:${index}:1">${t("moveDown")}</button>
+          <button type="button" class="mini-button danger-text" data-remove="${key}:${index}">${t("remove")}</button>
         </div>
       </div>
       ${(schema.fields || []).map(([field, label]) => inputField(`${key}.${index}.${field}`, label, item[field] || "")).join("")}
@@ -179,7 +403,7 @@
   }
 
   function listField(key, index, field, values) {
-    return `<label class="field"><span>موارد</span>
+    return `<label class="field"><span>${t("items")}</span>
       <textarea data-path="${key}.${index}.${field}" data-list="true" rows="4">${escapeHtml(values.join("\n"))}</textarea>
     </label>`;
   }
@@ -187,35 +411,35 @@
   function renderCustomEditor() {
     const sections = state.resume.customSections || [];
     return `<details class="editor-section">
-      <summary><span>بخش‌های سفارشی</span><button type="button" class="mini-button" data-add-custom-section="true">افزودن بخش</button></summary>
+      <summary><span>${t("customSections")}</span><button type="button" class="mini-button" data-add-custom-section="true">${t("addSection")}</button></summary>
       <div class="items">
         ${sections.map((section, sectionIndex) => `
           <article class="edit-item">
             <div class="item-toolbar">
-              <label><input type="checkbox" data-path="customSections.${sectionIndex}.hidden" ${section.hidden ? "checked" : ""}> مخفی</label>
-              <button type="button" class="mini-button danger-text" data-remove-custom-section="${sectionIndex}">حذف بخش</button>
+              <label><input type="checkbox" data-path="customSections.${sectionIndex}.hidden" ${section.hidden ? "checked" : ""}> ${t("hidden")}</label>
+              <button type="button" class="mini-button danger-text" data-remove-custom-section="${sectionIndex}">${t("removeSection")}</button>
             </div>
-            ${inputField(`customSections.${sectionIndex}.title`, "عنوان بخش", section.title || "")}
-            <button type="button" class="secondary-button small" data-add-custom-item="${sectionIndex}">افزودن آیتم</button>
+            ${inputField(`customSections.${sectionIndex}.title`, t("sectionTitle"), section.title || "")}
+            <button type="button" class="secondary-button small" data-add-custom-item="${sectionIndex}">${t("addItem")}</button>
             ${(section.items || []).map((item, itemIndex) => `
               <div class="nested-item">
                 <div class="item-toolbar">
-                  <label><input type="checkbox" data-path="customSections.${sectionIndex}.items.${itemIndex}.hidden" ${item.hidden ? "checked" : ""}> مخفی</label>
-                  <button type="button" class="mini-button danger-text" data-remove-custom-item="${sectionIndex}:${itemIndex}">حذف</button>
+                  <label><input type="checkbox" data-path="customSections.${sectionIndex}.items.${itemIndex}.hidden" ${item.hidden ? "checked" : ""}> ${t("hidden")}</label>
+                  <button type="button" class="mini-button danger-text" data-remove-custom-item="${sectionIndex}:${itemIndex}">${t("remove")}</button>
                 </div>
-                ${inputField(`customSections.${sectionIndex}.items.${itemIndex}.title`, "عنوان", item.title || "")}
-                ${inputField(`customSections.${sectionIndex}.items.${itemIndex}.subtitle`, "زیرعنوان", item.subtitle || "")}
-                ${inputField(`customSections.${sectionIndex}.items.${itemIndex}.period`, "زمان", item.period || "")}
+                ${inputField(`customSections.${sectionIndex}.items.${itemIndex}.title`, t("title"), item.title || "")}
+                ${inputField(`customSections.${sectionIndex}.items.${itemIndex}.subtitle`, t("subtitle"), item.subtitle || "")}
+                ${inputField(`customSections.${sectionIndex}.items.${itemIndex}.period`, t("periodLabel"), item.period || "")}
                 ${listField(`customSections.${sectionIndex}.items`, itemIndex, "bullets", item.bullets || [])}
               </div>
             `).join("")}
           </article>
-        `).join("") || `<p class="empty-note">بخش سفارشی ندارید.</p>`}
+        `).join("") || `<p class="empty-note">${t("noCustom")}</p>`}
       </div>
     </details>`;
   }
 
-  function bindSectionButtons(root) {
+  function bindSectionButtons(root, schemas) {
     root.querySelectorAll("[data-add]").forEach((button) => {
       button.addEventListener("click", (event) => {
         event.preventDefault();
@@ -301,7 +525,7 @@
 
   function renderPreview() {
     const title = [state.resume.basics.firstName, state.resume.basics.lastName].filter(Boolean).join(" ");
-    $("#preview-title").textContent = title || "رزومه";
+    $("#preview-title").textContent = title || t("resume");
     $("#preview").innerHTML = CVLite.renderResume(state.resume, state.templateId, { mode: "preview" });
   }
 
@@ -347,10 +571,10 @@
       state.resume = file.name.toLowerCase().endsWith(".json")
         ? CVLite.normalizeRxResume(JSON.parse(text))
         : CVLite.parseMarkdown(text);
-      setStatus(`Import شد: ${file.name}`);
+      setStatus(`${t("imported")}: ${file.name}`);
       render();
     } catch (error) {
-      setStatus(error.message || "Import ناموفق بود", true);
+      setStatus(error.message || t("importFailed"), true);
     } finally {
       event.target.value = "";
     }
@@ -367,7 +591,7 @@
   }
 
   async function downloadPdf() {
-    setStatus("در حال ساخت PDF...");
+    setStatus(t("buildingPdf"));
     const name = [state.resume.basics.firstName, state.resume.basics.lastName].filter(Boolean).join("-").toLowerCase() || "resume";
     try {
       const response = await fetch("/api/export-pdf", {
@@ -381,7 +605,7 @@
         })
       });
       if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: "ساخت PDF ناموفق بود." }));
+        const error = await response.json().catch(() => ({ error: t("pdfFailed") }));
         throw new Error(error.error);
       }
       const blob = await response.blob();
@@ -391,7 +615,7 @@
       link.download = `${name}-${state.templateId}.pdf`;
       link.click();
       URL.revokeObjectURL(url);
-      setStatus("PDF آماده شد");
+      setStatus(t("pdfReady"));
     } catch (error) {
       setStatus(error.message, true);
     }
@@ -415,6 +639,19 @@
   $("#export-json").addEventListener("click", () => downloadText("resume-cvlite.json", JSON.stringify(state.resume, null, 2), "application/json"));
   $("#export-md").addEventListener("click", () => downloadText("resume-cvlite.md", CVLite.resumeToMarkdown(state.resume), "text/markdown"));
   $("#download-pdf").addEventListener("click", downloadPdf);
+  $("#language-select").addEventListener("change", (event) => {
+    settings.language = event.target.value;
+    saveSettings();
+    render();
+  });
+  $("#theme-select").addEventListener("change", (event) => {
+    settings.theme = event.target.value;
+    saveSettings();
+    applySettings();
+  });
+  prefersDark.addEventListener("change", () => {
+    if (settings.theme === "system") applySettings();
+  });
   $("#page-size").addEventListener("change", (event) => {
     state.pageSize = event.target.value;
     renderPreview();

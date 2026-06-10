@@ -1,13 +1,66 @@
 :root {
+  color-scheme: light;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/vazirmatn/Vazirmatn%5Bwght%5D.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter%5Bwght%5D.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
   --bg: #eef2f4;
   --surface: #ffffff;
+  --surface-strong: rgba(255, 255, 255, 0.96);
+  --control: #ffffff;
+  --control-muted: #f5f8fa;
   --ink: #172026;
   --muted: #63717a;
   --line: #d7e0e5;
   --accent: #1f6f9f;
+  --accent-strong: #214b6d;
+  --preview-bg: #cfd7dc;
+  --shadow: rgba(22, 36, 45, 0.24);
+  --ok-bg: #eaf6ef;
+  --ok-text: #23603b;
+  --danger-bg: #fff0ef;
   --danger: #aa3131;
   --radius: 8px;
-  font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+  font-family: "Inter", Arial, sans-serif;
+}
+
+:root[lang="fa"] {
+  font-family: "Vazirmatn", Tahoma, Arial, sans-serif;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #10161b;
+  --surface: #172027;
+  --surface-strong: rgba(23, 32, 39, 0.96);
+  --control: #111920;
+  --control-muted: #202b33;
+  --ink: #edf4f7;
+  --muted: #9eb0ba;
+  --line: #2b3a44;
+  --accent: #8ac7ee;
+  --accent-strong: #5aa9da;
+  --preview-bg: #0c1116;
+  --shadow: rgba(0, 0, 0, 0.42);
+  --ok-bg: #183526;
+  --ok-text: #a9e6bf;
+  --danger-bg: #3a1c1c;
+  --danger: #ffaaa3;
 }
 
 * {
@@ -42,7 +95,7 @@ button {
   min-height: 74px;
   padding: 14px 22px;
   border-bottom: 1px solid var(--line);
-  background: rgba(255, 255, 255, 0.96);
+  background: var(--surface-strong);
 }
 
 .topbar h1,
@@ -80,6 +133,7 @@ button {
   border-radius: 7px;
   padding: 7px 11px;
   background: #fff;
+  background: var(--control);
   color: var(--ink);
   text-decoration: none;
 }
@@ -90,15 +144,15 @@ button {
 }
 
 .primary-button {
-  border-color: #214b6d;
-  background: #214b6d;
+  border-color: var(--accent-strong);
+  background: var(--accent-strong);
   color: #fff;
   font-weight: 700;
 }
 
 .secondary-button {
-  background: #eef6fb;
-  color: #164d70;
+  background: var(--control-muted);
+  color: var(--accent);
 }
 
 .secondary-button.small {
@@ -126,6 +180,22 @@ button {
   grid-template-columns: minmax(320px, 430px) minmax(0, 1fr);
   gap: 18px;
   padding: 18px;
+}
+
+.inline-select {
+  grid-template-columns: auto minmax(92px, auto);
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+.inline-select select {
+  min-height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 6px 8px;
+  background: var(--control);
+  color: var(--ink);
 }
 
 .control-panel,
@@ -165,6 +235,7 @@ button {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: #f5f8fa;
+  background: var(--control-muted);
 }
 
 .segmented button {
@@ -176,7 +247,7 @@ button {
 }
 
 .segmented button.active {
-  background: #214b6d;
+  background: var(--accent-strong);
   color: #fff;
 }
 
@@ -196,7 +267,7 @@ button {
   border: 1px solid var(--line);
   border-radius: 7px;
   padding: 8px 9px;
-  background: #fff;
+  background: var(--control);
   color: var(--ink);
 }
 
@@ -219,7 +290,7 @@ button {
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 50%;
-  background: #f1f5f7;
+  background: var(--control-muted);
 }
 
 .avatar-preview img {
@@ -253,15 +324,15 @@ button {
 
 .edit-item,
 .nested-item {
-  border: 1px solid #dfe7eb;
+  border: 1px solid var(--line);
   border-radius: 8px;
   padding: 10px;
   margin: 8px 0;
-  background: #fbfcfd;
+  background: var(--control-muted);
 }
 
 .nested-item {
-  background: #fff;
+  background: var(--control);
 }
 
 .item-toolbar {
@@ -298,14 +369,14 @@ button {
   min-width: 86px;
   border-radius: 99px;
   padding: 6px 10px;
-  background: #eaf6ef;
-  color: #23603b;
+  background: var(--ok-bg);
+  color: var(--ok-text);
   text-align: center;
   font-size: 12px;
 }
 
 .status.danger {
-  background: #fff0ef;
+  background: var(--danger-bg);
   color: var(--danger);
 }
 
@@ -315,12 +386,12 @@ button {
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: #cfd7dc;
+  background: var(--preview-bg);
 }
 
 .preview-frame .resume {
   margin: 0 auto;
-  box-shadow: 0 16px 38px rgba(22, 36, 45, 0.24);
+  box-shadow: 0 16px 38px var(--shadow);
   transform-origin: top center;
 }
 

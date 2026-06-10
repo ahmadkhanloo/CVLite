@@ -24,25 +24,25 @@
   function emptyResume() {
     return {
       basics: {
-        firstName: "MOHAMMAD",
-        lastName: "AHMADKHANLOO",
-        headline: "Researcher | Data Analyst | Behavioral & Cognitive Scientist",
-        email: "m.ahmadkhanloo@ipm.ir",
-        phone: "+98-936-179-3083",
+        firstName: "Arash",
+        lastName: "Rezaei",
+        headline: "Product Manager | Data Analyst | AI Solutions",
+        email: "arash.rezaei@example.com",
+        phone: "+98-912-000-0000",
         location: "Tehran, Iran",
         website: "",
-        linkedin: "mohammad-ahmadkhanloo",
+        linkedin: "arash-rezaei",
         extra: "",
         photo: ""
       },
-      summary: "Aspiring to Product Manager with a strong background in cognitive science, data analysis and computational modeling. Proven expertise in brain-data and eye-tracking systems, translating user and behavioral insights into clear MVP definitions, product roadmaps and Agile development cycles.",
+      summary: "Product-minded professional with experience in data analysis, stakeholder communication, and building practical digital tools. Skilled at turning user needs into clear requirements, structured workflows, and polished deliverables.",
       skills: [
-        { id: uid(), hidden: false, name: "Technical Skills", keywords: ["Lab & Instrumentation: Eye-tracking, EEG, GSR", "Methodologies: Experimental Design, Computational Modeling"] },
-        { id: uid(), hidden: false, name: "Programming Skills", keywords: ["Python", "MATLAB", "R", "Git", "Jupyter", "Linux"] },
-        { id: uid(), hidden: false, name: "Professional Skills", keywords: ["Team Leadership", "Project Management", "Technical Documentation"] }
+        { id: uid(), hidden: false, name: "Product Skills", keywords: ["Product Discovery", "Roadmapping", "Requirements Writing"] },
+        { id: uid(), hidden: false, name: "Technical Skills", keywords: ["Data Analysis", "Prototyping", "Automation"] },
+        { id: uid(), hidden: false, name: "Professional Skills", keywords: ["Stakeholder Communication", "Team Coordination", "Documentation"] }
       ],
       experience: [
-        { id: uid(), hidden: false, title: "AI Product Manager", organization: "Zharfatech", location: "Tehran", period: "2025 - Present", bullets: ["Led AI products including LLM training, speech-to-text systems, and AI-based database query tools."] }
+        { id: uid(), hidden: false, title: "Product Specialist", organization: "Sample Technology Studio", location: "Tehran", period: "2024 - Present", bullets: ["Defined product requirements, coordinated delivery tasks, and prepared stakeholder-facing documentation."] }
       ],
       education: [],
       projects: [],

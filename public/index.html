@@ -11,26 +11,41 @@
   <header class="topbar">
     <div>
       <p class="eyebrow">CVLite</p>
-      <h1>رزومه‌ساز محلی</h1>
+      <h1 data-i18n="appTitle">رزومه‌ساز محلی</h1>
     </div>
     <div class="topbar-actions">
-      <label class="icon-button" title="Import JSON or Markdown">
-        <span>Import</span>
+      <label class="field inline-select">
+        <span data-i18n="language">زبان</span>
+        <select id="language-select">
+          <option value="fa">فارسی</option>
+          <option value="en">English</option>
+        </select>
+      </label>
+      <label class="field inline-select">
+        <span data-i18n="theme">تم</span>
+        <select id="theme-select">
+          <option value="system" data-i18n="themeSystem">سیستم</option>
+          <option value="light" data-i18n="themeLight">روشن</option>
+          <option value="dark" data-i18n="themeDark">تیره</option>
+        </select>
+      </label>
+      <label class="icon-button" title="Import JSON or Markdown" data-i18n-title="importTitle">
+        <span data-i18n="import">Import</span>
         <input id="file-input" type="file" accept=".json,.md,.markdown,application/json,text/markdown,text/plain">
       </label>
       <button id="export-json" class="icon-button" type="button">JSON</button>
       <button id="export-md" class="icon-button" type="button">MD</button>
-      <button id="download-pdf" class="primary-button" type="button">دانلود PDF</button>
+      <button id="download-pdf" class="primary-button" type="button" data-i18n="downloadPdf">دانلود PDF</button>
     </div>
   </header>
 
   <main class="app-shell">
     <aside class="control-panel">
       <section class="panel-section">
-        <h2>قالب خروجی</h2>
+        <h2 data-i18n="templateSection">قالب خروجی</h2>
         <div id="template-tabs" class="segmented"></div>
         <label class="field compact-field">
-          <span>اندازه صفحه</span>
+          <span data-i18n="pageSize">اندازه صفحه</span>
           <select id="page-size">
             <option value="A4">A4</option>
             <option value="Letter">Letter</option>
@@ -39,12 +54,12 @@
       </section>
 
       <section class="panel-section">
-        <h2>اطلاعات اصلی</h2>
+        <h2 data-i18n="basicsSection">اطلاعات اصلی</h2>
         <div id="basics-editor"></div>
       </section>
 
       <section class="panel-section">
-        <h2>بخش‌ها</h2>
+        <h2 data-i18n="sectionsSection">بخش‌ها</h2>
         <div id="sections-editor"></div>
       </section>
     </aside>
@@ -52,10 +67,10 @@
     <section class="preview-panel">
       <div class="preview-toolbar">
         <div>
-          <p class="eyebrow">Preview</p>
+          <p class="eyebrow" data-i18n="preview">Preview</p>
           <h2 id="preview-title">رزومه</h2>
         </div>
-        <div id="status" class="status">ذخیره شد</div>
+        <div id="status" class="status" data-i18n="saved">ذخیره شد</div>
       </div>
       <div id="preview" class="preview-frame" dir="ltr"></div>
     </section>

@@ -1,5 +1,21 @@
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("/fonts/vazirmatn/Vazirmatn%5Bwght%5D.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Inter";
+  src: url("/fonts/inter/Inter%5Bwght%5D.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
-  --resume-font: Arial, Helvetica, sans-serif;
+  --resume-font: "Inter", "Vazirmatn", Arial, Helvetica, sans-serif;
 }
 
 [data-page-size="Letter"] .resume,
