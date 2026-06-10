@@ -5,10 +5,13 @@ const path = require("path");
 const crypto = require("crypto");
 const { spawn } = require("child_process");
 
-const PORT = Number(process.env.PORT || 4173);
+const DEFAULT_PORT = Number(process.env.PORT || 4173);
+const EXPLICIT_PORT = Boolean(process.env.PORT);
 const ROOT = __dirname;
 const PUBLIC_DIR = path.join(ROOT, "public");
 const payloads = new Map();
+let activePort = DEFAULT_PORT;
+let attemptedPort = DEFAULT_PORT;
 
 const MIME = {
   ".html": "text/html; charset=utf-8",
@@ -131,7 +134,7 @@ async function exportPdf(req, res) {
 
   const outPath = path.join(os.tmpdir(), `cvlite-${token}.pdf`);
   const userDataDir = path.join(os.tmpdir(), `cvlite-browser-${token}`);
-  const url = `http://127.0.0.1:${PORT}/render/${token}`;
+  const url = `http://127.0.0.1:${activePort}/render/${token}`;
   const args = [
     "--headless=new",
     "--disable-gpu",
@@ -220,6 +223,29 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-server.listen(PORT, "127.0.0.1", () => {
-  console.log(`CVLite is running at http://127.0.0.1:${PORT}`);
+function listen(port) {
+  attemptedPort = port;
+  server.listen(port, "127.0.0.1");
+}
+
+server.on("listening", () => {
+  activePort = attemptedPort;
+  console.log(`CVLite is running at http://127.0.0.1:${activePort}`);
 });
+
+server.on("error", (error) => {
+  if (error.code === "EADDRINUSE" && !EXPLICIT_PORT && attemptedPort < DEFAULT_PORT + 20) {
+    console.warn(`Port ${attemptedPort} is busy, trying ${attemptedPort + 1}...`);
+    listen(attemptedPort + 1);
+    return;
+  }
+
+  if (error.code === "EADDRINUSE") {
+    console.error(`Port ${attemptedPort} is already in use. Set PORT=4174 or close the existing CVLite server.`);
+    process.exit(1);
+  }
+
+  throw error;
+});
+
+listen(DEFAULT_PORT);
