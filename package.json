@@ -1,0 +1,14 @@
+{
+  "name": "cvlite-resume-builder",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local resume builder for Markdown/RxResume imports and PDF export.",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "check": "node --check server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
