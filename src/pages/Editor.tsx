@@ -2,9 +2,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEditor } from "../store/resume";
 import { useLibrary } from "../store/library";
-import { useSettings, type ThemeMode } from "../store/settings";
+import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
-import type { Language } from "../i18n/dictionaries";
 import { ResumeView } from "../templates";
 import { BasicsEditor } from "../editor/BasicsEditor";
 import { SectionsEditor } from "../editor/SectionsEditor";
@@ -15,7 +14,6 @@ import { normalizeRxResume } from "../data/importers/rxresume";
 import { parseMarkdown } from "../data/importers/markdown";
 import { importJsonResume } from "../data/importers/jsonresume";
 import { resumeToMarkdown } from "../data/exporters/markdown";
-import { exportJsonResume } from "../data/exporters/jsonresume";
 import { downloadBlob, downloadText, readFile } from "../lib/files";
 
 type Tab = "edit" | "design" | "cover" | "ai";
@@ -84,6 +82,7 @@ export function EditorPage() {
   const [tab, setTab] = useState<Tab>("edit");
   const [status, setStatus] = useState({ text: t("saved"), danger: false });
   const [notFound, setNotFound] = useState(false);
+  const [zoom, setZoom] = useState(1);
 
   useAutoSave(id);
 
@@ -132,10 +131,16 @@ export function EditorPage() {
         const err = await res.json().catch(() => ({ error: t("pdfFailed") }));
         throw new Error((err as { error?: string }).error);
       }
+      // On static hosting the SPA fallback can answer /api with HTML — make sure
+      // we actually got a PDF before downloading, otherwise fall back to print.
+      if (!(res.headers.get("content-type") || "").includes("pdf")) throw new Error("no-pdf-server");
       downloadBlob(`${name}-${templateId}.pdf`, await res.blob());
       setStatus({ text: t("pdfReady"), danger: false });
-    } catch (err) {
-      setStatus({ text: (err as Error).message, danger: true });
+    } catch {
+      // No PDF server (e.g. static hosting like Cloudflare Pages) — fall back to
+      // the browser's native print-to-PDF, which works everywhere offline.
+      setStatus({ text: t("savingPdf"), danger: false });
+      setTimeout(() => window.print(), 60);
     }
   }
 
@@ -147,55 +152,67 @@ export function EditorPage() {
     return (
       <div style={{ padding: 40, textAlign: "center" }}>
         <p>Resume not found.</p>
-        <button className="primary-button" onClick={() => navigate("/")}>Back to Library</button>
+        <button className="primary-button" onClick={() => navigate("/library")}>Back to Library</button>
       </div>
     );
   }
 
   const previewTitle = [resume.basics.firstName, resume.basics.lastName].filter(Boolean).join(" ") || t("resume");
 
+  const themeIcon = theme === "dark" ? "☀︎" : theme === "light" ? "☽" : "◐";
+
   return (
     <>
       <header className="topbar">
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <button className="icon-button" type="button" onClick={() => navigate("/")} title={t("backToLibrary")}>
+        <div className="topbar-brand">
+          <button className="tb-icon-btn" type="button" onClick={() => navigate("/library")} title={t("backToLibrary")} style={{ fontSize: 18 }}>
             ←
           </button>
-          <div>
-            <p className="eyebrow">CVLite</p>
-            <input
-              className="doc-name-input"
-              value={docName}
-              onChange={(e) => setDocName(e.target.value)}
-              aria-label={t("resumeName")}
-            />
-          </div>
+          <div className="brand-mark">CV</div>
+          <input
+            className="doc-name-input"
+            value={docName}
+            onChange={(e) => setDocName(e.target.value)}
+            aria-label={t("resumeName")}
+          />
         </div>
+
         <div className="topbar-actions">
-          <label className="field inline-select">
-            <span>{t("language")}</span>
-            <select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
-              <option value="fa">فارسی</option>
-              <option value="en">English</option>
-            </select>
-          </label>
-          <label className="field inline-select">
-            <span>{t("theme")}</span>
-            <select value={theme} onChange={(e) => setTheme(e.target.value as ThemeMode)}>
-              <option value="system">{t("themeSystem")}</option>
-              <option value="light">{t("themeLight")}</option>
-              <option value="dark">{t("themeDark")}</option>
-            </select>
-          </label>
-          <label className="icon-button" title={t("importTitle")}>
-            <span>{t("import")}</span>
-            <input type="file" accept=".json,.md,.markdown" onChange={handleImport} />
-          </label>
-          <button className="icon-button" type="button" onClick={() => downloadText("resume-cvlite.json", JSON.stringify(resume, null, 2), "application/json")}>JSON</button>
-          <button className="icon-button" type="button" onClick={() => downloadText("resume-cvlite.md", resumeToMarkdown(resume), "text/markdown")}>MD</button>
-          <button className="icon-button" type="button" onClick={() => downloadText("resume-jsonresume.json", exportJsonResume(resume), "application/json")}>JR</button>
-          <button className="icon-button" type="button" onClick={printPdf}>{t("printPdf")}</button>
-          <button className="primary-button" type="button" onClick={downloadPdf}>{t("downloadPdf")}</button>
+          {/* Language + Theme */}
+          <div className="tb-group" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
+            <button
+              className="tb-badge"
+              type="button"
+              onClick={() => setLanguage(language === "fa" ? "en" : "fa")}
+              title={t("language")}
+            >
+              {language === "fa" ? "FA" : "EN"}
+            </button>
+            <button
+              className="tb-icon-btn"
+              type="button"
+              title={t("theme")}
+              onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}
+            >
+              {themeIcon}
+            </button>
+          </div>
+
+          {/* Import / Export */}
+          <div className="tb-group">
+            <label className="icon-button" title={t("importTitle")} style={{ cursor: "pointer" }}>
+              ↑ {t("import")}
+              <input type="file" accept=".json,.md,.markdown" onChange={handleImport} />
+            </label>
+            <button className="icon-button" type="button" title="Export CVLite JSON" onClick={() => downloadText("resume-cvlite.json", JSON.stringify(resume, null, 2), "application/json")}>JSON</button>
+            <button className="icon-button" type="button" title="Export Markdown" onClick={() => downloadText("resume-cvlite.md", resumeToMarkdown(resume), "text/markdown")}>MD</button>
+          </div>
+
+          {/* Print / PDF */}
+          <div className="tb-group">
+            <button className="icon-button" type="button" onClick={printPdf} title={t("printPdf")}>⎙ {t("printPdf")}</button>
+            <button className="primary-button" type="button" onClick={downloadPdf}>↓ PDF</button>
+          </div>
         </div>
       </header>
 
@@ -237,10 +254,19 @@ export function EditorPage() {
               <p className="eyebrow">{t("preview")}</p>
               <h2 id="preview-title">{previewTitle}</h2>
             </div>
-            <div className={`status${status.danger ? " danger" : ""}`}>{status.text}</div>
+            <div className="preview-toolbar-right">
+              <div className="zoom-control" role="group" aria-label="Zoom">
+                <button className="tb-icon-btn" type="button" title={t("zoomOut")} onClick={() => setZoom((z) => Math.max(0.5, Math.round((z - 0.1) * 10) / 10))}>−</button>
+                <button className="zoom-value" type="button" title={t("fitToWidth")} onClick={() => setZoom(1)}>{Math.round(zoom * 100)}%</button>
+                <button className="tb-icon-btn" type="button" title={t("zoomIn")} onClick={() => setZoom((z) => Math.min(1.5, Math.round((z + 0.1) * 10) / 10))}>+</button>
+              </div>
+              <div className={`status${status.danger ? " danger" : ""}`}>{status.text}</div>
+            </div>
           </div>
           <div id="preview" className="preview-frame" dir="ltr">
-            <ResumeView resume={resume} templateId={templateId} design={design} />
+            <div className="zoom-wrap" style={{ transform: `scale(${zoom})` }}>
+              <ResumeView resume={resume} templateId={templateId} design={design} />
+            </div>
           </div>
         </section>
       </main>

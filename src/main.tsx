@@ -9,3 +9,11 @@ createRoot(document.getElementById("root")!).render(
     <App />
   </StrictMode>
 );
+
+// Register the offline service worker (moved out of index.html so a strict
+// Content-Security-Policy without 'unsafe-inline' for scripts still works).
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+  });
+}

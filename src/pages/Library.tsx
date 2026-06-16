@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../store/library";
-import { useSettings, type ThemeMode } from "../store/settings";
+import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
-import type { Language } from "../i18n/dictionaries";
 import type { ResumeDoc } from "../types/library";
 import { exportBackup, importBackup } from "../lib/backup";
 import { downloadText } from "../lib/files";
@@ -12,24 +11,69 @@ import { normalizeRxResume } from "../data/importers/rxresume";
 import { parseMarkdown } from "../data/importers/markdown";
 import { uid } from "../data/defaults";
 
-function formatDate(ts: number): string {
-  return new Date(ts).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+function relativeTime(ts: number, lang: string): string {
+  const diff = Date.now() - ts;
+  const min = Math.round(diff / 60000);
+  const hr = Math.round(diff / 3600000);
+  const day = Math.round(diff / 86400000);
+  const fa = lang === "fa";
+  if (min < 1) return fa ? "همین حالا" : "just now";
+  if (min < 60) return fa ? `${min} دقیقه پیش` : `${min}m ago`;
+  if (hr < 24) return fa ? `${hr} ساعت پیش` : `${hr}h ago`;
+  if (day < 30) return fa ? `${day} روز پیش` : `${day}d ago`;
+  return new Date(ts).toLocaleDateString(fa ? "fa-IR" : undefined, { day: "numeric", month: "short", year: "numeric" });
 }
 
-function ResumeCard({ doc, onEdit, onDuplicate, onDelete }: { doc: ResumeDoc; onEdit: () => void; onDuplicate: () => void; onDelete: () => void }) {
+// Stable gradient per template so each card has its own visual identity.
+function accentFor(templateId: string): string {
+  const palettes = [
+    "linear-gradient(135deg, #2563eb, #7c3aed)",
+    "linear-gradient(135deg, #0d9488, #0ea5e9)",
+    "linear-gradient(135deg, #db2777, #f97316)",
+    "linear-gradient(135deg, #059669, #84cc16)",
+    "linear-gradient(135deg, #7c3aed, #db2777)",
+    "linear-gradient(135deg, #ea580c, #eab308)",
+    "linear-gradient(135deg, #0891b2, #6366f1)",
+    "linear-gradient(135deg, #475569, #0f172a)"
+  ];
+  let h = 0;
+  for (let i = 0; i < templateId.length; i++) h = (h * 31 + templateId.charCodeAt(i)) >>> 0;
+  return palettes[h % palettes.length];
+}
+
+function initials(name: string, fallback: string): string {
+  const parts = (name || fallback).trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return "•";
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+function ResumeCard({ doc, lang, onEdit, onDuplicate, onDelete }: { doc: ResumeDoc; lang: string; onEdit: () => void; onDuplicate: () => void; onDelete: () => void }) {
   const t = useT();
+  const fullName = [doc.resume?.basics?.firstName, doc.resume?.basics?.lastName].filter(Boolean).join(" ");
+  const headline = doc.resume?.basics?.headline;
+  const accent = accentFor(doc.templateId);
   return (
     <div className="resume-card">
+      <div className="card-accent-bar" style={{ background: accent }} />
       <div className="card-body" onClick={onEdit} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && onEdit()}>
-        <p className="card-name">{doc.name}</p>
-        {doc.targetJob && <p className="card-job">{doc.targetJob}</p>}
-        <p className="card-date">{t("lastEdited")}: {formatDate(doc.updatedAt)}</p>
-        <p className="card-template">{doc.templateId}</p>
+        <div className="card-head">
+          <div className="card-avatar" style={{ background: accent }} aria-hidden="true">{initials(fullName, doc.name)}</div>
+          <div className="card-head-text">
+            <p className="card-name">{doc.name}</p>
+            {fullName && <p className="card-fullname">{fullName}</p>}
+          </div>
+        </div>
+        {headline && <p className="card-headline">{headline}</p>}
+        <div className="card-meta">
+          <p className="card-date">{relativeTime(doc.updatedAt, lang)}</p>
+          <p className="card-template">{doc.templateId}</p>
+        </div>
       </div>
       <div className="card-actions">
         <button className="mini-button" type="button" onClick={onEdit}>{t("editResume")}</button>
         <button className="mini-button" type="button" onClick={onDuplicate}>{t("duplicateResume")}</button>
-        <button className="mini-button danger-text" type="button" onClick={onDelete}>{t("deleteResume")}</button>
+        <button className="mini-button danger-text" type="button" onClick={onDelete} style={{ marginInlineStart: "auto" }}>{t("deleteResume")}</button>
       </div>
     </div>
   );
@@ -47,6 +91,7 @@ export function Library() {
   const importRef = useRef<HTMLInputElement>(null);
   const backupRef = useRef<HTMLInputElement>(null);
   const [status, setStatus] = useState("");
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     library.load().then(async () => {
@@ -143,63 +188,123 @@ export function Library() {
     await library.removeDoc(id);
   }
 
+  const themeIcon = theme === "dark" ? "☀︎" : theme === "light" ? "☽" : "◐";
+
+  const q = query.trim().toLowerCase();
+  const docs = q
+    ? library.docs.filter((d) => {
+        const full = [d.resume?.basics?.firstName, d.resume?.basics?.lastName, d.resume?.basics?.headline].filter(Boolean).join(" ").toLowerCase();
+        return d.name.toLowerCase().includes(q) || full.includes(q);
+      })
+    : library.docs;
+  const count = library.docs.length;
+  const countLabel = language === "fa" ? `${count} رزومه` : count === 1 ? "1 resume" : `${count} resumes`;
+
   return (
     <div className="library-page">
       <header className="topbar">
-        <div>
-          <p className="eyebrow">CVLite</p>
-          <h1>{t("myResumes")}</h1>
+        <div className="topbar-brand">
+          <div className="brand-mark">CV</div>
+          <span style={{ fontWeight: 700, fontSize: 15, color: "var(--ink)" }}>CVLite</span>
         </div>
-        <div className="topbar-actions">
-          <label className="field inline-select">
-            <span>{t("language")}</span>
-            <select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
-              <option value="fa">فارسی</option>
-              <option value="en">English</option>
-            </select>
-          </label>
-          <label className="field inline-select">
-            <span>{t("theme")}</span>
-            <select value={theme} onChange={(e) => setTheme(e.target.value as ThemeMode)}>
-              <option value="system">{t("themeSystem")}</option>
-              <option value="light">{t("themeLight")}</option>
-              <option value="dark">{t("themeDark")}</option>
-            </select>
-          </label>
-          <label className="icon-button" title={t("importTitle")}>
-            <span>{t("import")}</span>
-            <input ref={importRef} type="file" accept=".json,.md,.markdown" onChange={handleImport} />
-          </label>
-          <button className="icon-button" type="button" onClick={() => exportBackup().then(() => setStatus(t("backupReady")))}>
-            {t("exportBackup")}
-          </button>
-          <label className="icon-button">
-            <span>{t("importBackup")}</span>
-            <input ref={backupRef} type="file" accept=".json" onChange={handleBackupImport} />
-          </label>
-          <button className="primary-button" type="button" onClick={handleCreate}>
-            + {t("newResume")}
-          </button>
-        </div>
-      </header>
 
-      <main className="library-main">
-        {status && <p className="library-status">{status}</p>}
-        {library.loading ? (
-          <p className="empty-note" style={{ padding: "40px 0", textAlign: "center" }}>Loading...</p>
-        ) : library.docs.length === 0 ? (
-          <div className="library-empty">
-            <p>{t("noResumes")}</p>
+        <div className="topbar-actions">
+          <div className="tb-group" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
+            <button
+              className="tb-badge"
+              type="button"
+              onClick={() => setLanguage(language === "fa" ? "en" : "fa")}
+              title={t("language")}
+            >
+              {language === "fa" ? "FA" : "EN"}
+            </button>
+            <button
+              className="tb-icon-btn"
+              type="button"
+              title={t("theme")}
+              onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}
+            >
+              {themeIcon}
+            </button>
+          </div>
+
+          <div className="tb-group">
+            <label className="icon-button" title={t("importTitle")} style={{ cursor: "pointer" }}>
+              ↑ {t("import")}
+              <input ref={importRef} type="file" accept=".json,.md,.markdown" onChange={handleImport} />
+            </label>
+            <button className="icon-button" type="button" onClick={() => exportBackup().then(() => setStatus(t("backupReady")))}>
+              ↓ {t("exportBackup")}
+            </button>
+            <label className="icon-button" style={{ cursor: "pointer" }}>
+              ↑ {t("importBackup")}
+              <input ref={backupRef} type="file" accept=".json" onChange={handleBackupImport} />
+            </label>
+          </div>
+
+          <div className="tb-group">
             <button className="primary-button" type="button" onClick={handleCreate}>
               + {t("newResume")}
             </button>
           </div>
+        </div>
+      </header>
+
+      <main className="library-main">
+        <section className="library-hero">
+          <div className="hero-text">
+            <span className="hero-badge">◆ {t("privateBadge")}</span>
+            <h1 className="hero-title">{t("myResumes")}</h1>
+            <p className="hero-sub">{t("librarySubtitle")}</p>
+          </div>
+          <button className="hero-cta" type="button" onClick={handleCreate}>
+            <span className="hero-cta-plus">+</span>
+            <span>{t("newResume")}</span>
+          </button>
+        </section>
+
+        {status && <p className="library-status">{status}</p>}
+
+        {!library.loading && count > 0 && (
+          <div className="library-controls">
+            <div className="search-box">
+              <span className="search-icon" aria-hidden="true">⌕</span>
+              <input
+                className="search-input"
+                type="search"
+                value={query}
+                placeholder={t("searchResumes")}
+                onChange={(e) => setQuery(e.target.value)}
+                aria-label={t("searchResumes")}
+              />
+            </div>
+            <span className="library-count">{countLabel}</span>
+          </div>
+        )}
+
+        {library.loading ? (
+          <p className="empty-note" style={{ padding: "40px 0", textAlign: "center" }}>Loading...</p>
+        ) : count === 0 ? (
+          <div className="library-empty">
+            <div className="library-empty-icon">📄</div>
+            <p>{t("noResumes")}</p>
+            <button className="hero-cta" type="button" onClick={handleCreate}>
+              <span className="hero-cta-plus">+</span>
+              <span>{t("startFromScratch")}</span>
+            </button>
+          </div>
+        ) : docs.length === 0 ? (
+          <div className="library-empty">
+            <div className="library-empty-icon">🔍</div>
+            <p>{t("noSearchResults")}</p>
+          </div>
         ) : (
           <div className="resume-grid">
-            {library.docs.map((doc) => (
+            {docs.map((doc) => (
               <ResumeCard
                 key={doc.id}
                 doc={doc}
+                lang={language}
                 onEdit={() => navigate(`/edit/${doc.id}`)}
                 onDuplicate={async () => { const d = await library.duplicateDoc(doc.id); if (d) navigate(`/edit/${d.id}`); }}
                 onDelete={() => handleDelete(doc.id).then(() => library.load())}
