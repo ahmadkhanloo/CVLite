@@ -2,11 +2,13 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { resolve } from "node:path";
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 // Multi-page build:
 //  - index.html  → the editor app
 //  - render.html → the print/PDF render target (consumed by the Node PDF server)
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), cloudflare()],
   // Legacy vanilla app still lives in `public/`; use a dedicated static dir
   // for the new build so the two don't collide on index.html.
   publicDir: "static",
