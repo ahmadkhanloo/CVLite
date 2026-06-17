@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "cvlite",
+  "compatibility_date": "2026-06-17",
+  "compatibility_flags": ["nodejs_compat"],
+  // Worker script handles SPA fallback — avoids the infinite-loop bug
+  // that occurs when not_found_handling:"single-page-application" is
+  // combined with Cloudflare's automatic clean-URL rewriting.
+  "main": "worker.js",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS"
+  }
+}
