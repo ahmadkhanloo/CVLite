@@ -6,6 +6,7 @@
   "description": "Privacy-first, offline, bilingual resume builder. React + TypeScript + Vite.",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node scripts/build-info.mjs",
     "build": "tsc -p tsconfig.json && vite build",
     "preview": "vite preview",
     "start": "npm run build && node server/index.mjs",
