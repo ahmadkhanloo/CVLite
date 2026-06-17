@@ -8,22 +8,22 @@
 
 Hosted free on Cloudflare (accessible from inside Iran). See [DEPLOY.md](DEPLOY.md) to host your own.
 
-![CVLite résumé preview — Rostam-e Dastan in the Teal Pro template](assets/preview.png)
+![CVLite résumé preview — Rostam-e Dastan in the Product & Design template](assets/preview.png)
 
-> The sample résumé belongs to **Rostam-e Dastan**, the immortal champion of Ferdowsi's
-> *Shahnameh*, with every field filled from his legend.
+> The main preview features **Rostam-e Dastan** from Ferdowsi's *Shahnameh*.
+> The gallery below renders every template with a different Shahnameh character.
 
 ---
 
 ## Template Gallery
 
-All eight templates, rendered with the same Rostam sample data:
+All eight templates, each rendered with a distinct Shahnameh-inspired résumé:
 
-| Dark Sidebar | Classic Blue | Purple Compact | Modern Minimal |
+| Technical Sidebar<br>Rostam Tahmtan | Corporate Classic<br>Gordafarid | Compact Professional<br>Sohrab | Modern Minimal<br>Siavash |
 |:---:|:---:|:---:|:---:|
-| ![Dark Sidebar](assets/templates/dark-sidebar.png) | ![Classic Blue](assets/templates/classic-blue-lines.png) | ![Purple Compact](assets/templates/purple-compact.png) | ![Modern Minimal](assets/templates/modern-minimal.png) |
-| **Executive** | **Teal Pro** | **Warm Earth** | **ATS Clean** |
-| ![Executive](assets/templates/executive.png) | ![Teal Pro](assets/templates/teal-pro.png) | ![Warm Earth](assets/templates/warm-earth.png) | ![ATS Clean](assets/templates/ats-clean.png) |
+| ![Technical Sidebar](assets/templates/dark-sidebar.png) | ![Corporate Classic](assets/templates/classic-blue-lines.png) | ![Compact Professional](assets/templates/purple-compact.png) | ![Modern Minimal](assets/templates/modern-minimal.png) |
+| **Executive Leadership**<br>Esfandiar | **Product & Design**<br>Rudabeh | **Creative Editorial**<br>Tahmineh | **ATS Plain Text**<br>Afrasiab |
+| ![Executive Leadership](assets/templates/executive.png) | ![Product & Design](assets/templates/teal-pro.png) | ![Creative Editorial](assets/templates/warm-earth.png) | ![ATS Plain Text](assets/templates/ats-clean.png) |
 
 ---
 
@@ -52,7 +52,7 @@ Open **http://127.0.0.1:4173** in Edge or Chrome.
 ### Features
 
 - **100% offline** — fonts, assets, everything bundled locally
-- **8 resume templates** — Dark Sidebar, Classic Blue, Purple Compact, Modern Minimal, Executive, Teal Pro, Warm Earth, ATS Clean
+- **8 resume templates** — Technical Sidebar, Corporate Classic, Compact Professional, Modern Minimal, Executive Leadership, Product & Design, Creative Editorial, ATS Plain Text
 - **Import** `.json` / `.md` / `.markdown` files
 - **Export** PDF (via headless Chrome/Edge), JSON, Markdown
 - **Drag & drop** reordering of all sections
@@ -66,18 +66,20 @@ Open **http://127.0.0.1:4173** in Edge or Chrome.
 
 | Template | Style |
 |---|---|
-| Dark Sidebar | Two-column, dark left panel |
-| Classic Blue | Header photo, blue accents, two-column |
-| Purple Compact | Compact sidebar, purple accents |
-| Modern Minimal | Clean, single-page, teal accent |
-| Executive | Bold header, photo, letter size |
-| Teal Pro | Sidebar + main, teal accent |
-| Warm Earth | Warm tones, earthy amber |
-| ATS Clean | Plain text, ATS-optimized |
+| Technical Sidebar | Dense two-column layout for engineering and technical roles |
+| Corporate Classic | Traditional profile-first resume for corporate applications |
+| Compact Professional | Space-efficient layout for concise one-page resumes |
+| Modern Minimal | Clean editorial structure for general professional use |
+| Executive Leadership | Polished leadership format for senior and management roles |
+| Product & Design | Balanced sidebar resume for product, design, and hybrid roles |
+| Creative Editorial | Warm visual layout for creative and storytelling-heavy profiles |
+| ATS Plain Text | Plain, parser-friendly structure for applicant tracking systems |
 
 ### PDF Export
 
-The server auto-detects Chrome or Edge on Windows. To use a custom browser:
+Real PDF export requires the Node server (`npm start` or `npm run serve`) and uses headless
+Chrome/Edge. Static deployments can still export JSON/Markdown, but the PDF button needs the Node
+PDF endpoint. To use a custom browser:
 
 ```powershell
 $env:CVLITE_BROWSER = "C:\Path\To\chrome.exe"
@@ -86,7 +88,7 @@ npm start
 
 ### Sample Resume
 
-Paste this JSON into CVLite via **Import → JSON**, then pick the **Teal Pro** or **Executive** template.
+Paste this JSON into CVLite via **Import → JSON**, then pick the **Product & Design** or **Executive Leadership** template.
 
 ```json
 {
@@ -255,7 +257,7 @@ npm start
 ### قابلیت‌ها
 
 - **۱۰۰٪ آفلاین** — فونت‌ها، دارایی‌ها و همه چیز داخل پروژه است
-- **۸ قالب رزومه** — Dark Sidebar، Classic Blue، Purple Compact، Modern Minimal، Executive، Teal Pro، Warm Earth، ATS Clean
+- **۸ قالب رزومه** — Technical Sidebar، Corporate Classic، Compact Professional، Modern Minimal، Executive Leadership، Product & Design، Creative Editorial، ATS Plain Text
 - **ایمپورت** فایل‌های `.json` / `.md` / `.markdown`
 - **خروجی** PDF (از طریق Chrome/Edge headless)، JSON، Markdown
 - **جابه‌جایی با کشیدن** برای تمام بخش‌ها
@@ -269,18 +271,20 @@ npm start
 
 | قالب | سبک |
 |---|---|
-| Dark Sidebar | دو ستونه، پانل چپ تیره |
-| Classic Blue | عکس بالا، رنگ‌های آبی، دو ستونه |
-| Purple Compact | سایدبار فشرده، رنگ بنفش |
-| Modern Minimal | تمیز، تک‌صفحه، رنگ تیل |
-| Executive | هدر ضخیم، عکس، سایز Letter |
-| Teal Pro | سایدبار + متن اصلی، رنگ تیل |
-| Warm Earth | رنگ‌های گرم، کهربایی |
-| ATS Clean | متن ساده، بهینه برای سیستم‌های ATS |
+| Technical Sidebar | چیدمان دو ستونه و فشرده برای نقش‌های فنی و مهندسی |
+| Corporate Classic | رزومه کلاسیک و رسمی برای موقعیت‌های شرکتی |
+| Compact Professional | قالب کم‌حجم برای رزومه‌های یک‌صفحه‌ای |
+| Modern Minimal | ساختار تمیز و مینیمال برای استفاده عمومی حرفه‌ای |
+| Executive Leadership | قالب رسمی برای مدیران و نقش‌های ارشد |
+| Product & Design | چیدمان متعادل برای محصول، طراحی و نقش‌های ترکیبی |
+| Creative Editorial | قالب گرم و روایی برای پروفایل‌های خلاق |
+| ATS Plain Text | ساختار ساده و مناسب سیستم‌های ATS |
 
 ### خروجی PDF
 
-سرور به‌صورت خودکار Chrome یا Edge را در ویندوز پیدا می‌کند. برای استفاده از مرورگر دلخواه:
+خروجی PDF واقعی به سرور Node نیاز دارد (`npm start` یا `npm run serve`) و با Chrome/Edge
+headless ساخته می‌شود. deploy استاتیک همچنان خروجی JSON/Markdown دارد، اما دکمه PDF به endpoint
+سرور Node نیاز دارد. برای استفاده از مرورگر دلخواه:
 
 ```powershell
 $env:CVLITE_BROWSER = "C:\Path\To\chrome.exe"
@@ -289,7 +293,7 @@ npm start
 
 ### نمونه رزومه
 
-این JSON را از طریق **Import → JSON** وارد CVLite کنید، سپس قالب **Teal Pro** یا **Executive** را انتخاب کنید.
+این JSON را از طریق **Import → JSON** وارد CVLite کنید، سپس قالب **Product & Design** یا **Executive Leadership** را انتخاب کنید.
 
 ```json
 {

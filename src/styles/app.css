@@ -628,8 +628,8 @@ button {
 /* ── Template grid (8 templates) ──────────────────────────────────────────── */
 .template-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-  gap: 4px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 6px;
   padding: 4px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -637,21 +637,37 @@ button {
 }
 
 .template-chip {
-  min-height: 32px;
+  min-height: 74px;
   border: 0;
   border-radius: 6px;
   background: transparent;
-  font-size: 11px;
   color: var(--ink);
   cursor: pointer;
-  padding: 4px 6px;
-  text-align: center;
+  padding: 7px 8px;
+  text-align: start;
   line-height: 1.3;
 }
 
 .template-chip.active {
   background: var(--accent-strong);
   color: #fff;
+}
+
+.template-chip-name {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.template-chip-desc {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 10.5px;
+}
+
+.template-chip.active .template-chip-desc {
+  color: rgba(255, 255, 255, 0.78);
 }
 
 /* ── Editor tabs ──────────────────────────────────────────────────────────── */
@@ -1219,6 +1235,53 @@ input[type="range"] {
   font-size: 12.5px;
   font-weight: 500;
   box-shadow: var(--shadow-sm);
+}
+
+.welcome-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+
+.welcome-gallery-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.welcome-gallery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: top center;
+  background: var(--accent-soft);
+}
+
+.welcome-gallery-card div {
+  display: grid;
+  gap: 3px;
+  padding: 10px 12px 12px;
+}
+
+.welcome-gallery-card strong,
+.welcome-gallery-card span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.welcome-gallery-card strong {
+  color: var(--ink);
+  font-size: 13px;
+}
+
+.welcome-gallery-card span {
+  color: var(--muted);
+  font-size: 12px;
 }
 
 .welcome-features {

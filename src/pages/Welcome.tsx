@@ -4,6 +4,14 @@ import { useLibrary } from "../store/library";
 import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
 import { EXTENDED_TEMPLATES } from "../templates";
+import darkSidebarPreview from "../../assets/templates/dark-sidebar.png";
+import classicPreview from "../../assets/templates/classic-blue-lines.png";
+import compactPreview from "../../assets/templates/purple-compact.png";
+import minimalPreview from "../../assets/templates/modern-minimal.png";
+import executivePreview from "../../assets/templates/executive.png";
+import tealPreview from "../../assets/templates/teal-pro.png";
+import warmPreview from "../../assets/templates/warm-earth.png";
+import atsPreview from "../../assets/templates/ats-clean.png";
 
 function useApplyShell() {
   const language = useSettings((s) => s.language);
@@ -30,6 +38,19 @@ const FEATURES = [
   { icon: "📄", title: "featExportTitle", desc: "featExportDesc" },
   { icon: "✨", title: "featAiTitle", desc: "featAiDesc" }
 ] as const;
+
+const GITHUB_URL = "https://github.com/ahmadkhanloo/CVLite";
+
+const TEMPLATE_PREVIEWS = [
+  { id: "dark-sidebar", persona: "Rostam Tahmtan", image: darkSidebarPreview },
+  { id: "classic-blue-lines", persona: "Gordafarid", image: classicPreview },
+  { id: "purple-compact", persona: "Sohrab", image: compactPreview },
+  { id: "modern-minimal", persona: "Siavash", image: minimalPreview },
+  { id: "executive", persona: "Esfandiar", image: executivePreview },
+  { id: "teal-pro", persona: "Rudabeh", image: tealPreview },
+  { id: "warm-earth", persona: "Tahmineh", image: warmPreview },
+  { id: "ats-clean", persona: "Afrasiab", image: atsPreview }
+];
 
 export function Welcome() {
   const t = useT();
@@ -67,6 +88,11 @@ export function Welcome() {
             </button>
           </div>
           <div className="tb-group">
+            <a className="icon-button" href={GITHUB_URL} target="_blank" rel="noreferrer noopener">
+              GitHub ↗
+            </a>
+          </div>
+          <div className="tb-group">
             <button className="icon-button" type="button" onClick={() => navigate("/library")}>{t("welcomeLibrary")}</button>
           </div>
         </div>
@@ -96,6 +122,21 @@ export function Welcome() {
           </div>
         </section>
 
+        <section className="welcome-gallery" aria-label={t("welcomeGalleryLabel")}>
+          {TEMPLATE_PREVIEWS.map((item) => {
+            const template = EXTENDED_TEMPLATES.find((tpl) => tpl.id === item.id);
+            return (
+              <article className="welcome-gallery-card" key={item.id}>
+                <img src={item.image} alt={`${template?.name || item.id} - ${item.persona}`} loading="lazy" />
+                <div>
+                  <strong>{item.persona}</strong>
+                  <span>{template?.name || item.id}</span>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+
         <section className="welcome-features">
           {FEATURES.map((f) => (
             <div key={f.title} className="feature-card">
@@ -108,7 +149,7 @@ export function Welcome() {
 
         <footer className="welcome-footer">
           <span>{t("welcomeFooter")}</span>
-          <a className="welcome-footer-link" href="https://github.com/ahmadkhanloo/CVLite" target="_blank" rel="noreferrer noopener">GitHub ↗</a>
+          <a className="welcome-footer-link" href={GITHUB_URL} target="_blank" rel="noreferrer noopener">GitHub ↗</a>
         </footer>
       </main>
     </div>

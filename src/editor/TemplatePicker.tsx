@@ -20,7 +20,8 @@ export function TemplatePicker() {
             className={`template-chip${template.id === templateId ? " active" : ""}`}
             onClick={() => setTemplate(template.id as TemplateId)}
           >
-            {template.name}
+            <span className="template-chip-name">{template.name}</span>
+            <span className="template-chip-desc">{template.description}</span>
           </button>
         ))}
       </div>

@@ -1,21 +1,21 @@
 import { useEditor } from "../store/resume";
 
-export function TextField({ path, label, value }: { path: string; label: string; value: string }) {
+export function TextField({ path, label, value, placeholder }: { path: string; label: string; value: string; placeholder?: string }) {
   const setField = useEditor((s) => s.setField);
   return (
     <label className="field">
       <span>{label}</span>
-      <input value={value} onChange={(e) => setField(path, e.target.value)} />
+      <input value={value} placeholder={placeholder} onChange={(e) => setField(path, e.target.value)} />
     </label>
   );
 }
 
-export function TextArea({ path, label, value, rows = 5 }: { path: string; label: string; value: string; rows?: number }) {
+export function TextArea({ path, label, value, rows = 5, placeholder }: { path: string; label: string; value: string; rows?: number; placeholder?: string }) {
   const setField = useEditor((s) => s.setField);
   return (
     <label className="field">
       <span>{label}</span>
-      <textarea rows={rows} value={value} onChange={(e) => setField(path, e.target.value)} />
+      <textarea rows={rows} value={value} placeholder={placeholder} onChange={(e) => setField(path, e.target.value)} />
     </label>
   );
 }

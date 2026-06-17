@@ -66,10 +66,10 @@ function safeStaticPath(urlPath) {
 function findBrowser() {
   const candidates = [
     process.env.CVLITE_BROWSER,
-    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
-    "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
     "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+    "C:\\Program Files\\Microsoft\\Edge\\Application\\msedge.exe",
+    "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
     "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge",
     "/usr/bin/google-chrome",
@@ -119,8 +119,16 @@ async function exportPdf(req, res) {
   const userDataDir = path.join(os.tmpdir(), `cvlite-browser-${token}`);
   const url = `http://127.0.0.1:${activePort}/render/${token}`;
   const args = [
-    "--headless=new",
+    "--headless",
+    "--no-sandbox",
+    "--disable-gpu-sandbox",
     "--disable-gpu",
+    "--disable-gpu-compositing",
+    "--disable-accelerated-2d-canvas",
+    "--disable-dev-shm-usage",
+    "--use-angle=swiftshader",
+    "--use-gl=swiftshader",
+    "--disable-features=DawnGraphite,SkiaGraphite,Vulkan",
     "--no-first-run",
     "--no-default-browser-check",
     "--disable-extensions",
@@ -144,7 +152,7 @@ async function exportPdf(req, res) {
       child.on("error", reject);
       child.on("exit", (code) => {
         clearTimeout(timer);
-        if (code === 0 && fs.existsSync(outPath)) resolve();
+        if (fs.existsSync(outPath) && fs.statSync(outPath).size > 0) resolve();
         else reject(new Error(stderr.trim() || `Browser exited with code ${code}.`));
       });
     });

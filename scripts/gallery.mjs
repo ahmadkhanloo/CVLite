@@ -1,5 +1,5 @@
 /**
- * Renders every résumé template with the sample (Rostam) data and saves a
+ * Renders every résumé template with its Shahnameh character sample and saves a
  * thumbnail per template to assets/templates/<id>.png for the README gallery.
  *
  * Usage: node scripts/gallery.mjs
@@ -10,7 +10,7 @@ import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer-core";
-import { RESUME_PAYLOAD } from "./sample-resume.mjs";
+import { sampleForTemplate } from "./sample-resume.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -35,10 +35,22 @@ function findBrowser() {
 }
 
 function buildHtml(template, templateId) {
-  const payload = { ...RESUME_PAYLOAD, templateId };
+  const payload = { ...sampleForTemplate(templateId), templateId };
   const safe = JSON.stringify(payload).replace(/<\/script>/gi, "<\\/script>");
   const inject = `<script>window.__CVLITE_PAYLOAD__ = ${safe}; window.__CVLITE_RENDER_TOKEN__ = "preview";</script>`;
   return template.replace("<!--CVLITE_PAYLOAD-->", inject);
+}
+
+function serveLocalAsset(urlPath, res) {
+  if (!urlPath.startsWith("/assets/")) return false;
+  const filePath = path.join(ROOT, urlPath.replace(/^\//, ""));
+  if (!filePath.startsWith(path.join(ROOT, "assets"))) return false;
+  if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) return false;
+  const ext = path.extname(filePath).toLowerCase();
+  const type = ext === ".png" ? "image/png" : "application/octet-stream";
+  res.writeHead(200, { "content-type": type });
+  fs.createReadStream(filePath).pipe(res);
+  return true;
 }
 
 async function main() {
@@ -55,6 +67,7 @@ async function main() {
       res.writeHead(200, { "content-type": "text/html; charset=utf-8" });
       return res.end(currentHtml);
     }
+    if (serveLocalAsset(urlPath, res)) return;
     const proxy = http.request(
       { hostname: "127.0.0.1", port: 4173, path: req.url, method: "GET" },
       (pr) => { res.writeHead(pr.statusCode, pr.headers); pr.pipe(res); }

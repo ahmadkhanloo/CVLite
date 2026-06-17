@@ -1,17 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../store/library";
-import { useAuth } from "../store/auth";
 import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
 import type { ResumeDoc } from "../types/library";
-import { importBackup } from "../lib/backup";
-import { downloadText } from "../lib/files";
+import { exportBackup, importBackup } from "../lib/backup";
 import { importJsonResume } from "../data/importers/jsonresume";
 import { normalizeRxResume } from "../data/importers/rxresume";
 import { parseMarkdown } from "../data/importers/markdown";
 import { uid } from "../data/defaults";
-import { apiExportAllResumes, ResumeLimitError } from "../api/client";
 
 function relativeTime(ts: number, lang: string): string {
   const diff = Date.now() - ts;
@@ -84,7 +81,6 @@ export function Library() {
   const t = useT();
   const navigate = useNavigate();
   const library = useLibrary();
-  const auth = useAuth();
   const language = useSettings((s) => s.language);
   const theme = useSettings((s) => s.theme);
   const setLanguage = useSettings((s) => s.setLanguage);
@@ -109,17 +105,10 @@ export function Library() {
     return () => media.removeEventListener("change", apply);
   }, [language, theme]);
 
-  // Switch library mode based on auth state, then load
+  // Load local library and migrate the legacy single-resume draft once.
   useEffect(() => {
-    if (!auth.loaded) return;
-    if (auth.user) {
-      library.setMode("cloud");
-    } else {
-      library.setMode("local");
-    }
     library.load().then(async () => {
-      // Migrate legacy single-resume draft on first-ever local load
-      if (!auth.user && library.docs.length === 0) {
+      if (library.docs.length === 0) {
         const legacy = localStorage.getItem("cvlite.resumeDraft.v1");
         if (legacy) {
           try {
@@ -132,43 +121,18 @@ export function Library() {
         }
       }
     });
-  }, [auth.loaded, auth.user]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Execute pending backup action after login redirect
-  useEffect(() => {
-    if (!auth.user) return;
-    const raw = localStorage.getItem("cvlite.pendingAction");
-    if (!raw) return;
-    try {
-      const { type } = JSON.parse(raw) as { type: string };
-      if (type === "backup") {
-        localStorage.removeItem("cvlite.pendingAction");
-        void handleExportBackup();
-      }
-    } catch { localStorage.removeItem("cvlite.pendingAction"); }
-  }, [auth.user]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const isCloud = library.mode === "cloud";
   const count = library.docs.length;
-  const maxDocs = isCloud ? 2 : 1;
-  const atLimit = count >= maxDocs;
 
   async function handleCreate() {
-    if (atLimit) {
-      setStatus(isCloud ? t("resumeLimitReached") : t("loginToSaveMore"));
-      return;
-    }
-    const doc = await library.createDoc(t("myResumes")).catch((e) => {
-      if (e instanceof ResumeLimitError) { setStatus(t("resumeLimitReached")); return null; }
-      throw e;
-    });
-    if (doc) navigate(`/edit/${doc.id}`);
+    const doc = await library.createDoc(t("myResumes"));
+    navigate(`/edit/${doc.id}`);
   }
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (atLimit) { setStatus(isCloud ? t("resumeLimitReached") : t("loginToSaveMore")); e.target.value = ""; return; }
     try {
       const text = await file.text();
       let resume;
@@ -205,15 +169,8 @@ export function Library() {
   }
 
   async function handleExportBackup() {
-    if (!auth.user) {
-      localStorage.setItem("cvlite.pendingAction", JSON.stringify({ type: "backup" }));
-      window.location.href = `/api/auth/google/start?returnTo=/library`;
-      return;
-    }
     try {
-      setStatus(t("syncingToCloud"));
-      const docs = isCloud ? await apiExportAllResumes() : library.docs as ResumeDoc[];
-      downloadText("cvlite-backup.json", JSON.stringify(docs, null, 2), "application/json");
+      await exportBackup();
       setStatus(t("backupReady"));
     } catch {
       setStatus("Export failed");
@@ -267,31 +224,8 @@ export function Library() {
             </label>
           </div>
 
-          {/* Auth section */}
           <div className="tb-group">
-            {auth.user ? (
-              <>
-                {isCloud && (
-                  <span className={`cloud-counter${atLimit ? " at-limit" : ""}`}>
-                    {count}/2
-                  </span>
-                )}
-                <div className="user-chip">
-                  {auth.user.picture
-                    ? <img className="user-avatar" src={auth.user.picture} alt={auth.user.name} referrerPolicy="no-referrer" />
-                    : <span className="user-avatar user-avatar-initials">{auth.user.name?.slice(0, 1).toUpperCase()}</span>
-                  }
-                  <span className="user-name">{auth.user.name}</span>
-                </div>
-                <button className="icon-button" type="button" onClick={() => auth.logout()}>{t("signOut")}</button>
-              </>
-            ) : (
-              <a className="primary-button" href="/api/auth/google/start?returnTo=/library">{t("signIn")}</a>
-            )}
-          </div>
-
-          <div className="tb-group">
-            <button className="primary-button" type="button" onClick={handleCreate} disabled={atLimit}>
+            <button className="primary-button" type="button" onClick={handleCreate}>
               + {t("newResume")}
             </button>
           </div>
@@ -299,35 +233,15 @@ export function Library() {
       </header>
 
       <main className="library-main">
-        {/* Privacy notice (cloud mode only) */}
-        {isCloud && (
-          <div className="privacy-notice">
-            <strong>{t("privacyNoticeTitle")}:</strong> {t("privacyNoticeBody")}
-          </div>
-        )}
-
-        {/* Limit banner */}
-        {atLimit && !isCloud && (
-          <div className="limit-banner">
-            {t("anonymousDraftLimit")}{" "}
-            <a href="/api/auth/google/start?returnTo=/library">{t("signIn")}</a>
-          </div>
-        )}
-        {atLimit && isCloud && (
-          <div className="limit-banner limit-banner-cloud">
-            {t("resumeLimitReached")}
-          </div>
-        )}
-
         <section className="library-hero">
           <div className="hero-text">
             <span className="hero-badge">
-              {isCloud ? "☁ " + t("cloudMode") : "◆ " + t("privateBadge")}
+              {"◆ " + t("privateBadge")}
             </span>
             <h1 className="hero-title">{t("myResumes")}</h1>
             <p className="hero-sub">{t("librarySubtitle")}</p>
           </div>
-          <button className="hero-cta" type="button" onClick={handleCreate} disabled={atLimit}>
+          <button className="hero-cta" type="button" onClick={handleCreate}>
             <span className="hero-cta-plus">+</span>
             <span>{t("newResume")}</span>
           </button>

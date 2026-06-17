@@ -30,6 +30,18 @@ function findBrowser() {
   return BROWSERS.find((b) => { try { fs.accessSync(b); return true; } catch { return false; } });
 }
 
+function serveLocalAsset(urlPath, res) {
+  if (!urlPath.startsWith("/assets/")) return false;
+  const filePath = path.join(ROOT, urlPath.replace(/^\//, ""));
+  if (!filePath.startsWith(path.join(ROOT, "assets"))) return false;
+  if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) return false;
+  const ext = path.extname(filePath).toLowerCase();
+  const type = ext === ".png" ? "image/png" : "application/octet-stream";
+  res.writeHead(200, { "content-type": type });
+  fs.createReadStream(filePath).pipe(res);
+  return true;
+}
+
 
 async function main() {
   const browser = findBrowser();
@@ -49,6 +61,7 @@ async function main() {
       res.writeHead(200, { "content-type": "text/html; charset=utf-8" });
       return res.end(html);
     }
+    if (serveLocalAsset(urlPath, res)) return;
     // Proxy to the running server at 4173 for assets/fonts
     const proxy = http.request(
       { hostname: "127.0.0.1", port: 4173, path: req.url, method: "GET" },

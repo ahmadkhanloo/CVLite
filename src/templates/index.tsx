@@ -21,7 +21,7 @@ function designStyle(tokens: DesignTokens | undefined, vars: Record<string, stri
   return result as CSSProperties;
 }
 
-// ── Template 1: Dark Sidebar ──────────────────────────────────────────────────
+// ── Template 1: Technical Sidebar ─────────────────────────────────────────────
 function DarkSidebar({ r, design }: { r: Resume; design?: DesignTokens }) {
   const style = designStyle(design, design?.accentColor ? { "--ds-sidebar": design.accentColor } : {});
   return (
@@ -46,7 +46,7 @@ function DarkSidebar({ r, design }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
-// ── Template 2: Classic Blue ──────────────────────────────────────────────────
+// ── Template 2: Corporate Classic ─────────────────────────────────────────────
 function ClassicBlue({ r, design }: { r: Resume; design?: DesignTokens }) {
   const style = designStyle(design, design?.accentColor ? { "--cb-accent": design.accentColor } : {});
   return (
@@ -79,7 +79,7 @@ function ClassicBlue({ r, design }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
-// ── Template 3: Purple Compact ────────────────────────────────────────────────
+// ── Template 3: Compact Professional ──────────────────────────────────────────
 function PurpleCompact({ r, design }: { r: Resume; design?: DesignTokens }) {
   const style = designStyle(design, design?.accentColor ? { "--pc-accent": design.accentColor } : {});
   return (
@@ -140,7 +140,7 @@ function ModernMinimal({ r, design }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
-// ── Template 5: Executive ─────────────────────────────────────────────────────
+// ── Template 5: Executive Leadership ──────────────────────────────────────────
 function Executive({ r, design }: { r: Resume; design?: DesignTokens }) {
   const accent = design?.accentColor || "#1a1a2e";
   const style = designStyle(design, { "--ex-accent": accent });
@@ -184,7 +184,7 @@ function Executive({ r, design }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
-// ── Template 6: Teal Pro ──────────────────────────────────────────────────────
+// ── Template 6: Product & Design ──────────────────────────────────────────────
 function TealPro({ r, design }: { r: Resume; design?: DesignTokens }) {
   const accent = design?.accentColor || "#0d9488";
   const style = designStyle(design, { "--tp-accent": accent });
@@ -210,7 +210,7 @@ function TealPro({ r, design }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
-// ── Template 7: Warm Earth ────────────────────────────────────────────────────
+// ── Template 7: Creative Editorial ────────────────────────────────────────────
 function WarmEarth({ r, design }: { r: Resume; design?: DesignTokens }) {
   const accent = design?.accentColor || "#b45309";
   const style = designStyle(design, { "--we-accent": accent });
@@ -243,7 +243,7 @@ function WarmEarth({ r, design }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
-// ── Template 8: ATS Clean ─────────────────────────────────────────────────────
+// ── Template 8: ATS Plain Text ────────────────────────────────────────────────
 function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
   return (
     <article className="resume resume-ats">
@@ -306,12 +306,7 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
 // ── Registry & render ─────────────────────────────────────────────────────────
 
 export const EXTENDED_TEMPLATES = [
-  ...TEMPLATES,
-  { id: "modern-minimal" as TemplateId, name: "Modern Minimal", pageSize: "A4" as const },
-  { id: "executive" as TemplateId, name: "Executive", pageSize: "Letter" as const },
-  { id: "teal-pro" as TemplateId, name: "Teal Pro", pageSize: "A4" as const },
-  { id: "warm-earth" as TemplateId, name: "Warm Earth", pageSize: "A4" as const },
-  { id: "ats-clean" as TemplateId, name: "ATS Clean", pageSize: "Letter" as const }
+  ...TEMPLATES
 ];
 
 const ALL_IDS = EXTENDED_TEMPLATES.map((t) => t.id);

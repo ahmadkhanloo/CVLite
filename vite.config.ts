@@ -7,8 +7,7 @@ import { resolve } from "node:path";
 //  - render.html → the print/PDF render target (consumed by the Node PDF server)
 export default defineConfig({
   plugins: [react()],
-  // Legacy vanilla app still lives in `public/`; use a dedicated static dir
-  // for the new build so the two don't collide on index.html.
+  // Static assets live in `static/` so Vite does not mix them with app entrypoints.
   publicDir: "static",
   build: {
     outDir: "dist",

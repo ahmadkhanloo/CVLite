@@ -1,11 +1,12 @@
 import type { ResumeDoc } from "../types/library";
 import { backupAllDocs, restoreAllDocs } from "../db";
+import { backupFileName } from "./filenames";
 import { downloadText } from "./files";
 
 export async function exportBackup(): Promise<void> {
   const docs = await backupAllDocs();
   const payload = JSON.stringify({ version: 1, docs, exportedAt: new Date().toISOString() }, null, 2);
-  downloadText(`cvlite-backup-${new Date().toISOString().slice(0, 10)}.json`, payload, "application/json");
+  downloadText(backupFileName(), payload, "application/json");
 }
 
 export async function importBackup(file: File): Promise<number> {

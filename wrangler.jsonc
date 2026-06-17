@@ -3,33 +3,10 @@
   "name": "cvlite",
   "compatibility_date": "2026-06-17",
   "compatibility_flags": ["nodejs_compat"],
-  // Worker handles Google OAuth, resume CRUD, and SPA asset serving.
+  // Worker serves static assets with SPA fallback.
   "main": "worker.js",
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS"
-  },
-  // ── D1 database ───────────────────────────────────────────────────────────
-  // 1. Create:   wrangler d1 create cvlite
-  // 2. Copy the database_id from the output into the field below.
-  // 3. Migrate:  wrangler d1 execute cvlite --file=migrations/0001_initial.sql
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "cvlite",
-      "database_id": "<replace-with-your-database-id>"
-    }
-  ],
-  // ── Secrets (set with `wrangler secret put <NAME>`) ───────────────────────
-  // GOOGLE_CLIENT_ID      — OAuth 2.0 client ID from Google Cloud Console
-  // GOOGLE_CLIENT_SECRET  — OAuth 2.0 client secret from Google Cloud Console
-  // APP_ORIGIN            — full origin, e.g. https://cvlite.example.workers.dev
-  // ADMIN_EMAILS          — comma-separated admin email addresses (optional)
-  //
-  // Google OAuth redirect URI to whitelist in the Cloud Console:
-  //   Production:  https://<your-domain>/api/auth/google/callback
-  //   Local dev:   http://localhost:8787/api/auth/google/callback
-  "vars": {
-    "APP_ORIGIN": "http://localhost:8787"
   }
 }

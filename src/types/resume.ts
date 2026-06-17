@@ -1,5 +1,4 @@
-// Typed Resume model — ported 1:1 from the shape produced by emptyResume()
-// and normalizeRxResume() in the legacy public/resume-core.js.
+// Typed Resume model shared by the editor, importers, exporters, and templates.
 
 export interface Basics {
   firstName: string;
@@ -148,11 +147,57 @@ export type PageSize = "A4" | "Letter";
 export interface TemplateMeta {
   id: TemplateId;
   name: string;
+  description: string;
   pageSize: PageSize;
 }
 
 export const TEMPLATES: TemplateMeta[] = [
-  { id: "dark-sidebar", name: "Dark Sidebar", pageSize: "A4" },
-  { id: "classic-blue-lines", name: "Classic Blue", pageSize: "Letter" },
-  { id: "purple-compact", name: "Purple Compact", pageSize: "A4" }
+  {
+    id: "dark-sidebar",
+    name: "Technical Sidebar",
+    description: "Dense two-column layout for engineering and technical roles.",
+    pageSize: "A4"
+  },
+  {
+    id: "classic-blue-lines",
+    name: "Corporate Classic",
+    description: "Traditional profile-first resume for corporate applications.",
+    pageSize: "Letter"
+  },
+  {
+    id: "purple-compact",
+    name: "Compact Professional",
+    description: "Space-efficient layout for concise one-page resumes.",
+    pageSize: "A4"
+  },
+  {
+    id: "modern-minimal",
+    name: "Modern Minimal",
+    description: "Clean editorial structure for general professional use.",
+    pageSize: "A4"
+  },
+  {
+    id: "executive",
+    name: "Executive Leadership",
+    description: "Polished leadership format for senior and management roles.",
+    pageSize: "Letter"
+  },
+  {
+    id: "teal-pro",
+    name: "Product & Design",
+    description: "Balanced sidebar resume for product, design, and hybrid roles.",
+    pageSize: "A4"
+  },
+  {
+    id: "warm-earth",
+    name: "Creative Editorial",
+    description: "Warm visual layout for creative and storytelling-heavy profiles.",
+    pageSize: "A4"
+  },
+  {
+    id: "ats-clean",
+    name: "ATS Plain Text",
+    description: "Plain, parser-friendly structure for applicant tracking systems.",
+    pageSize: "Letter"
+  }
 ];

@@ -16,6 +16,18 @@ const BASIC_FIELDS: Array<[keyof import("../types/resume").Basics, TranslationKe
   ["extra", "extra"]
 ];
 
+const BASIC_PLACEHOLDERS: Partial<Record<keyof import("../types/resume").Basics, TranslationKey>> = {
+  firstName: "firstNamePlaceholder",
+  lastName: "lastNamePlaceholder",
+  headline: "headlinePlaceholder",
+  email: "emailPlaceholder",
+  phone: "phonePlaceholder",
+  location: "locationPlaceholder",
+  linkedin: "linkedinPlaceholder",
+  website: "websitePlaceholder",
+  extra: "extraPlaceholder"
+};
+
 export function BasicsEditor() {
   const t = useT();
   const basics = useEditor((s) => s.resume.basics);
@@ -42,9 +54,9 @@ export function BasicsEditor() {
         </button>
       </div>
       {BASIC_FIELDS.map(([key, labelKey]) => (
-        <TextField key={key} path={`basics.${key}`} label={t(labelKey)} value={basics[key] || ""} />
+        <TextField key={key} path={`basics.${key}`} label={t(labelKey)} value={basics[key] || ""} placeholder={BASIC_PLACEHOLDERS[key] ? t(BASIC_PLACEHOLDERS[key]) : ""} />
       ))}
-      <TextArea path="summary" label={t("summary")} value={summary || ""} />
+      <TextArea path="summary" label={t("summary")} value={summary || ""} placeholder={t("summaryPlaceholder")} />
     </div>
   );
 }
