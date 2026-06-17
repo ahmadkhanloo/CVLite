@@ -160,7 +160,24 @@ export const dictionaries = {
     featExportDesc: "چاپ مستقیم به PDF، یا خروجی JSON و Markdown.",
     featAiTitle: "دستیار هوشمند",
     featAiDesc: "بازنویسی و بهبود متن با کلید API شخصی خودت (اختیاری).",
-    welcomeFooter: "نرم‌افزار آزاد و متن‌باز · بدون تبلیغ · بدون حساب کاربری"
+    welcomeFooter: "نرم‌افزار آزاد و متن‌باز · بدون تبلیغ · بدون حساب کاربری",
+    // Auth / cloud
+    signIn: "ورود با Google",
+    signOut: "خروج",
+    cloudSave: "ذخیره ابری",
+    cloudMode: "حالت ابری",
+    localMode: "حالت محلی",
+    resumeLimit: "۲/۲ رزومه",
+    resumeLimitReached: "سقف ۲ رزومه پر شده. یکی را حذف کنید.",
+    resumeCounter: "{{count}}/۲",
+    syncingToCloud: "در حال همگام‌سازی با ابر...",
+    syncDone: "همگام‌سازی انجام شد",
+    requireLoginTitle: "برای export نیاز به ورود دارید",
+    requireLoginDesc: "ابتدا با حساب Google وارد شوید تا رزومه‌تان ذخیره و export شود.",
+    privacyNoticeTitle: "اطلاع‌رسانی حریم خصوصی",
+    privacyNoticeBody: "وقتی ذخیره ابری فعال است، رزومه‌هایتان روی سرورهای Cloudflare D1 ذخیره می‌شوند. ادمین پروژه می‌تواند محتوای ذخیره‌شده را مشاهده کند.",
+    anonymousDraftLimit: "در حالت ناشناس فقط یک پیش‌نویس مجاز است.",
+    loginToSaveMore: "برای ذخیره بیشتر از یک رزومه وارد شوید."
   },
   en: {
     // Core
@@ -320,7 +337,24 @@ export const dictionaries = {
     featExportDesc: "Print straight to PDF, or export JSON and Markdown.",
     featAiTitle: "AI assistant",
     featAiDesc: "Rewrite and polish text with your own API key (optional).",
-    welcomeFooter: "Free & open source · no ads · no account"
+    welcomeFooter: "Free & open source · no ads · no account",
+    // Auth / cloud
+    signIn: "Sign in with Google",
+    signOut: "Sign out",
+    cloudSave: "Cloud Save",
+    cloudMode: "Cloud mode",
+    localMode: "Local mode",
+    resumeLimit: "2/2 resumes",
+    resumeLimitReached: "2-resume limit reached. Delete one to continue.",
+    resumeCounter: "{{count}}/2",
+    syncingToCloud: "Syncing to cloud...",
+    syncDone: "Synced",
+    requireLoginTitle: "Sign in to export",
+    requireLoginDesc: "Sign in with Google to save your resume to the cloud and enable exports.",
+    privacyNoticeTitle: "Privacy notice",
+    privacyNoticeBody: "When cloud save is enabled, your resumes are stored on Cloudflare D1 servers. Project admins can view stored resume content.",
+    anonymousDraftLimit: "Only one local draft allowed without sign-in.",
+    loginToSaveMore: "Sign in to save more than one resume."
   }
 } as const;
 

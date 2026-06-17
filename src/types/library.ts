@@ -12,9 +12,12 @@ export interface ResumeDoc {
   targetJob?: string;
   createdAt: number;
   updatedAt: number;
-  resume: Resume;
+  resume?: Resume;
   templateId: TemplateId;
   pageSize: PageSize;
   design?: DesignTokens;
   coverLetter?: string;
 }
+
+/** Metadata-only shape returned by the cloud list endpoint (no resume body). */
+export type ResumeDocMeta = Omit<ResumeDoc, "resume">;

@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../store/library";
+import { useAuth } from "../store/auth";
 import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
 import type { ResumeDoc } from "../types/library";
-import { exportBackup, importBackup } from "../lib/backup";
+import { importBackup } from "../lib/backup";
 import { downloadText } from "../lib/files";
 import { importJsonResume } from "../data/importers/jsonresume";
 import { normalizeRxResume } from "../data/importers/rxresume";
 import { parseMarkdown } from "../data/importers/markdown";
 import { uid } from "../data/defaults";
+import { apiExportAllResumes, ResumeLimitError } from "../api/client";
 
 function relativeTime(ts: number, lang: string): string {
   const diff = Date.now() - ts;
@@ -24,7 +26,6 @@ function relativeTime(ts: number, lang: string): string {
   return new Date(ts).toLocaleDateString(fa ? "fa-IR" : undefined, { day: "numeric", month: "short", year: "numeric" });
 }
 
-// Stable gradient per template so each card has its own visual identity.
 function accentFor(templateId: string): string {
   const palettes = [
     "linear-gradient(135deg, #2563eb, #7c3aed)",
@@ -83,6 +84,7 @@ export function Library() {
   const t = useT();
   const navigate = useNavigate();
   const library = useLibrary();
+  const auth = useAuth();
   const language = useSettings((s) => s.language);
   const theme = useSettings((s) => s.theme);
   const setLanguage = useSettings((s) => s.setLanguage);
@@ -93,32 +95,7 @@ export function Library() {
   const [status, setStatus] = useState("");
   const [query, setQuery] = useState("");
 
-  useEffect(() => {
-    library.load().then(async () => {
-      // On first run, migrate legacy single-resume draft from old app
-      if (library.docs.length === 0) {
-        const legacy = localStorage.getItem("cvlite.resumeDraft.v1");
-        if (legacy) {
-          try {
-            const { normalizeResume } = await import("../data/defaults");
-            const resume = normalizeResume(JSON.parse(legacy));
-            const now = Date.now();
-            await library.saveDoc({
-              id: uid(),
-              name: "My Resume (migrated)",
-              createdAt: now,
-              updatedAt: now,
-              resume,
-              templateId: "dark-sidebar",
-              pageSize: "A4"
-            });
-            await library.load();
-          } catch { /* ignore migration errors */ }
-        }
-      }
-    });
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
+  // Apply language/theme to document root
   useEffect(() => {
     const root = document.documentElement;
     const media = window.matchMedia("(prefers-color-scheme: dark)");
@@ -132,14 +109,66 @@ export function Library() {
     return () => media.removeEventListener("change", apply);
   }, [language, theme]);
 
+  // Switch library mode based on auth state, then load
+  useEffect(() => {
+    if (!auth.loaded) return;
+    if (auth.user) {
+      library.setMode("cloud");
+    } else {
+      library.setMode("local");
+    }
+    library.load().then(async () => {
+      // Migrate legacy single-resume draft on first-ever local load
+      if (!auth.user && library.docs.length === 0) {
+        const legacy = localStorage.getItem("cvlite.resumeDraft.v1");
+        if (legacy) {
+          try {
+            const { normalizeResume } = await import("../data/defaults");
+            const resume = normalizeResume(JSON.parse(legacy));
+            const now = Date.now();
+            await library.saveDoc({ id: uid(), name: "My Resume (migrated)", createdAt: now, updatedAt: now, resume, templateId: "dark-sidebar", pageSize: "A4" });
+            await library.load();
+          } catch { /* ignore migration errors */ }
+        }
+      }
+    });
+  }, [auth.loaded, auth.user]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Execute pending backup action after login redirect
+  useEffect(() => {
+    if (!auth.user) return;
+    const raw = localStorage.getItem("cvlite.pendingAction");
+    if (!raw) return;
+    try {
+      const { type } = JSON.parse(raw) as { type: string };
+      if (type === "backup") {
+        localStorage.removeItem("cvlite.pendingAction");
+        void handleExportBackup();
+      }
+    } catch { localStorage.removeItem("cvlite.pendingAction"); }
+  }, [auth.user]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const isCloud = library.mode === "cloud";
+  const count = library.docs.length;
+  const maxDocs = isCloud ? 2 : 1;
+  const atLimit = count >= maxDocs;
+
   async function handleCreate() {
-    const doc = await library.createDoc(t("myResumes"));
-    navigate(`/edit/${doc.id}`);
+    if (atLimit) {
+      setStatus(isCloud ? t("resumeLimitReached") : t("loginToSaveMore"));
+      return;
+    }
+    const doc = await library.createDoc(t("myResumes")).catch((e) => {
+      if (e instanceof ResumeLimitError) { setStatus(t("resumeLimitReached")); return null; }
+      throw e;
+    });
+    if (doc) navigate(`/edit/${doc.id}`);
   }
 
   async function handleImport(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (atLimit) { setStatus(isCloud ? t("resumeLimitReached") : t("loginToSaveMore")); e.target.value = ""; return; }
     try {
       const text = await file.text();
       let resume;
@@ -150,15 +179,7 @@ export function Library() {
         resume = parseMarkdown(text);
       }
       const now = Date.now();
-      const doc: ResumeDoc = {
-        id: uid(),
-        name: file.name.replace(/\.(json|md|markdown)$/i, ""),
-        createdAt: now,
-        updatedAt: now,
-        resume,
-        templateId: "dark-sidebar",
-        pageSize: "A4"
-      };
+      const doc: ResumeDoc = { id: uid(), name: file.name.replace(/\.(json|md|markdown)$/i, ""), createdAt: now, updatedAt: now, resume, templateId: "dark-sidebar", pageSize: "A4" };
       await library.saveDoc(doc);
       await library.load();
       navigate(`/edit/${doc.id}`);
@@ -183,13 +204,28 @@ export function Library() {
     }
   }
 
+  async function handleExportBackup() {
+    if (!auth.user) {
+      localStorage.setItem("cvlite.pendingAction", JSON.stringify({ type: "backup" }));
+      window.location.href = `/api/auth/google/start?returnTo=/library`;
+      return;
+    }
+    try {
+      setStatus(t("syncingToCloud"));
+      const docs = isCloud ? await apiExportAllResumes() : library.docs as ResumeDoc[];
+      downloadText("cvlite-backup.json", JSON.stringify(docs, null, 2), "application/json");
+      setStatus(t("backupReady"));
+    } catch {
+      setStatus("Export failed");
+    }
+  }
+
   async function handleDelete(id: string) {
     if (!window.confirm(t("confirmDelete"))) return;
     await library.removeDoc(id);
   }
 
   const themeIcon = theme === "dark" ? "☀︎" : theme === "light" ? "☽" : "◐";
-
   const q = query.trim().toLowerCase();
   const docs = q
     ? library.docs.filter((d) => {
@@ -197,7 +233,6 @@ export function Library() {
         return d.name.toLowerCase().includes(q) || full.includes(q);
       })
     : library.docs;
-  const count = library.docs.length;
   const countLabel = language === "fa" ? `${count} رزومه` : count === 1 ? "1 resume" : `${count} resumes`;
 
   return (
@@ -210,20 +245,10 @@ export function Library() {
 
         <div className="topbar-actions">
           <div className="tb-group" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
-            <button
-              className="tb-badge"
-              type="button"
-              onClick={() => setLanguage(language === "fa" ? "en" : "fa")}
-              title={t("language")}
-            >
+            <button className="tb-badge" type="button" onClick={() => setLanguage(language === "fa" ? "en" : "fa")} title={t("language")}>
               {language === "fa" ? "FA" : "EN"}
             </button>
-            <button
-              className="tb-icon-btn"
-              type="button"
-              title={t("theme")}
-              onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}
-            >
+            <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
               {themeIcon}
             </button>
           </div>
@@ -233,7 +258,7 @@ export function Library() {
               ↑ {t("import")}
               <input ref={importRef} type="file" accept=".json,.md,.markdown" onChange={handleImport} />
             </label>
-            <button className="icon-button" type="button" onClick={() => exportBackup().then(() => setStatus(t("backupReady")))}>
+            <button className="icon-button" type="button" onClick={handleExportBackup}>
               ↓ {t("exportBackup")}
             </button>
             <label className="icon-button" style={{ cursor: "pointer" }}>
@@ -242,8 +267,31 @@ export function Library() {
             </label>
           </div>
 
+          {/* Auth section */}
           <div className="tb-group">
-            <button className="primary-button" type="button" onClick={handleCreate}>
+            {auth.user ? (
+              <>
+                {isCloud && (
+                  <span className={`cloud-counter${atLimit ? " at-limit" : ""}`}>
+                    {count}/2
+                  </span>
+                )}
+                <div className="user-chip">
+                  {auth.user.picture
+                    ? <img className="user-avatar" src={auth.user.picture} alt={auth.user.name} referrerPolicy="no-referrer" />
+                    : <span className="user-avatar user-avatar-initials">{auth.user.name?.slice(0, 1).toUpperCase()}</span>
+                  }
+                  <span className="user-name">{auth.user.name}</span>
+                </div>
+                <button className="icon-button" type="button" onClick={() => auth.logout()}>{t("signOut")}</button>
+              </>
+            ) : (
+              <a className="primary-button" href="/api/auth/google/start?returnTo=/library">{t("signIn")}</a>
+            )}
+          </div>
+
+          <div className="tb-group">
+            <button className="primary-button" type="button" onClick={handleCreate} disabled={atLimit}>
               + {t("newResume")}
             </button>
           </div>
@@ -251,13 +299,35 @@ export function Library() {
       </header>
 
       <main className="library-main">
+        {/* Privacy notice (cloud mode only) */}
+        {isCloud && (
+          <div className="privacy-notice">
+            <strong>{t("privacyNoticeTitle")}:</strong> {t("privacyNoticeBody")}
+          </div>
+        )}
+
+        {/* Limit banner */}
+        {atLimit && !isCloud && (
+          <div className="limit-banner">
+            {t("anonymousDraftLimit")}{" "}
+            <a href="/api/auth/google/start?returnTo=/library">{t("signIn")}</a>
+          </div>
+        )}
+        {atLimit && isCloud && (
+          <div className="limit-banner limit-banner-cloud">
+            {t("resumeLimitReached")}
+          </div>
+        )}
+
         <section className="library-hero">
           <div className="hero-text">
-            <span className="hero-badge">◆ {t("privateBadge")}</span>
+            <span className="hero-badge">
+              {isCloud ? "☁ " + t("cloudMode") : "◆ " + t("privateBadge")}
+            </span>
             <h1 className="hero-title">{t("myResumes")}</h1>
             <p className="hero-sub">{t("librarySubtitle")}</p>
           </div>
-          <button className="hero-cta" type="button" onClick={handleCreate}>
+          <button className="hero-cta" type="button" onClick={handleCreate} disabled={atLimit}>
             <span className="hero-cta-plus">+</span>
             <span>{t("newResume")}</span>
           </button>
@@ -313,11 +383,6 @@ export function Library() {
           </div>
         )}
       </main>
-
-      {/* Hidden export-all-as-json for backup */}
-      <div style={{ display: "none" }}>
-        <button onClick={() => downloadText("backup.json", JSON.stringify(library.docs), "application/json")} />
-      </div>
     </div>
   );
 }

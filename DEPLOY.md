@@ -7,33 +7,39 @@ CVLite is a **static SPA**. It runs entirely in the browser — IndexedDB for st
 > the **PDF** button automatically falls back to the browser's native print-to-PDF, which works
 > offline on every platform.
 
-## Recommended: Cloudflare Pages
+## Recommended: Cloudflare Workers
 
 Cloudflare does **not** sanction Iran and its dashboard + deployed sites are reachable from inside
-Iran. It serves the app from a root domain (`https://<project>.pages.dev`) with a global CDN.
+Iran. The current repository is configured for Cloudflare Workers static assets with a small
+Worker fallback in `worker.js`.
 
 ### Option A — Connect the Git repo (auto-deploy on every push)
 
-1. Sign in at <https://dash.cloudflare.com> → **Workers & Pages** → **Create** → **Pages** →
-   **Connect to Git**.
+1. Sign in at <https://dash.cloudflare.com> → **Workers & Pages** → **Create**.
 2. Pick the `CVLite` repository.
 3. Build settings:
    - **Framework preset:** `None`
    - **Build command:** `npm run build`
    - **Build output directory:** `dist`
    - **Node version:** `20` (set env var `NODE_VERSION = 20` if needed)
-4. **Save and Deploy**. Every `git push` to `main` now redeploys automatically.
+4. Deploy command:
+   - Leave it empty for a Pages-style static deployment, or
+   - Use `npm run deploy` only when deploying the configured Worker.
+5. **Save and Deploy**. Every `git push` to `main` now redeploys automatically.
 
 ### Option B — Deploy from your machine (Wrangler CLI)
 
 ```bash
 npm run build
-npx wrangler pages deploy dist --project-name cvlite
+npx wrangler deploy
 ```
 
-The included `static/_redirects` (`/* /index.html 200`) makes client-side routes like
-`/edit/<id>` resolve correctly, and `static/_headers` adds long-term caching for assets/fonts.
-Both are copied into `dist/` by the build.
+SPA fallback is handled by `worker.js`. Do **not** add a catch-all `_redirects` rule such as
+`/* /index.html 200`; Cloudflare Workers static assets can reject that rule as an infinite loop
+when clean-URL rewriting is enabled.
+
+The included `static/_headers` adds long-term caching for assets/fonts and is copied into `dist/`
+by the build.
 
 ## Other Iran-friendly options
 
