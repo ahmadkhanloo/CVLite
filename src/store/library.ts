@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { ResumeDoc } from "../types/library";
-import { saveDoc as dbSave, loadDoc as dbLoad, deleteDoc as dbDelete, listDocs as dbList } from "../db";
+import { saveDoc as dbSave, loadDoc as dbLoad, deleteDoc as dbDelete, deleteAllDocs as dbDeleteAll, listDocs as dbList } from "../db";
 import { emptyResume, uid } from "../data/defaults";
 
 interface LibraryState {
@@ -10,6 +10,7 @@ interface LibraryState {
   createDoc: (name?: string) => Promise<ResumeDoc>;
   duplicateDoc: (id: string) => Promise<ResumeDoc | null>;
   removeDoc: (id: string) => Promise<void>;
+  removeAllDocs: () => Promise<void>;
   saveDoc: (doc: ResumeDoc) => Promise<void>;
   getDoc: (id: string) => Promise<ResumeDoc | undefined>;
 }
@@ -69,6 +70,11 @@ export const useLibrary = create<LibraryState>((set, get) => ({
   removeDoc: async (id) => {
     await dbDelete(id);
     set((s) => ({ docs: s.docs.filter((d) => d.id !== id) }));
+  },
+
+  removeAllDocs: async () => {
+    await dbDeleteAll();
+    set({ docs: [] });
   },
 
   saveDoc: async (doc) => {

@@ -19,7 +19,8 @@ const OUT_DIR = path.join(ROOT, "assets", "templates");
 
 const TEMPLATES = [
   "dark-sidebar", "classic-blue-lines", "purple-compact", "modern-minimal",
-  "executive", "teal-pro", "warm-earth", "ats-clean"
+  "executive", "teal-pro", "warm-earth", "ats-clean",
+  "gordafarid-defender", "rudabeh-heritage"
 ];
 
 const BROWSERS = [
@@ -97,7 +98,7 @@ async function main() {
       const el = await page.$("#render-root .resume") || await page.$("#render-root");
       const out = path.join(OUT_DIR, `${id}.png`);
       await el.screenshot({ path: out });
-      console.log(`  ✓ ${id} → ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)}KB)`);
+      console.log(`  ${id} -> ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)}KB)`);
     }
   } finally {
     await pup.close();

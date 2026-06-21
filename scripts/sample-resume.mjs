@@ -307,7 +307,115 @@ export const TEMPLATE_PERSONAS = {
   "executive": "Esfandiar",
   "teal-pro": "Rudabeh",
   "warm-earth": "Tahmineh",
-  "ats-clean": "Afrasiab"
+  "ats-clean": "Afrasiab",
+  "gordafarid-defender": "Gordafarid",
+  "rudabeh-heritage": "Rudabeh"
+};
+
+SHAHNAMEH_SAMPLES["gordafarid-defender"] = {
+  ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["classic-blue-lines"])),
+  resume: {
+    ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["classic-blue-lines"].resume)),
+    basics: {
+      firstName: "گردآفرید",
+      lastName: "",
+      headline: "استراتژیست دفاعی، رهبر میدانی و الهام بخش",
+      email: "gordafarid@sepiddiz.ir",
+      phone: "دژ سپید، مرزهای شرقی ایران",
+      location: "دژ سپید",
+      website: "gordafarid-defender.ir",
+      linkedin: "مدافع مرزها",
+      extra: "من به نام خویش، به نام ایران می جنگم و پاسدار مرزهایم.",
+      photo: profile("gordafarid.png")
+    },
+    summary: "زنی از مرزهای ایران؛ شجاع، خردمند و وفادار به میهن. با تکیه بر دانش، شهامت و تدبیر از دژ سپید و مرزهای سرزمین پاسداری کردم و در سخت ترین نبردها ایستادگی ساختم.",
+    skills: [
+      { id: "gd-s1", hidden: false, name: "رهبری", level: "5", keywords: ["شجاعت", "تفکر تاکتیکی", "ارتباط موثر"] },
+      { id: "gd-s2", hidden: false, name: "تاب آوری", level: "5", keywords: ["مدیریت بحران", "مذاکره در شرایط دشوار", "تصمیم گیری سریع"] },
+      { id: "gd-s3", hidden: false, name: "دفاع", level: "5", keywords: ["مدافع مرزها", "وفادار به میهن", "روحیه بخشی"] }
+    ],
+    experience: [
+      { id: "gd-e1", hidden: false, title: "فرمانده در دژ سپید", organization: "سال های کیانی", location: "دژ سپید", period: "سال های کیانی", bullets: ["مدیریت دفاعی دژ و مرزهای شرقی، سازماندهی نیروها و تامین آمادگی همیشگی در برابر تهدیدها."] },
+      { id: "gd-e2", hidden: false, title: "رهبر میدانی", organization: "نبرد با تورانیان", location: "میدان نبرد", period: "نبرد با تورانیان", bullets: ["هدایت مستقیم نیروها در میدان نبرد، طراحی تاکتیک های دفاعی و جلوگیری از نفوذ دشمن."] },
+      { id: "gd-e3", hidden: false, title: "استراتژیست و مذاکره کننده", organization: "ماموریت پنهان", location: "اردوگاه دشمن", period: "ماموریت پنهان", bullets: ["نفوذ با هویت پنهان برای شناسایی نقشه ها و حفاظت از مردم و سرزمین."] },
+      { id: "gd-e4", hidden: false, title: "الگوی الهام بخش", organization: "پس از پیروزی", location: "ایران", period: "پس از پیروزی", bullets: ["الهام بخش نسل های بعدی با تکیه بر تجربه، خرد و داستان ایستادگی در راه میهن."] }
+    ],
+    projects: [
+      { id: "gd-p1", hidden: false, name: "دفاع از دژ سپید", period: "مرزهای ایران", website: "", bullets: ["رهبری موفق در دفاع از دژ سپید در برابر یورش دشمنان تورانی و حفظ امنیت مرزهای شرقی ایران."] },
+      { id: "gd-p2", hidden: false, name: "رویارویی با سهراب", period: "نبرد تن به تن", website: "", bullets: ["مبارزه شجاعانه و برابر در میدان نبرد؛ نمادی از شهامت و شایستگی زنان ایرانی."] }
+    ],
+    achievements: [
+      { id: "gd-a1", hidden: false, title: "دفاع از دژ سپید", description: "حفظ امنیت مرزهای شرقی ایران" },
+      { id: "gd-a2", hidden: false, title: "رویارویی با سهراب", description: "ایستادگی در برابر نیروی برتر" },
+      { id: "gd-a3", hidden: false, title: "پنهان سازی هویت برای ماموریت", description: "شناخت نقشه های دشمن" },
+      { id: "gd-a4", hidden: false, title: "ایجاد روحیه در مدافعان", description: "تبدیل ترس به امید و مقاومت" }
+    ],
+    interests: [
+      { id: "gd-i1", hidden: false, name: "هدف محور", keywords: [] },
+      { id: "gd-i2", hidden: false, name: "مردم محور", keywords: [] },
+      { id: "gd-i3", hidden: false, name: "عادل و منصف", keywords: [] },
+      { id: "gd-i4", hidden: false, name: "پایدار و مقاوم", keywords: [] }
+    ],
+    education: [],
+    certifications: [],
+    languages: [],
+    publications: [],
+    customSections: []
+  },
+  templateId: "gordafarid-defender",
+  pageSize: "A4"
+};
+
+SHAHNAMEH_SAMPLES["rudabeh-heritage"] = {
+  ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["teal-pro"])),
+  resume: {
+    ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["teal-pro"].resume)),
+    basics: {
+      firstName: "رودابه",
+      lastName: "",
+      headline: "بانوی دیپلماسی فرهنگی و پیوندساز خاندان ها",
+      email: "rudabeh.shahnameh@heritage.ir",
+      phone: "کابل، سرزمین خورشید و فرهنگ",
+      location: "کابل",
+      website: "rudabeh-legacy.ir",
+      linkedin: "الهام بخش زنان امروز",
+      extra: "عشق را با خرد درآمیختم تا پیوندی بسازم که تا ابد، دو سرزمین و دو خاندان را به شکوهی واحد برساند.",
+      photo: profile("rudabeh.png")
+    },
+    summary: "من، رودابه، دختر مهراب کابل، با تکیه بر خرد، وقار و هوش هیجانی، پلی میان دو سرزمین و دو فرهنگ ساختم. با انتخابی آگاهانه، سرنوشت خود را رقم زدم و بنیان خانواده ای را نهادم که قهرمانی چون رستم از آن زاده شد.",
+    skills: [
+      { id: "rh-s1", hidden: false, name: "دیپلماسی", level: "5", keywords: ["مذاکره", "ارتباط بین فرهنگی", "نفوذ کلام"] },
+      { id: "rh-s2", hidden: false, name: "رهبری انسانی", level: "5", keywords: ["مدیریت روابط", "هوش هیجانی", "الهام بخشی"] },
+      { id: "rh-s3", hidden: false, name: "میراث فرهنگی", level: "5", keywords: ["حفظ سنت ها", "تصمیم گیری آگاهانه", "شجاعت"] }
+    ],
+    achievements: [
+      { id: "rh-a1", hidden: false, title: "مادری رستم", description: "پرورش رستم، پهلوان بی بدیل ایران" },
+      { id: "rh-a2", hidden: false, title: "پرورش میراث خانوادگی", description: "حفظ عزت، فرهنگ و تربیت نسلی بزرگ" },
+      { id: "rh-a3", hidden: false, title: "ایستادگی در عشق و انتخاب", description: "انتخابی خردمندانه و ماندگار" },
+      { id: "rh-a4", hidden: false, title: "پیوند میان کابل و زابل", description: "برقراری اتحاد میان دو خاندان بزرگ" }
+    ],
+    experience: [
+      { id: "rh-e1", hidden: false, title: "پرورش در محیطی سرشار از فرهنگ، ادب و خرد", organization: "زادگاه و ریشه ها", location: "کابل", period: "زادگاه و ریشه ها", bullets: ["دختر مهراب شاه کابل؛ پرورش در محیطی سرشار از فرهنگ، ادب و خرد."] },
+      { id: "rh-e2", hidden: false, title: "ازدواج با زال و بنیان اتحاد دو خاندان", organization: "پیوند سرنوشت ها", location: "کابل و زابل", period: "پیوند سرنوشت ها", bullets: ["ازدواج با زال، بنیان اتحاد دو خاندان بزرگ ایرانی و نقطه ای نو از همدلی و شکوه."] },
+      { id: "rh-e3", hidden: false, title: "حامل و همراه زال در ساختن زندگی", organization: "سال های پختگی", location: "زابل", period: "سال های پختگی", bullets: ["حامی و همراه زال در ساختن زندگی، تربیت رستم و حفظ کرامت و انسجام خانواده."] },
+      { id: "rh-e4", hidden: false, title: "الهام بخش نسل های بعد", organization: "میراث جاودان", location: "ایران", period: "میراث جاودان", bullets: ["الهام بخشی نسل های بعد در ارزش های زنانه، عشق آگاهانه و نقش آفرینی سازنده در سرنوشت سرزمین."] }
+    ],
+    projects: [],
+    interests: [
+      { id: "rh-i1", hidden: false, name: "بلندهمتی و اصالت", keywords: [] },
+      { id: "rh-i2", hidden: false, name: "خردمندی و آینده نگری", keywords: [] },
+      { id: "rh-i3", hidden: false, name: "وفاداری به ارزش ها", keywords: [] },
+      { id: "rh-i4", hidden: false, name: "قدرت عشق همراه با مسئولیت", keywords: [] },
+      { id: "rh-i5", hidden: false, name: "توانایی ایجاد اتحاد", keywords: [] }
+    ],
+    education: [],
+    certifications: [],
+    languages: [],
+    publications: [],
+    customSections: []
+  },
+  templateId: "rudabeh-heritage",
+  pageSize: "A4"
 };
 
 export function sampleForTemplate(templateId) {

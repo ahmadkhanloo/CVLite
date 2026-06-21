@@ -3,6 +3,8 @@ import { useT } from "../i18n/useT";
 import { EXTENDED_TEMPLATES } from "../templates";
 import type { PageSize, TemplateId } from "../types/resume";
 
+const previewFor = (id: TemplateId) => new URL(`../../assets/templates/${id}.png`, import.meta.url).href;
+
 export function TemplatePicker() {
   const t = useT();
   const templateId = useEditor((s) => s.templateId);
@@ -17,11 +19,17 @@ export function TemplatePicker() {
           <button
             key={template.id}
             type="button"
-            className={`template-chip${template.id === templateId ? " active" : ""}`}
+            className={`template-card${template.id === templateId ? " active" : ""}`}
             onClick={() => setTemplate(template.id as TemplateId)}
+            aria-pressed={template.id === templateId}
           >
-            <span className="template-chip-name">{template.name}</span>
-            <span className="template-chip-desc">{template.description}</span>
+            <span className="template-card-preview">
+              <img src={previewFor(template.id as TemplateId)} alt="" loading="lazy" />
+            </span>
+            <span className="template-card-copy">
+              <span className="template-card-name">{template.name}</span>
+              <span className="template-card-desc">{template.description}</span>
+            </span>
           </button>
         ))}
       </div>

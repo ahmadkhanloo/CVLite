@@ -19,6 +19,7 @@ import {
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { Icon } from "../components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
@@ -51,6 +52,7 @@ function ItemToolbar({ keyName, index }: { keyName: ArraySectionKey; index: numb
         {" "}{t("hidden")}
       </label>
       <button type="button" className="mini-button danger-text" onClick={() => removeItem(keyName, index)}>
+        <Icon name="trash" size={13} />
         {t("remove")}
       </button>
     </div>
@@ -81,6 +83,7 @@ function ArraySection({ keyName, schema }: { keyName: ArraySectionKey; schema: S
       <summary>
         <span>{t(schema.titleKey)}</span>
         <button type="button" className="mini-button" onClick={(e) => { e.preventDefault(); addItem(keyName); }}>
+          <Icon name="plus" size={13} />
           {t("add")}
         </button>
       </summary>
@@ -128,6 +131,7 @@ function CustomEditor() {
       <summary>
         <span>{t("customSections")}</span>
         <button type="button" className="mini-button" onClick={(e) => { e.preventDefault(); addCustomSection(); }}>
+          <Icon name="plus" size={13} />
           {t("addSection")}
         </button>
       </summary>
@@ -143,11 +147,13 @@ function CustomEditor() {
                   {" "}{t("hidden")}
                 </label>
                 <button type="button" className="mini-button danger-text" onClick={() => removeCustomSection(sectionIndex)}>
+                  <Icon name="trash" size={13} />
                   {t("removeSection")}
                 </button>
               </div>
               <TextField path={`customSections.${sectionIndex}.title`} label={t("sectionTitle")} value={section.title || ""} />
               <button type="button" className="secondary-button small" onClick={() => addCustomItem(sectionIndex)}>
+                <Icon name="plus" size={13} />
                 {t("addItem")}
               </button>
               {section.items.map((item, itemIndex) => (
@@ -158,6 +164,7 @@ function CustomEditor() {
                       {" "}{t("hidden")}
                     </label>
                     <button type="button" className="mini-button danger-text" onClick={() => removeCustomItem(sectionIndex, itemIndex)}>
+                      <Icon name="trash" size={13} />
                       {t("remove")}
                     </button>
                   </div>

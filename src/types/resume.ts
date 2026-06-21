@@ -141,7 +141,9 @@ export type TemplateId =
   | "executive"
   | "teal-pro"
   | "warm-earth"
-  | "ats-clean";
+  | "ats-clean"
+  | "gordafarid-defender"
+  | "rudabeh-heritage";
 export type PageSize = "A4" | "Letter";
 
 export interface TemplateMeta {
@@ -199,5 +201,17 @@ export const TEMPLATES: TemplateMeta[] = [
     name: "ATS Plain Text",
     description: "Plain, parser-friendly structure for applicant tracking systems.",
     pageSize: "Letter"
+  },
+  {
+    id: "gordafarid-defender",
+    name: "Gordafarid Defender",
+    description: "Dramatic dark and gold A4 layout with hero image, sidebar, and achievements.",
+    pageSize: "A4"
+  },
+  {
+    id: "rudabeh-heritage",
+    name: "Rudabeh Heritage",
+    description: "Decorative A4 layout with portrait column, strengths, achievement cards, and timeline.",
+    pageSize: "A4"
   }
 ];

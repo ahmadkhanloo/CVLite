@@ -4,6 +4,7 @@ import { useLibrary } from "../store/library";
 import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
 import { EXTENDED_TEMPLATES } from "../templates";
+import { Icon } from "../components/Icon";
 import darkSidebarPreview from "../../assets/templates/dark-sidebar.png";
 import classicPreview from "../../assets/templates/classic-blue-lines.png";
 import compactPreview from "../../assets/templates/purple-compact.png";
@@ -12,6 +13,8 @@ import executivePreview from "../../assets/templates/executive.png";
 import tealPreview from "../../assets/templates/teal-pro.png";
 import warmPreview from "../../assets/templates/warm-earth.png";
 import atsPreview from "../../assets/templates/ats-clean.png";
+import gordafaridPreview from "../../assets/templates/gordafarid-defender.png";
+import rudabehPreview from "../../assets/templates/rudabeh-heritage.png";
 
 function useApplyShell() {
   const language = useSettings((s) => s.language);
@@ -31,12 +34,12 @@ function useApplyShell() {
 }
 
 const FEATURES = [
-  { icon: "🔒", title: "featPrivacyTitle", desc: "featPrivacyDesc" },
-  { icon: "✈️", title: "featOfflineTitle", desc: "featOfflineDesc" },
-  { icon: "🌐", title: "featBilingualTitle", desc: "featBilingualDesc" },
-  { icon: "🎨", title: "featTemplatesTitle", desc: "featTemplatesDesc" },
-  { icon: "📄", title: "featExportTitle", desc: "featExportDesc" },
-  { icon: "✨", title: "featAiTitle", desc: "featAiDesc" }
+  { icon: "lock", title: "featPrivacyTitle", desc: "featPrivacyDesc" },
+  { icon: "plane", title: "featOfflineTitle", desc: "featOfflineDesc" },
+  { icon: "world", title: "featBilingualTitle", desc: "featBilingualDesc" },
+  { icon: "paint", title: "featTemplatesTitle", desc: "featTemplatesDesc" },
+  { icon: "file", title: "featExportTitle", desc: "featExportDesc" },
+  { icon: "sparkles", title: "featAiTitle", desc: "featAiDesc" }
 ] as const;
 
 const GITHUB_URL = "https://github.com/ahmadkhanloo/CVLite";
@@ -49,7 +52,9 @@ const TEMPLATE_PREVIEWS = [
   { id: "executive", persona: "Esfandiar", image: executivePreview },
   { id: "teal-pro", persona: "Rudabeh", image: tealPreview },
   { id: "warm-earth", persona: "Tahmineh", image: warmPreview },
-  { id: "ats-clean", persona: "Afrasiab", image: atsPreview }
+  { id: "ats-clean", persona: "Afrasiab", image: atsPreview },
+  { id: "gordafarid-defender", persona: "Gordafarid", image: gordafaridPreview },
+  { id: "rudabeh-heritage", persona: "Rudabeh", image: rudabehPreview }
 ];
 
 export function Welcome() {
@@ -64,7 +69,7 @@ export function Welcome() {
 
   useEffect(() => { library.load(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const themeIcon = theme === "dark" ? "☀︎" : theme === "light" ? "☽" : "◐";
+  const themeIcon = theme === "dark" ? "sun" : theme === "light" ? "moon" : "system";
 
   async function startNew() {
     const doc = await library.createDoc(t("myResumes"));
@@ -84,12 +89,14 @@ export function Welcome() {
               {language === "fa" ? "FA" : "EN"}
             </button>
             <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
-              {themeIcon}
+              <Icon name={themeIcon} />
             </button>
           </div>
           <div className="tb-group">
             <a className="icon-button" href={GITHUB_URL} target="_blank" rel="noreferrer noopener">
-              GitHub ↗
+              <Icon name="github" />
+              GitHub
+              <Icon name="external" size={14} />
             </a>
           </div>
           <div className="tb-group">
@@ -100,16 +107,17 @@ export function Welcome() {
 
       <main className="welcome-main">
         <section className="welcome-hero">
-          <span className="welcome-kicker">◆ {t("welcomeKicker")}</span>
+          <span className="welcome-kicker"><Icon name="lock" size={14} /> {t("welcomeKicker")}</span>
           <h1 className="welcome-title">{t("welcomeTitle")}</h1>
           <p className="welcome-lead">{t("welcomeLead")}</p>
           <div className="welcome-cta-row">
             <button className="hero-cta" type="button" onClick={startNew}>
-              <span className="hero-cta-plus">+</span>
+              <Icon name="plus" />
               <span>{t("welcomeStart")}</span>
             </button>
             <button className="welcome-cta-ghost" type="button" onClick={() => navigate("/library")}>
-              {t("welcomeLibrary")} →
+              <Icon name="library" />
+              {t("welcomeLibrary")}
             </button>
           </div>
           <div className="welcome-templates" aria-hidden="true">
@@ -140,7 +148,7 @@ export function Welcome() {
         <section className="welcome-features">
           {FEATURES.map((f) => (
             <div key={f.title} className="feature-card">
-              <div className="feature-icon">{f.icon}</div>
+              <div className="feature-icon"><Icon name={f.icon} size={22} /></div>
               <h3 className="feature-title">{t(f.title)}</h3>
               <p className="feature-desc">{t(f.desc)}</p>
             </div>
@@ -149,7 +157,7 @@ export function Welcome() {
 
         <footer className="welcome-footer">
           <span>{t("welcomeFooter")}</span>
-          <a className="welcome-footer-link" href={GITHUB_URL} target="_blank" rel="noreferrer noopener">GitHub ↗</a>
+          <a className="welcome-footer-link" href={GITHUB_URL} target="_blank" rel="noreferrer noopener">GitHub</a>
         </footer>
       </main>
     </div>

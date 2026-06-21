@@ -17,8 +17,10 @@ import { resumeToMarkdown } from "../data/exporters/markdown";
 import { exportJsonResume } from "../data/exporters/jsonresume";
 import { downloadBlob, downloadText, readFile } from "../lib/files";
 import { resumeExportName } from "../lib/filenames";
+import { Icon } from "../components/Icon";
 
 type Tab = "edit" | "design" | "cover" | "ai";
+type MobilePane = "edit" | "preview";
 
 function useAutoSave(id: string) {
   const library = useLibrary();
@@ -86,6 +88,7 @@ export function EditorPage() {
   const [status, setStatus] = useState({ text: t("saved"), danger: false });
   const [notFound, setNotFound] = useState(false);
   const [zoom, setZoom] = useState(1);
+  const [mobilePane, setMobilePane] = useState<MobilePane>("edit");
 
   useAutoSave(id);
 
@@ -101,7 +104,7 @@ export function EditorPage() {
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setStatus({ text: isDirty ? "..." : t("saved"), danger: false });
+    setStatus({ text: isDirty ? t("saving") : t("saved"), danger: false });
   }, [isDirty, t]);
 
   async function saveBeforeExport(): Promise<boolean> {
@@ -180,14 +183,14 @@ export function EditorPage() {
   }
 
   const previewTitle = [resume.basics.firstName, resume.basics.lastName].filter(Boolean).join(" ") || t("resume");
-  const themeIcon = theme === "dark" ? "☀︎" : theme === "light" ? "☽" : "◐";
+  const themeIcon = theme === "dark" ? "sun" : theme === "light" ? "moon" : "system";
 
   return (
     <>
       <header className="topbar">
         <div className="topbar-brand">
           <button className="tb-icon-btn" type="button" onClick={() => navigate("/library")} title={t("backToLibrary")} style={{ fontSize: 18 }}>
-            ←
+            <Icon name="arrow-left" />
           </button>
           <div className="brand-mark">CV</div>
           <input
@@ -204,13 +207,14 @@ export function EditorPage() {
               {language === "fa" ? "FA" : "EN"}
             </button>
             <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
-              {themeIcon}
+              <Icon name={themeIcon} />
             </button>
           </div>
 
           <div className="tb-group">
             <label className="icon-button" title={t("importTitle")} style={{ cursor: "pointer" }}>
-              ↑ {t("import")}
+              <Icon name="upload" />
+              {t("import")}
               <input type="file" accept=".json,.md,.markdown" onChange={handleImport} />
             </label>
             <button className="icon-button" type="button" title="Export CVLite JSON" onClick={handleExportJson}>JSON</button>
@@ -219,14 +223,25 @@ export function EditorPage() {
           </div>
 
           <div className="tb-group">
-            <button className="icon-button" type="button" onClick={printPdf} title={t("printPdf")}>⎙ {t("printPdf")}</button>
-            <button className="primary-button" type="button" onClick={downloadPdf}>↓ PDF</button>
+            <button className="icon-button" type="button" onClick={printPdf} title={t("printPdf")}>
+              <Icon name="print" />
+              {t("printPdf")}
+            </button>
+            <button className="primary-button" type="button" onClick={downloadPdf}>
+              <Icon name="download" />
+              PDF
+            </button>
           </div>
         </div>
       </header>
 
+      <div className="mobile-pane-switch" role="group" aria-label={t("mobileViewMode")}>
+        <button type="button" className={mobilePane === "edit" ? "active" : ""} onClick={() => setMobilePane("edit")}>{t("editTab")}</button>
+        <button type="button" className={mobilePane === "preview" ? "active" : ""} onClick={() => setMobilePane("preview")}>{t("preview")}</button>
+      </div>
+
       <main className="app-shell">
-        <aside className="control-panel">
+        <aside className={`control-panel mobile-${mobilePane === "edit" ? "active" : "hidden"}`}>
           <div className="editor-tabs">
             {(["edit", "design", "cover", "ai"] as Tab[]).map((tabId) => (
               <button
@@ -257,7 +272,7 @@ export function EditorPage() {
           {tab === "ai" && <AIPanel />}
         </aside>
 
-        <section className="preview-panel">
+        <section className={`preview-panel mobile-${mobilePane === "preview" ? "active" : "hidden"}`}>
           <div className="preview-toolbar">
             <div>
               <p className="eyebrow">{t("preview")}</p>

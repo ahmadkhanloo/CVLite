@@ -17,13 +17,15 @@ Hosted free on Cloudflare (accessible from inside Iran). See [DEPLOY.md](DEPLOY.
 
 ## Template Gallery
 
-All eight templates, each rendered with a distinct Shahnameh-inspired résumé:
+All ten templates, each rendered with a Shahnameh-inspired résumé:
 
 | Technical Sidebar<br>Rostam Tahmtan | Corporate Classic<br>Gordafarid | Compact Professional<br>Sohrab | Modern Minimal<br>Siavash |
 |:---:|:---:|:---:|:---:|
 | ![Technical Sidebar](assets/templates/dark-sidebar.png) | ![Corporate Classic](assets/templates/classic-blue-lines.png) | ![Compact Professional](assets/templates/purple-compact.png) | ![Modern Minimal](assets/templates/modern-minimal.png) |
 | **Executive Leadership**<br>Esfandiar | **Product & Design**<br>Rudabeh | **Creative Editorial**<br>Tahmineh | **ATS Plain Text**<br>Afrasiab |
 | ![Executive Leadership](assets/templates/executive.png) | ![Product & Design](assets/templates/teal-pro.png) | ![Creative Editorial](assets/templates/warm-earth.png) | ![ATS Plain Text](assets/templates/ats-clean.png) |
+| **Gordafarid Defender**<br>Gordafarid | **Rudabeh Heritage**<br>Rudabeh |  |  |
+| ![Gordafarid Defender](assets/templates/gordafarid-defender.png) | ![Rudabeh Heritage](assets/templates/rudabeh-heritage.png) |  |  |
 
 ---
 
@@ -52,7 +54,7 @@ Open **http://127.0.0.1:4173** in Edge or Chrome.
 ### Features
 
 - **100% offline** — fonts, assets, everything bundled locally
-- **8 resume templates** — Technical Sidebar, Corporate Classic, Compact Professional, Modern Minimal, Executive Leadership, Product & Design, Creative Editorial, ATS Plain Text
+- **10 resume templates** — Technical Sidebar, Corporate Classic, Compact Professional, Modern Minimal, Executive Leadership, Product & Design, Creative Editorial, ATS Plain Text, Gordafarid Defender, Rudabeh Heritage
 - **Import** `.json` / `.md` / `.markdown` files
 - **Export** PDF (via headless Chrome/Edge), JSON, Markdown
 - **Drag & drop** reordering of all sections
@@ -74,6 +76,10 @@ Open **http://127.0.0.1:4173** in Edge or Chrome.
 | Product & Design | Balanced sidebar resume for product, design, and hybrid roles |
 | Creative Editorial | Warm visual layout for creative and storytelling-heavy profiles |
 | ATS Plain Text | Plain, parser-friendly structure for applicant tracking systems |
+| Gordafarid Defender | Dark/gold A4 layout with a large hero image, sidebar, experience, and achievement cards |
+| Rudabeh Heritage | Decorative A4 layout with portrait/contact column, strengths, achievement cards, and timeline |
+
+Template reference images live in `assets/templates/references/`; generated gallery previews live in `assets/templates/`.
 
 ### PDF Export
 
@@ -257,7 +263,7 @@ npm start
 ### قابلیت‌ها
 
 - **۱۰۰٪ آفلاین** — فونت‌ها، دارایی‌ها و همه چیز داخل پروژه است
-- **۸ قالب رزومه** — Technical Sidebar، Corporate Classic، Compact Professional، Modern Minimal، Executive Leadership، Product & Design، Creative Editorial، ATS Plain Text
+- **۱۰ قالب رزومه** — Technical Sidebar، Corporate Classic، Compact Professional، Modern Minimal، Executive Leadership، Product & Design، Creative Editorial، ATS Plain Text، Gordafarid Defender، Rudabeh Heritage
 - **ایمپورت** فایل‌های `.json` / `.md` / `.markdown`
 - **خروجی** PDF (از طریق Chrome/Edge headless)، JSON، Markdown
 - **جابه‌جایی با کشیدن** برای تمام بخش‌ها
@@ -279,6 +285,10 @@ npm start
 | Product & Design | چیدمان متعادل برای محصول، طراحی و نقش‌های ترکیبی |
 | Creative Editorial | قالب گرم و روایی برای پروفایل‌های خلاق |
 | ATS Plain Text | ساختار ساده و مناسب سیستم‌های ATS |
+| Gordafarid Defender | قالب A4 تیره/طلایی با هدر تصویری بزرگ، ستون کناری، تجربه و کارت‌های دستاورد |
+| Rudabeh Heritage | قالب A4 تزئینی با ستون پرتره/تماس، نقاط قوت، کارت‌های دستاورد و timeline |
+
+تصویرهای reference در `assets/templates/references/` هستند و previewهای ساخته‌شده‌ی gallery در `assets/templates/` قرار می‌گیرند.
 
 ### خروجی PDF
 

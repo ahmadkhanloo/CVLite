@@ -15,6 +15,12 @@ export async function deleteDoc(id: string): Promise<void> {
   await del(PREFIX + id);
 }
 
+export async function deleteAllDocs(): Promise<void> {
+  const allKeys = await keys();
+  const docKeys = (allKeys as string[]).filter((k) => k.startsWith(PREFIX));
+  await Promise.all(docKeys.map((k) => del(k)));
+}
+
 export async function listDocs(): Promise<ResumeDoc[]> {
   const allKeys = await keys();
   const docKeys = (allKeys as string[]).filter((k) => k.startsWith(PREFIX));

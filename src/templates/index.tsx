@@ -21,6 +21,129 @@ function designStyle(tokens: DesignTokens | undefined, vars: Record<string, stri
   return result as CSSProperties;
 }
 
+function isResumeEmpty(r: Resume): boolean {
+  const basics = Object.values(r.basics).some(Boolean);
+  const sections = [
+    r.summary,
+    r.experience.length,
+    r.education.length,
+    r.skills.length,
+    r.projects.length,
+    r.certifications.length,
+    r.languages.length,
+    r.interests.length,
+    r.publications.length,
+    r.achievements.length,
+    r.customSections.length
+  ];
+  return !basics && !sections.some(Boolean);
+}
+
+function EmptyTemplateHint() {
+  return (
+    <div className="template-empty">
+      <h2>Start your resume</h2>
+      <p>Add your name, headline, experience, and skills in the editor. This template will fill itself from your data.</p>
+    </div>
+  );
+}
+
+function AchievementCards({ items }: { items: Resume["achievements"] }) {
+  const visible = (items || []).filter((item) => !item.hidden && (item.title || item.description));
+  if (!visible.length) return null;
+  return (
+    <section className="resume-section achievement-cards">
+      <h2>ACHIEVEMENTS</h2>
+      <div>
+        {visible.map((item) => (
+          <article key={item.id}>
+            <h3>{item.title}</h3>
+            {item.description ? <p>{item.description}</p> : null}
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function cleanList(items: Array<string | undefined>, fallback: string[]) {
+  const values = items.filter(Boolean) as string[];
+  return values.length ? values : fallback;
+}
+
+function TemplateContact({ r }: { r: Resume }) {
+  const rows = [
+    ["زادگاه", r.basics.location],
+    ["نقش", r.basics.extra || r.basics.headline],
+    ["ایمیل", r.basics.email],
+    ["وب", r.basics.website || r.basics.linkedin]
+  ].filter((row) => row[1]);
+  if (!rows.length) return null;
+  return (
+    <div className="heritage-contact">
+      {rows.map(([label, value]) => (
+        <p key={label}>
+          <span>{label}</span>
+          <b>{value}</b>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function SkillBars({ skills }: { skills: Resume["skills"] }) {
+  const visible = (skills || []).filter((skill) => !skill.hidden && skill.name);
+  if (!visible.length) return null;
+  return (
+    <section className="heritage-skillbars">
+      <h2>مهارت ها</h2>
+      {visible.flatMap((skill) => {
+        const words = skill.keywords.length ? skill.keywords : [skill.name];
+        const level = Math.max(62, Math.min(98, (Number(skill.level) || 4) * 18 + 8));
+        return words.slice(0, 3).map((word, index) => (
+          <p key={`${skill.id}-${word}`}>
+            <span>{index === 0 ? skill.name : word}</span>
+            <i><b style={{ width: `${level - index * 7}%` }} /></i>
+          </p>
+        ));
+      })}
+    </section>
+  );
+}
+
+function MiniIconList({ items }: { items: string[] }) {
+  return (
+    <div className="mini-icon-list">
+      {items.map((item, index) => (
+        <p key={item}>
+          <span>{["◇", "◈", "✦", "✧", "◆", "◉"][index % 6]}</span>
+          <b>{item}</b>
+        </p>
+      ))}
+    </div>
+  );
+}
+
+function HeritageTimeline({ items }: { items: Resume["experience"] }) {
+  const visible = (items || []).filter((item) => !item.hidden && (item.organization || item.title));
+  if (!visible.length) return null;
+  return (
+    <section className="heritage-timeline">
+      <h2>مسیر زندگی و تجربه</h2>
+      <div>
+        {visible.slice(0, 4).map((item) => (
+          <article key={item.id}>
+            <span />
+            <h3>{item.period || item.organization}</h3>
+            <p>{item.title || item.organization}</p>
+            <small>{(item.bullets || [])[0] || item.location}</small>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 // ── Template 1: Technical Sidebar ─────────────────────────────────────────────
 function DarkSidebar({ r, design }: { r: Resume; design?: DesignTokens }) {
   const style = designStyle(design, design?.accentColor ? { "--ds-sidebar": design.accentColor } : {});
@@ -303,6 +426,120 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
   );
 }
 
+// ── Template 9: Gordafarid Defender ─────────────────────────────────────────
+function GordafaridDefender({ r, design }: { r: Resume; design?: DesignTokens }) {
+  const accent = design?.accentColor || "#c99b4a";
+  const style = designStyle(design, { "--gd-accent": accent });
+  const empty = isResumeEmpty(r);
+  const strengths = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), ["شجاعت و تعهد", "تفکر استراتژیک", "رهبری الهام بخش", "مدافع مرزها"]);
+  const values = cleanList(r.interests.map((i) => i.name), ["هدف محور", "مردم محور", "عادل و منصف", "پایدار و مقاوم"]);
+  return (
+    <article className="resume resume-gordafarid" style={style} dir="rtl">
+      <header className="gord-hero-exact">
+        <div className="gord-photo-panel">
+          {r.basics.photo ? <img src={r.basics.photo} alt="" /> : <div className="gord-hero-placeholder" />}
+        </div>
+        <div className="gord-title-panel">
+          <div className="ornament">◇</div>
+          <h1><span>{r.basics.firstName || "گردآفرید"}</span><span>{r.basics.lastName || ""}</span></h1>
+          <p>{r.basics.headline || "استراتژیست دفاعی، رهبر میدانی و الهام بخش"}</p>
+          <i />
+          {r.summary ? <strong>{r.summary}</strong> : null}
+          <div className="gord-traits">
+            {strengths.slice(0, 4).map((item, index) => (
+              <span key={item}><b>{["✦", "♞", "◌", "◇"][index]}</b>{item}</span>
+            ))}
+          </div>
+        </div>
+      </header>
+      {empty ? <EmptyTemplateHint /> : (
+        <>
+        <div className="gord-body-exact">
+          <aside className="gord-info-card">
+            <section>
+              <h2>اطلاعات فردی</h2>
+              <TemplateContact r={r} />
+            </section>
+            <SkillBars skills={r.skills} />
+            <blockquote>{r.basics.extra || "من به نام خویش، به نام ایران می جنگم و پاسدار مرزهایم."}</blockquote>
+          </aside>
+          <main className="gord-content-exact">
+            <TextSection title="درباره من" text={r.summary} />
+            <div className="gord-two-cols">
+              <section>
+                <h2>دستاوردها و تاثیرگذاری</h2>
+                <AchievementCards items={r.achievements} />
+                <Projects items={r.projects} />
+              </section>
+              <section>
+                <h2>تجربه و نقش آفرینی</h2>
+                <Timeline title="" items={r.experience} />
+              </section>
+            </div>
+            <section className="gord-values">
+              <h2>نگرش و رویکرد</h2>
+              <MiniIconList items={values.slice(0, 4)} />
+            </section>
+          </main>
+        </div>
+        <footer className="gord-footer">
+          <span>برای ایران، با ایمان، تا پای جان.</span>
+          <b>{strengths.slice(0, 3).join("   ·   ")}</b>
+        </footer>
+        </>
+      )}
+    </article>
+  );
+}
+
+// ── Template 10: Rudabeh Heritage ───────────────────────────────────────────
+function RudabehHeritage({ r, design }: { r: Resume; design?: DesignTokens }) {
+  const accent = design?.accentColor || "#8f4a63";
+  const style = designStyle(design, { "--rh-accent": accent });
+  const empty = isResumeEmpty(r);
+  const strengths = cleanList(r.interests.map((i) => i.name), ["بلندهمتی و اصالت", "خردمندی و آینده نگری", "وفاداری به ارزش ها", "توانایی ایجاد اتحاد"]);
+  const skills = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), ["دیپلماسی و مذاکره", "ارتباط بین فرهنگی", "نفوذ کلام", "مدیریت روابط"]);
+  return (
+    <article className="resume resume-rudabeh" style={style} dir="rtl">
+      <aside className="rudabeh-side-exact">
+        <div className="rudabeh-arch">
+          {r.basics.photo ? <img src={r.basics.photo} alt="" /> : <div />}
+        </div>
+        <blockquote>{r.basics.extra || "عشق را با خرد درآمیختم تا پیوندی بسازم که دو خاندان را یکی کند."}</blockquote>
+        <TemplateContact r={r} />
+      </aside>
+      <main className="rudabeh-main-exact">
+        <header className="rudabeh-head-exact">
+          <div className="ornament">❧</div>
+          <h1><span>{r.basics.firstName || "رودابه"}</span><span>{r.basics.lastName || ""}</span></h1>
+          <p>{r.basics.headline || "بانوی دیپلماسی فرهنگی و پیوندساز خاندان ها"}</p>
+        </header>
+        {empty ? <EmptyTemplateHint /> : (
+          <>
+            <TextSection title="خلاصه" text={r.summary} />
+            <div className="rudabeh-columns">
+              <section>
+                <h2>نقاط قوت</h2>
+                <MiniIconList items={strengths.slice(0, 6)} />
+              </section>
+              <section>
+                <h2>مهارت ها و توانمندی ها</h2>
+                <MiniIconList items={skills.slice(0, 8)} />
+              </section>
+            </div>
+            <AchievementCards items={r.achievements} />
+            <Projects items={r.projects} />
+            <HeritageTimeline items={r.experience} />
+            <Education items={r.education} />
+            <CustomSections sections={r.customSections} />
+          </>
+        )}
+      </main>
+      <footer className="rudabeh-footer">هر پیوندی که بر پایه احترام، عشق و خرد بنا شود، جاودانه خواهد ماند.</footer>
+    </article>
+  );
+}
+
 // ── Registry & render ─────────────────────────────────────────────────────────
 
 export const EXTENDED_TEMPLATES = [
@@ -321,5 +558,7 @@ export function ResumeView({ resume, templateId, design }: { resume: Partial<Res
   if (id === "teal-pro") return <TealPro r={r} design={design} />;
   if (id === "warm-earth") return <WarmEarth r={r} design={design} />;
   if (id === "ats-clean") return <ATSClean r={r} design={design} />;
+  if (id === "gordafarid-defender") return <GordafaridDefender r={r} design={design} />;
+  if (id === "rudabeh-heritage") return <RudabehHeritage r={r} design={design} />;
   return <DarkSidebar r={r} design={design} />;
 }

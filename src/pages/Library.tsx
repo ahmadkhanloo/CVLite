@@ -9,6 +9,7 @@ import { importJsonResume } from "../data/importers/jsonresume";
 import { normalizeRxResume } from "../data/importers/rxresume";
 import { parseMarkdown } from "../data/importers/markdown";
 import { uid } from "../data/defaults";
+import { Icon } from "../components/Icon";
 
 function relativeTime(ts: number, lang: string): string {
   const diff = Date.now() - ts;
@@ -71,7 +72,10 @@ function ResumeCard({ doc, lang, onEdit, onDuplicate, onDelete }: { doc: ResumeD
       <div className="card-actions">
         <button className="mini-button" type="button" onClick={onEdit}>{t("editResume")}</button>
         <button className="mini-button" type="button" onClick={onDuplicate}>{t("duplicateResume")}</button>
-        <button className="mini-button danger-text" type="button" onClick={onDelete} style={{ marginInlineStart: "auto" }}>{t("deleteResume")}</button>
+        <button className="mini-button danger-text" type="button" onClick={onDelete} style={{ marginInlineStart: "auto" }}>
+          <Icon name="trash" size={13} />
+          {t("deleteResume")}
+        </button>
       </div>
     </div>
   );
@@ -182,7 +186,13 @@ export function Library() {
     await library.removeDoc(id);
   }
 
-  const themeIcon = theme === "dark" ? "☀︎" : theme === "light" ? "☽" : "◐";
+  async function handleDeleteAll() {
+    if (!window.confirm(t("confirmDeleteAll"))) return;
+    await library.removeAllDocs();
+    setStatus(t("localDataDeleted"));
+  }
+
+  const themeIcon = theme === "dark" ? "sun" : theme === "light" ? "moon" : "system";
   const q = query.trim().toLowerCase();
   const docs = q
     ? library.docs.filter((d) => {
@@ -206,27 +216,35 @@ export function Library() {
               {language === "fa" ? "FA" : "EN"}
             </button>
             <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
-              {themeIcon}
+              <Icon name={themeIcon} />
             </button>
           </div>
 
           <div className="tb-group">
             <label className="icon-button" title={t("importTitle")} style={{ cursor: "pointer" }}>
-              ↑ {t("import")}
+              <Icon name="upload" />
+              {t("import")}
               <input ref={importRef} type="file" accept=".json,.md,.markdown" onChange={handleImport} />
             </label>
             <button className="icon-button" type="button" onClick={handleExportBackup}>
-              ↓ {t("exportBackup")}
+              <Icon name="download" />
+              {t("exportBackup")}
             </button>
             <label className="icon-button" style={{ cursor: "pointer" }}>
-              ↑ {t("importBackup")}
+              <Icon name="import" />
+              {t("importBackup")}
               <input ref={backupRef} type="file" accept=".json" onChange={handleBackupImport} />
             </label>
+            <button className="icon-button danger-text" type="button" onClick={handleDeleteAll}>
+              <Icon name="trash" />
+              {t("deleteLocalData")}
+            </button>
           </div>
 
           <div className="tb-group">
             <button className="primary-button" type="button" onClick={handleCreate}>
-              + {t("newResume")}
+              <Icon name="plus" />
+              {t("newResume")}
             </button>
           </div>
         </div>
@@ -236,23 +254,29 @@ export function Library() {
         <section className="library-hero">
           <div className="hero-text">
             <span className="hero-badge">
-              {"◆ " + t("privateBadge")}
+              <Icon name="lock" size={14} />
+              {t("privateBadge")}
             </span>
             <h1 className="hero-title">{t("myResumes")}</h1>
             <p className="hero-sub">{t("librarySubtitle")}</p>
           </div>
           <button className="hero-cta" type="button" onClick={handleCreate}>
-            <span className="hero-cta-plus">+</span>
+            <Icon name="plus" />
             <span>{t("newResume")}</span>
           </button>
         </section>
+
+        <p className="local-first-note">
+          <Icon name="lock" size={15} />
+          {t("localFirstNote")}
+        </p>
 
         {status && <p className="library-status">{status}</p>}
 
         {!library.loading && count > 0 && (
           <div className="library-controls">
             <div className="search-box">
-              <span className="search-icon" aria-hidden="true">⌕</span>
+              <span className="search-icon" aria-hidden="true"><Icon name="search" size={16} /></span>
               <input
                 className="search-input"
                 type="search"
@@ -270,16 +294,16 @@ export function Library() {
           <p className="empty-note" style={{ padding: "40px 0", textAlign: "center" }}>Loading...</p>
         ) : count === 0 ? (
           <div className="library-empty">
-            <div className="library-empty-icon">📄</div>
+            <div className="library-empty-icon"><Icon name="file" size={46} /></div>
             <p>{t("noResumes")}</p>
             <button className="hero-cta" type="button" onClick={handleCreate}>
-              <span className="hero-cta-plus">+</span>
+              <Icon name="plus" />
               <span>{t("startFromScratch")}</span>
             </button>
           </div>
         ) : docs.length === 0 ? (
           <div className="library-empty">
-            <div className="library-empty-icon">🔍</div>
+            <div className="library-empty-icon"><Icon name="search" size={46} /></div>
             <p>{t("noSearchResults")}</p>
           </div>
         ) : (

@@ -3,6 +3,7 @@ import { useT } from "../i18n/useT";
 import { cropCenterSquare, readFile } from "../lib/files";
 import { TextArea, TextField } from "./Fields";
 import type { TranslationKey } from "../i18n/dictionaries";
+import { Icon } from "../components/Icon";
 
 const BASIC_FIELDS: Array<[keyof import("../types/resume").Basics, TranslationKey]> = [
   ["firstName", "firstName"],
@@ -46,10 +47,12 @@ export function BasicsEditor() {
       <div className="photo-tools">
         <div className="avatar-preview">{basics.photo ? <img src={basics.photo} alt="" /> : null}</div>
         <label className="secondary-button">
+          <Icon name="upload" />
           {t("uploadPhoto")}
           <input type="file" accept="image/*" onChange={handlePhoto} />
         </label>
         <button className="ghost-button" type="button" onClick={() => setField("basics.photo", "")}>
+          <Icon name="trash" size={14} />
           {t("remove")}
         </button>
       </div>
