@@ -1,11 +1,11 @@
 import type { CSSProperties } from "react";
 import type { DesignTokens } from "../types/library";
-import type { Resume, TemplateId } from "../types/resume";
+import type { Resume, ResumeLocale, TemplateId } from "../types/resume";
 import { TEMPLATES } from "../types/resume";
 import { normalizeResume } from "../data/defaults";
 import {
-  Certifications, Contact, CustomSections, Education, Identity,
-  InlineContact, LanguagesInline, LanguagesWithDots, Name, Photo,
+  Bullets, Certifications, Contact, CustomSections, Education, Identity,
+  InlineContact, label, LanguagesInline, LanguagesWithDots, Name, Photo,
   Pills, Projects, Publications, Skills, TextSection, Timeline
 } from "./shared/primitives";
 
@@ -39,6 +39,8 @@ function isResumeEmpty(r: Resume): boolean {
   return !basics && !sections.some(Boolean);
 }
 
+const dirFor = (locale: ResumeLocale) => locale === "fa" ? "rtl" : "ltr";
+
 function EmptyTemplateHint() {
   return (
     <div className="template-empty">
@@ -48,12 +50,12 @@ function EmptyTemplateHint() {
   );
 }
 
-function AchievementCards({ items }: { items: Resume["achievements"] }) {
+function AchievementCards({ items, locale = "en" }: { items: Resume["achievements"]; locale?: ResumeLocale }) {
   const visible = (items || []).filter((item) => !item.hidden && (item.title || item.description));
   if (!visible.length) return null;
   return (
     <section className="resume-section achievement-cards">
-      <h2>ACHIEVEMENTS</h2>
+      <h2>{label(locale, "achievements")}</h2>
       <div>
         {visible.map((item) => (
           <article key={item.id}>
@@ -145,24 +147,24 @@ function HeritageTimeline({ items }: { items: Resume["experience"] }) {
 }
 
 // ── Template 1: Technical Sidebar ─────────────────────────────────────────────
-function DarkSidebar({ r, design }: { r: Resume; design?: DesignTokens }) {
+function DarkSidebar({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const style = designStyle(design, design?.accentColor ? { "--ds-sidebar": design.accentColor } : {});
   return (
-    <article className="resume resume-dark" style={style}>
+    <article className="resume resume-dark" style={style} dir={dirFor(locale)}>
       <aside className="resume-side">
         <Identity r={r} />
         <Contact r={r} />
-        <TextSection title="SUMMARY" text={r.summary} />
-        <Skills skills={r.skills} bullets />
-        <Pills title="INTERESTS" items={r.interests.map((i) => i.name)} />
-        <Pills title="LANGUAGES" items={r.languages.map((l) => l.language)} />
+        <TextSection title={label(locale, "summary")} text={r.summary} />
+        <Skills skills={r.skills} bullets locale={locale} />
+        <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
+        <Pills title={label(locale, "languages")} items={r.languages.map((l) => l.language)} />
       </aside>
       <section className="resume-main">
-        <Timeline title="EXPERIENCE" items={r.experience} />
-        <Education items={r.education} />
-        <Certifications items={r.certifications} />
-        <Projects items={r.projects} />
-        <Publications items={r.publications} />
+        <Timeline title={label(locale, "experience")} items={r.experience} />
+        <Education items={r.education} locale={locale} />
+        <Certifications items={r.certifications} locale={locale} />
+        <Projects items={r.projects} locale={locale} />
+        <Publications items={r.publications} locale={locale} />
         <CustomSections sections={r.customSections} />
       </section>
     </article>
@@ -170,10 +172,10 @@ function DarkSidebar({ r, design }: { r: Resume; design?: DesignTokens }) {
 }
 
 // ── Template 2: Corporate Classic ─────────────────────────────────────────────
-function ClassicBlue({ r, design }: { r: Resume; design?: DesignTokens }) {
+function ClassicBlue({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const style = designStyle(design, design?.accentColor ? { "--cb-accent": design.accentColor } : {});
   return (
-    <article className="resume resume-classic" style={style}>
+    <article className="resume resume-classic" style={style} dir={dirFor(locale)}>
       <header className="classic-head">
         <div>
           <Name r={r} />
@@ -184,18 +186,18 @@ function ClassicBlue({ r, design }: { r: Resume; design?: DesignTokens }) {
       </header>
       <div className="classic-grid">
         <section>
-          <Timeline title="EXPERIENCE" items={r.experience} />
-          <Education items={r.education} />
-          <Certifications items={r.certifications} />
-          <Projects items={r.projects} />
+          <Timeline title={label(locale, "experience")} items={r.experience} />
+          <Education items={r.education} locale={locale} />
+          <Certifications items={r.certifications} locale={locale} />
+          <Projects items={r.projects} locale={locale} />
         </section>
         <aside>
-          <TextSection title="SUMMARY" text={r.summary} />
-          <Skills skills={r.skills} bullets={false} />
-          <LanguagesWithDots items={r.languages} />
-          <Pills title="ACHIEVEMENTS" items={r.achievements.map((a) => a.title)} />
-          <Pills title="INTERESTS" items={r.interests.map((i) => i.name)} />
-          <Publications items={r.publications} />
+          <TextSection title={label(locale, "summary")} text={r.summary} />
+          <Skills skills={r.skills} bullets={false} locale={locale} />
+          <LanguagesWithDots items={r.languages} locale={locale} />
+          <Pills title={label(locale, "achievements")} items={r.achievements.map((a) => a.title)} />
+          <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
+          <Publications items={r.publications} locale={locale} />
         </aside>
       </div>
     </article>
@@ -203,25 +205,25 @@ function ClassicBlue({ r, design }: { r: Resume; design?: DesignTokens }) {
 }
 
 // ── Template 3: Compact Professional ──────────────────────────────────────────
-function PurpleCompact({ r, design }: { r: Resume; design?: DesignTokens }) {
+function PurpleCompact({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const style = designStyle(design, design?.accentColor ? { "--pc-accent": design.accentColor } : {});
   return (
-    <article className="resume resume-purple" style={style}>
+    <article className="resume resume-purple" style={style} dir={dirFor(locale)}>
       <div className="purple-grid">
         <aside className="purple-left">
           <Identity r={r} />
           <Contact r={r} />
-          <TextSection title="SUMMARY" text={r.summary} />
-          <Skills skills={r.skills} bullets />
+          <TextSection title={label(locale, "summary")} text={r.summary} />
+          <Skills skills={r.skills} bullets locale={locale} />
         </aside>
         <section className="purple-right">
-          <Timeline title="EXPERIENCE" items={r.experience} />
-          <Education items={r.education} />
-          <Certifications items={r.certifications} />
-          <LanguagesInline items={r.languages} />
-          <Pills title="INTERESTS" items={r.interests.map((i) => i.name)} />
-          <Projects items={r.projects} />
-          <Publications items={r.publications} />
+          <Timeline title={label(locale, "experience")} items={r.experience} />
+          <Education items={r.education} locale={locale} />
+          <Certifications items={r.certifications} locale={locale} />
+          <LanguagesInline items={r.languages} locale={locale} />
+          <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
+          <Projects items={r.projects} locale={locale} />
+          <Publications items={r.publications} locale={locale} />
         </section>
       </div>
     </article>
@@ -229,11 +231,11 @@ function PurpleCompact({ r, design }: { r: Resume; design?: DesignTokens }) {
 }
 
 // ── Template 4: Modern Minimal ────────────────────────────────────────────────
-function ModernMinimal({ r, design }: { r: Resume; design?: DesignTokens }) {
+function ModernMinimal({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const accent = design?.accentColor || "#0a7ea4";
   const style = designStyle(design, { "--mm-accent": accent });
   return (
-    <article className="resume resume-minimal" style={style}>
+    <article className="resume resume-minimal" style={style} dir={dirFor(locale)}>
       <header className="minimal-head">
         <div className="minimal-name-wrap">
           <h1><span>{r.basics.firstName}</span> <span className="minimal-last">{r.basics.lastName}</span></h1>
@@ -247,28 +249,28 @@ function ModernMinimal({ r, design }: { r: Resume; design?: DesignTokens }) {
       </header>
       {r.summary ? <section className="minimal-summary"><p>{r.summary}</p></section> : null}
       <div className="minimal-body">
-        <Timeline title="EXPERIENCE" items={r.experience} />
-        <Education items={r.education} />
-        <Projects items={r.projects} />
-        <Certifications items={r.certifications} />
+        <Timeline title={label(locale, "experience")} items={r.experience} />
+        <Education items={r.education} locale={locale} />
+        <Projects items={r.projects} locale={locale} />
+        <Certifications items={r.certifications} locale={locale} />
         <CustomSections sections={r.customSections} />
       </div>
       <div className="minimal-sidebar">
-        <Skills skills={r.skills} bullets={false} />
-        <LanguagesWithDots items={r.languages} />
-        <Pills title="INTERESTS" items={r.interests.map((i) => i.name)} />
-        <Publications items={r.publications} />
+        <Skills skills={r.skills} bullets={false} locale={locale} />
+        <LanguagesWithDots items={r.languages} locale={locale} />
+        <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
+        <Publications items={r.publications} locale={locale} />
       </div>
     </article>
   );
 }
 
 // ── Template 5: Executive Leadership ──────────────────────────────────────────
-function Executive({ r, design }: { r: Resume; design?: DesignTokens }) {
+function Executive({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const accent = design?.accentColor || "#1a1a2e";
   const style = designStyle(design, { "--ex-accent": accent });
   return (
-    <article className="resume resume-executive" style={style}>
+    <article className="resume resume-executive" style={style} dir={dirFor(locale)}>
       <header className="executive-head">
         <div>
           <h1 className="executive-name">
@@ -285,22 +287,22 @@ function Executive({ r, design }: { r: Resume; design?: DesignTokens }) {
       </div>
       {r.summary ? (
         <section className="resume-section executive-summary">
-          <h2>EXECUTIVE SUMMARY</h2>
+          <h2>{label(locale, "executiveSummary")}</h2>
           <p className="summary-text">{r.summary}</p>
         </section>
       ) : null}
       <div className="executive-grid">
         <section className="executive-main">
-          <Timeline title="EXPERIENCE" items={r.experience} />
-          <Projects items={r.projects} />
+          <Timeline title={label(locale, "experience")} items={r.experience} />
+          <Projects items={r.projects} locale={locale} />
           <CustomSections sections={r.customSections} />
         </section>
         <aside className="executive-side">
-          <Skills skills={r.skills} bullets />
-          <Education items={r.education} />
-          <Certifications items={r.certifications} />
-          <LanguagesWithDots items={r.languages} />
-          <Pills title="ACHIEVEMENTS" items={r.achievements.map((a) => a.title)} />
+          <Skills skills={r.skills} bullets locale={locale} />
+          <Education items={r.education} locale={locale} />
+          <Certifications items={r.certifications} locale={locale} />
+          <LanguagesWithDots items={r.languages} locale={locale} />
+          <Pills title={label(locale, "achievements")} items={r.achievements.map((a) => a.title)} />
         </aside>
       </div>
     </article>
@@ -308,68 +310,119 @@ function Executive({ r, design }: { r: Resume; design?: DesignTokens }) {
 }
 
 // ── Template 6: Product & Design ──────────────────────────────────────────────
-function TealPro({ r, design }: { r: Resume; design?: DesignTokens }) {
+function TealPro({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const accent = design?.accentColor || "#0d9488";
   const style = designStyle(design, { "--tp-accent": accent });
+  const visibleProjects = r.projects.filter((p) => !p.hidden && p.name);
+  const metrics = r.achievements.filter((a) => !a.hidden && a.title);
   return (
-    <article className="resume resume-teal" style={style}>
-      <aside className="teal-side">
-        <Identity r={r} />
-        <Contact r={r} />
-        <Skills skills={r.skills} bullets />
-        <LanguagesWithDots items={r.languages} />
-        <Pills title="INTERESTS" items={r.interests.map((i) => i.name)} />
-      </aside>
-      <section className="teal-main">
-        {r.summary ? <TextSection title="PROFILE" text={r.summary} /> : null}
-        <Timeline title="EXPERIENCE" items={r.experience} />
-        <Education items={r.education} />
-        <Projects items={r.projects} />
-        <Certifications items={r.certifications} />
-        <Publications items={r.publications} />
-        <CustomSections sections={r.customSections} />
+    <article className="resume resume-teal" style={style} dir={dirFor(locale)}>
+      <header className="teal-case-head">
+        <div>
+          <span className="teal-kicker">{label(locale, "profile")}</span>
+          <Name r={r} />
+          <p>{r.basics.headline}</p>
+        </div>
+        <div className="teal-contact-strip">
+          {[r.basics.email, r.basics.phone, r.basics.location, r.basics.website || r.basics.linkedin].filter(Boolean).map((v, i) => (
+            <span key={i}>{v}</span>
+          ))}
+        </div>
+      </header>
+      <section className="teal-case-summary">
+        <p>{r.summary}</p>
+        <div className="teal-metrics">
+          {metrics.slice(0, 3).map((item) => (
+            <article key={item.id}>
+              <strong>{item.title}</strong>
+              {item.description ? <span>{item.description}</span> : null}
+            </article>
+          ))}
+        </div>
       </section>
+      <main className="teal-case-grid">
+        <section className="teal-case-main">
+          <section className="resume-section teal-projects">
+            <h2>{label(locale, "projects")}</h2>
+            {visibleProjects.map((item) => (
+              <article key={item.id}>
+                <div>
+                  <h3>{item.name}</h3>
+                  <p className="entry-meta">{[item.period, item.website].filter(Boolean).join(" · ")}</p>
+                </div>
+                <Bullets bullets={item.bullets} />
+              </article>
+            ))}
+          </section>
+          <Timeline title={label(locale, "experience")} items={r.experience} />
+          <Publications items={r.publications} locale={locale} />
+          <CustomSections sections={r.customSections} />
+        </section>
+        <aside className="teal-case-side">
+          <Skills skills={r.skills} bullets={false} locale={locale} />
+          <Education items={r.education} locale={locale} />
+          <Certifications items={r.certifications} locale={locale} />
+          <LanguagesInline items={r.languages} locale={locale} />
+          <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
+        </aside>
+      </main>
     </article>
   );
 }
 
 // ── Template 7: Creative Editorial ────────────────────────────────────────────
-function WarmEarth({ r, design }: { r: Resume; design?: DesignTokens }) {
+function WarmEarth({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const accent = design?.accentColor || "#b45309";
   const style = designStyle(design, { "--we-accent": accent });
   return (
-    <article className="resume resume-warm" style={style}>
-      <header className="warm-head">
-        <div className="warm-name-area">
-          <h1><span>{r.basics.firstName}</span> <span>{r.basics.lastName}</span></h1>
-          <p>{r.basics.headline}</p>
+    <article className="resume resume-warm" style={style} dir={dirFor(locale)}>
+      <header className="warm-masthead">
+        <p>{r.basics.location || r.basics.website || label(locale, "profile")}</p>
+        <h1><span>{r.basics.firstName}</span> <span>{r.basics.lastName}</span></h1>
+        <div>
+          <strong>{r.basics.headline}</strong>
+          <span>{[r.basics.email, r.basics.phone, r.basics.linkedin].filter(Boolean).join(" · ")}</span>
         </div>
-        <Photo r={r} />
       </header>
-      <div className="warm-body">
-        <aside className="warm-left">
-          <Contact r={r} />
-          <Skills skills={r.skills} bullets />
-          <LanguagesWithDots items={r.languages} />
-          <Pills title="INTERESTS" items={r.interests.map((i) => i.name)} />
-          <Certifications items={r.certifications} />
-        </aside>
-        <section className="warm-right">
-          {r.summary ? <TextSection title="ABOUT" text={r.summary} /> : null}
-          <Timeline title="EXPERIENCE" items={r.experience} />
-          <Education items={r.education} />
-          <Projects items={r.projects} />
+      <section className="warm-deck">
+        <p>{r.summary}</p>
+      </section>
+      <div className="warm-story-grid">
+        <section className="warm-story-main">
+          <section className="resume-section warm-timeline">
+            <h2>{label(locale, "experience")}</h2>
+            {r.experience.filter((e) => !e.hidden && (e.organization || e.title)).map((item) => (
+              <article key={item.id}>
+                <time>{item.period}</time>
+                <div>
+                  <h3>{item.organization || item.title}</h3>
+                  <p className="entry-role">{item.title}</p>
+                  <Bullets bullets={item.bullets} />
+                </div>
+              </article>
+            ))}
+          </section>
+          <Projects items={r.projects} locale={locale} />
+          <Publications items={r.publications} locale={locale} />
           <CustomSections sections={r.customSections} />
         </section>
+        <aside className="warm-story-side">
+          <AchievementCards items={r.achievements} locale={locale} />
+          <Skills skills={r.skills} bullets={false} locale={locale} />
+          <Education items={r.education} locale={locale} />
+          <Certifications items={r.certifications} locale={locale} />
+          <LanguagesWithDots items={r.languages} locale={locale} />
+          <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
+        </aside>
       </div>
     </article>
   );
 }
 
 // ── Template 8: ATS Plain Text ────────────────────────────────────────────────
-function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
+function ATSClean({ r, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   return (
-    <article className="resume resume-ats">
+    <article className="resume resume-ats" dir={dirFor(locale)}>
       <header className="ats-head">
         <h1>{[r.basics.firstName, r.basics.lastName].join(" ")}</h1>
         <p className="ats-headline">{r.basics.headline}</p>
@@ -379,12 +432,12 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
       </header>
       {r.summary ? (
         <section className="ats-section">
-          <h2>SUMMARY</h2>
+          <h2>{label(locale, "summary")}</h2>
           <p>{r.summary}</p>
         </section>
       ) : null}
       <section className="ats-section">
-        <h2>EXPERIENCE</h2>
+        <h2>{label(locale, "experience")}</h2>
         {r.experience.filter((e) => !e.hidden).map((e) => (
           <div key={e.id} className="ats-entry">
             <p><strong>{e.organization}</strong> — {e.title} | {e.period}{e.location ? `, ${e.location}` : ""}</p>
@@ -393,7 +446,7 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
         ))}
       </section>
       <section className="ats-section">
-        <h2>EDUCATION</h2>
+        <h2>{label(locale, "education")}</h2>
         {r.education.filter((e) => !e.hidden).map((e) => (
           <div key={e.id} className="ats-entry">
             <p><strong>{e.organization}</strong> — {e.degree} | {e.period}</p>
@@ -402,7 +455,7 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
       </section>
       {r.skills.length > 0 && (
         <section className="ats-section">
-          <h2>SKILLS</h2>
+          <h2>{label(locale, "skills")}</h2>
           {r.skills.filter((s) => !s.hidden).map((s) => (
             <p key={s.id}><strong>{s.name}:</strong> {s.keywords.join(", ")}</p>
           ))}
@@ -410,7 +463,7 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
       )}
       {r.certifications.length > 0 && (
         <section className="ats-section">
-          <h2>CERTIFICATIONS</h2>
+          <h2>{label(locale, "certifications")}</h2>
           {r.certifications.filter((c) => !c.hidden).map((c) => (
             <p key={c.id}>{c.title}{c.issuer ? ` — ${c.issuer}` : ""}{c.date ? `, ${c.date}` : ""}</p>
           ))}
@@ -418,7 +471,7 @@ function ATSClean({ r }: { r: Resume; design?: DesignTokens }) {
       )}
       {r.languages.length > 0 && (
         <section className="ats-section">
-          <h2>LANGUAGES</h2>
+          <h2>{label(locale, "languages")}</h2>
           <p>{r.languages.filter((l) => !l.hidden).map((l) => `${l.language}${l.fluency ? ` (${l.fluency})` : ""}`).join("  |  ")}</p>
         </section>
       )}
@@ -431,6 +484,9 @@ function GordafaridDefender({ r, design }: { r: Resume; design?: DesignTokens })
   const accent = design?.accentColor || "#c99b4a";
   const style = designStyle(design, { "--gd-accent": accent });
   const empty = isResumeEmpty(r);
+  if (empty) {
+    return <article className="resume resume-gordafarid" style={style} dir="rtl"><EmptyTemplateHint /></article>;
+  }
   const strengths = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), ["شجاعت و تعهد", "تفکر استراتژیک", "رهبری الهام بخش", "مدافع مرزها"]);
   const values = cleanList(r.interests.map((i) => i.name), ["هدف محور", "مردم محور", "عادل و منصف", "پایدار و مقاوم"]);
   return (
@@ -497,6 +553,9 @@ function RudabehHeritage({ r, design }: { r: Resume; design?: DesignTokens }) {
   const accent = design?.accentColor || "#8f4a63";
   const style = designStyle(design, { "--rh-accent": accent });
   const empty = isResumeEmpty(r);
+  if (empty) {
+    return <article className="resume resume-rudabeh" style={style} dir="rtl"><EmptyTemplateHint /></article>;
+  }
   const strengths = cleanList(r.interests.map((i) => i.name), ["بلندهمتی و اصالت", "خردمندی و آینده نگری", "وفاداری به ارزش ها", "توانایی ایجاد اتحاد"]);
   const skills = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), ["دیپلماسی و مذاکره", "ارتباط بین فرهنگی", "نفوذ کلام", "مدیریت روابط"]);
   return (
@@ -548,17 +607,17 @@ export const EXTENDED_TEMPLATES = [
 
 const ALL_IDS = EXTENDED_TEMPLATES.map((t) => t.id);
 
-export function ResumeView({ resume, templateId, design }: { resume: Partial<Resume>; templateId?: TemplateId; design?: DesignTokens }) {
+export function ResumeView({ resume, templateId, design, locale = "en" }: { resume: Partial<Resume>; templateId?: TemplateId; design?: DesignTokens; locale?: ResumeLocale }) {
   const r = normalizeResume(resume);
   const id = ALL_IDS.includes(templateId as TemplateId) ? templateId! : "dark-sidebar";
-  if (id === "classic-blue-lines") return <ClassicBlue r={r} design={design} />;
-  if (id === "purple-compact") return <PurpleCompact r={r} design={design} />;
-  if (id === "modern-minimal") return <ModernMinimal r={r} design={design} />;
-  if (id === "executive") return <Executive r={r} design={design} />;
-  if (id === "teal-pro") return <TealPro r={r} design={design} />;
-  if (id === "warm-earth") return <WarmEarth r={r} design={design} />;
-  if (id === "ats-clean") return <ATSClean r={r} design={design} />;
+  if (id === "classic-blue-lines") return <ClassicBlue r={r} design={design} locale={locale} />;
+  if (id === "purple-compact") return <PurpleCompact r={r} design={design} locale={locale} />;
+  if (id === "modern-minimal") return <ModernMinimal r={r} design={design} locale={locale} />;
+  if (id === "executive") return <Executive r={r} design={design} locale={locale} />;
+  if (id === "teal-pro") return <TealPro r={r} design={design} locale={locale} />;
+  if (id === "warm-earth") return <WarmEarth r={r} design={design} locale={locale} />;
+  if (id === "ats-clean") return <ATSClean r={r} design={design} locale={locale} />;
   if (id === "gordafarid-defender") return <GordafaridDefender r={r} design={design} />;
   if (id === "rudabeh-heritage") return <RudabehHeritage r={r} design={design} />;
-  return <DarkSidebar r={r} design={design} />;
+  return <DarkSidebar r={r} design={design} locale={locale} />;
 }

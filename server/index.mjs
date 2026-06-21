@@ -110,7 +110,8 @@ async function exportPdf(req, res) {
   const payload = {
     resume: body.resume,
     templateId: body.templateId || "dark-sidebar",
-    pageSize: body.pageSize || "A4"
+    pageSize: body.pageSize || "A4",
+    locale: body.locale === "fa" ? "fa" : "en"
   };
   payloads.set(token, payload);
   setTimeout(() => payloads.delete(token), 3 * 60 * 1000).unref();

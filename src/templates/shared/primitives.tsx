@@ -8,12 +8,56 @@ import type {
   ProjectItem,
   PublicationItem,
   Resume,
+  ResumeLocale,
   SkillItem
 } from "../../types/resume";
 import { compact, itemVisible } from "../../data/text";
 
 // Each primitive reproduces the exact markup + class names of the legacy
 // render* functions in resume-core.js so the ported print.css applies as-is.
+
+export const SECTION_LABELS: Record<ResumeLocale, Record<string, string>> = {
+  en: {
+    about: "ABOUT",
+    achievements: "ACHIEVEMENTS",
+    certifications: "CERTIFICATIONS",
+    courses: "COURSES",
+    education: "EDUCATION",
+    experience: "EXPERIENCE",
+    executiveSummary: "EXECUTIVE SUMMARY",
+    impact: "IMPACT",
+    interests: "INTERESTS",
+    languages: "LANGUAGES",
+    metrics: "METRICS",
+    profile: "PROFILE",
+    projects: "PROJECTS",
+    publications: "PUBLICATIONS",
+    skills: "SKILLS",
+    summary: "SUMMARY"
+  },
+  fa: {
+    about: "درباره",
+    achievements: "دستاوردها",
+    certifications: "گواهی نامه ها",
+    courses: "دوره ها",
+    education: "تحصیلات",
+    experience: "تجربه",
+    executiveSummary: "خلاصه مدیریتی",
+    impact: "اثرگذاری",
+    interests: "علایق",
+    languages: "زبان ها",
+    metrics: "شاخص ها",
+    profile: "پروفایل",
+    projects: "پروژه ها",
+    publications: "انتشارات",
+    skills: "مهارت ها",
+    summary: "خلاصه"
+  }
+};
+
+export function label(locale: ResumeLocale, key: string) {
+  return SECTION_LABELS[locale]?.[key] || SECTION_LABELS.en[key] || key;
+}
 
 export function Name({ r }: { r: Resume }) {
   return (
@@ -88,12 +132,12 @@ export function Bullets({ bullets }: { bullets?: string[] }) {
   );
 }
 
-export function Skills({ skills, bullets }: { skills: SkillItem[]; bullets: boolean }) {
+export function Skills({ skills, bullets, locale = "en" }: { skills: SkillItem[]; bullets: boolean; locale?: ResumeLocale }) {
   const visible = (skills || []).filter(itemVisible);
   if (!visible.length) return null;
   return (
     <section className="resume-section skills">
-      <h2>SKILLS</h2>
+      <h2>{label(locale, "skills")}</h2>
       {visible.map((skill) => (
         <div className="skill-group" key={skill.id}>
           <h3>{skill.name}</h3>
@@ -134,12 +178,12 @@ export function Timeline({ title, items }: { title: string; items: ExperienceIte
   );
 }
 
-export function Education({ items }: { items: EducationItem[] }) {
+export function Education({ items, locale = "en" }: { items: EducationItem[]; locale?: ResumeLocale }) {
   const visible = (items || []).filter(itemVisible);
   if (!visible.length) return null;
   return (
     <section className="resume-section">
-      <h2>EDUCATION</h2>
+      <h2>{label(locale, "education")}</h2>
       {visible.map((item) => (
         <div className="entry compact-entry" key={item.id}>
           <h3>{item.degree || item.organization}</h3>
@@ -152,12 +196,12 @@ export function Education({ items }: { items: EducationItem[] }) {
   );
 }
 
-export function Certifications({ items }: { items: CertificationItem[] }) {
+export function Certifications({ items, locale = "en" }: { items: CertificationItem[]; locale?: ResumeLocale }) {
   const visible = (items || []).filter(itemVisible);
   if (!visible.length) return null;
   return (
     <section className="resume-section">
-      <h2>COURSES</h2>
+      <h2>{label(locale, "courses")}</h2>
       {visible.map((item) => (
         <div className="entry compact-entry" key={item.id}>
           <h3>{item.title}</h3>
@@ -169,12 +213,12 @@ export function Certifications({ items }: { items: CertificationItem[] }) {
   );
 }
 
-export function Projects({ items }: { items: ProjectItem[] }) {
+export function Projects({ items, locale = "en" }: { items: ProjectItem[]; locale?: ResumeLocale }) {
   const visible = (items || []).filter(itemVisible);
   if (!visible.length) return null;
   return (
     <section className="resume-section">
-      <h2>PROJECTS</h2>
+      <h2>{label(locale, "projects")}</h2>
       {visible.map((item) => (
         <div className="entry compact-entry" key={item.id}>
           <h3>{item.name}</h3>
@@ -186,12 +230,12 @@ export function Projects({ items }: { items: ProjectItem[] }) {
   );
 }
 
-export function Publications({ items }: { items: PublicationItem[] }) {
+export function Publications({ items, locale = "en" }: { items: PublicationItem[]; locale?: ResumeLocale }) {
   const visible = (items || []).filter(itemVisible);
   if (!visible.length) return null;
   return (
     <section className="resume-section">
-      <h2>PUBLICATIONS</h2>
+      <h2>{label(locale, "publications")}</h2>
       {visible.map((item) => (
         <div className="entry compact-entry" key={item.id}>
           <h3>{item.title}</h3>
@@ -237,17 +281,17 @@ export function Pills({ title, items }: { title: string; items: Array<string | u
   );
 }
 
-export function LanguagesInline({ items }: { items: LanguageItem[] }) {
+export function LanguagesInline({ items, locale = "en" }: { items: LanguageItem[]; locale?: ResumeLocale }) {
   const visible = (items || []).filter(itemVisible).map((item) => item.language);
-  return <Pills title="LANGUAGES" items={visible} />;
+  return <Pills title={label(locale, "languages")} items={visible} />;
 }
 
-export function LanguagesWithDots({ items }: { items: LanguageItem[] }) {
+export function LanguagesWithDots({ items, locale = "en" }: { items: LanguageItem[]; locale?: ResumeLocale }) {
   const visible = (items || []).filter(itemVisible);
   if (!visible.length) return null;
   return (
     <section className="resume-section language-dots">
-      <h2>LANGUAGES</h2>
+      <h2>{label(locale, "languages")}</h2>
       {visible.map((item) => {
         const level = Math.max(1, Math.min(5, Number(item.level) || 4));
         return (

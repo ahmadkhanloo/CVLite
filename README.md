@@ -1,5 +1,7 @@
 # CVLite — Resume Studio
 
+> Template gallery note: the 10 stable template IDs now have exactly two preview assets each: `assets/templates/<id>.en.png` and `assets/templates/<id>.fa.png`. Visual templates are bilingual, while ATS Plain Text remains intentionally plain and parser-safe.
+
 **Privacy-first · Offline · Bilingual · PDF-ready**
 
 > [فارسی](#فارسی) · [English](#english)
@@ -21,11 +23,11 @@ All ten templates, each rendered with a Shahnameh-inspired résumé:
 
 | Technical Sidebar<br>Rostam Tahmtan | Corporate Classic<br>Gordafarid | Compact Professional<br>Sohrab | Modern Minimal<br>Siavash |
 |:---:|:---:|:---:|:---:|
-| ![Technical Sidebar](assets/templates/dark-sidebar.png) | ![Corporate Classic](assets/templates/classic-blue-lines.png) | ![Compact Professional](assets/templates/purple-compact.png) | ![Modern Minimal](assets/templates/modern-minimal.png) |
+| ![Technical Sidebar](assets/templates/dark-sidebar.en.png) | ![Corporate Classic](assets/templates/classic-blue-lines.en.png) | ![Compact Professional](assets/templates/purple-compact.en.png) | ![Modern Minimal](assets/templates/modern-minimal.en.png) |
 | **Executive Leadership**<br>Esfandiar | **Product & Design**<br>Rudabeh | **Creative Editorial**<br>Tahmineh | **ATS Plain Text**<br>Afrasiab |
-| ![Executive Leadership](assets/templates/executive.png) | ![Product & Design](assets/templates/teal-pro.png) | ![Creative Editorial](assets/templates/warm-earth.png) | ![ATS Plain Text](assets/templates/ats-clean.png) |
+| ![Executive Leadership](assets/templates/executive.en.png) | ![Product Case Study](assets/templates/teal-pro.en.png) | ![Editorial Timeline](assets/templates/warm-earth.en.png) | ![ATS Plain Text](assets/templates/ats-clean.en.png) |
 | **Gordafarid Defender**<br>Gordafarid | **Rudabeh Heritage**<br>Rudabeh |  |  |
-| ![Gordafarid Defender](assets/templates/gordafarid-defender.png) | ![Rudabeh Heritage](assets/templates/rudabeh-heritage.png) |  |  |
+| ![Gordafarid Defender](assets/templates/gordafarid-defender.en.png) | ![Rudabeh Heritage](assets/templates/rudabeh-heritage.en.png) |  |  |
 
 ---
 

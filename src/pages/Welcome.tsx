@@ -5,16 +5,7 @@ import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
 import { EXTENDED_TEMPLATES } from "../templates";
 import { Icon } from "../components/Icon";
-import darkSidebarPreview from "../../assets/templates/dark-sidebar.png";
-import classicPreview from "../../assets/templates/classic-blue-lines.png";
-import compactPreview from "../../assets/templates/purple-compact.png";
-import minimalPreview from "../../assets/templates/modern-minimal.png";
-import executivePreview from "../../assets/templates/executive.png";
-import tealPreview from "../../assets/templates/teal-pro.png";
-import warmPreview from "../../assets/templates/warm-earth.png";
-import atsPreview from "../../assets/templates/ats-clean.png";
-import gordafaridPreview from "../../assets/templates/gordafarid-defender.png";
-import rudabehPreview from "../../assets/templates/rudabeh-heritage.png";
+import type { ResumeLocale, TemplateId } from "../types/resume";
 
 function useApplyShell() {
   const language = useSettings((s) => s.language);
@@ -44,17 +35,19 @@ const FEATURES = [
 
 const GITHUB_URL = "https://github.com/ahmadkhanloo/CVLite";
 
-const TEMPLATE_PREVIEWS = [
-  { id: "dark-sidebar", persona: "Rostam Tahmtan", image: darkSidebarPreview },
-  { id: "classic-blue-lines", persona: "Gordafarid", image: classicPreview },
-  { id: "purple-compact", persona: "Sohrab", image: compactPreview },
-  { id: "modern-minimal", persona: "Siavash", image: minimalPreview },
-  { id: "executive", persona: "Esfandiar", image: executivePreview },
-  { id: "teal-pro", persona: "Rudabeh", image: tealPreview },
-  { id: "warm-earth", persona: "Tahmineh", image: warmPreview },
-  { id: "ats-clean", persona: "Afrasiab", image: atsPreview },
-  { id: "gordafarid-defender", persona: "Gordafarid", image: gordafaridPreview },
-  { id: "rudabeh-heritage", persona: "Rudabeh", image: rudabehPreview }
+const previewFor = (id: TemplateId, locale: ResumeLocale) => new URL(`../../assets/templates/${id}.${locale}.png`, import.meta.url).href;
+
+const TEMPLATE_PREVIEWS: Array<{ id: TemplateId; persona: Record<ResumeLocale, string> }> = [
+  { id: "dark-sidebar", persona: { en: "Rostam Tahmtan", fa: "رستم تهمتن" } },
+  { id: "classic-blue-lines", persona: { en: "Gordafarid", fa: "گردآفرید" } },
+  { id: "purple-compact", persona: { en: "Sohrab", fa: "سهراب" } },
+  { id: "modern-minimal", persona: { en: "Siavash", fa: "سیاوش" } },
+  { id: "executive", persona: { en: "Esfandiar", fa: "اسفندیار" } },
+  { id: "teal-pro", persona: { en: "Rudabeh", fa: "رودابه" } },
+  { id: "warm-earth", persona: { en: "Tahmineh", fa: "تهمینه" } },
+  { id: "ats-clean", persona: { en: "Afrasiab", fa: "افراسیاب" } },
+  { id: "gordafarid-defender", persona: { en: "Gordafarid", fa: "گردآفرید" } },
+  { id: "rudabeh-heritage", persona: { en: "Rudabeh", fa: "رودابه" } }
 ];
 
 export function Welcome() {
@@ -135,9 +128,9 @@ export function Welcome() {
             const template = EXTENDED_TEMPLATES.find((tpl) => tpl.id === item.id);
             return (
               <article className="welcome-gallery-card" key={item.id}>
-                <img src={item.image} alt={`${template?.name || item.id} - ${item.persona}`} loading="lazy" />
+                <img src={previewFor(item.id, language)} alt={`${template?.name || item.id} - ${item.persona[language]}`} loading="lazy" />
                 <div>
-                  <strong>{item.persona}</strong>
+                  <strong>{item.persona[language]}</strong>
                   <span>{template?.name || item.id}</span>
                 </div>
               </article>

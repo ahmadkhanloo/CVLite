@@ -1,9 +1,10 @@
 import { useEditor } from "../store/resume";
+import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
 import { EXTENDED_TEMPLATES } from "../templates";
-import type { PageSize, TemplateId } from "../types/resume";
+import type { PageSize, ResumeLocale, TemplateId } from "../types/resume";
 
-const previewFor = (id: TemplateId) => new URL(`../../assets/templates/${id}.png`, import.meta.url).href;
+const previewFor = (id: TemplateId, locale: ResumeLocale) => new URL(`../../assets/templates/${id}.${locale}.png`, import.meta.url).href;
 
 export function TemplatePicker() {
   const t = useT();
@@ -11,6 +12,7 @@ export function TemplatePicker() {
   const pageSize = useEditor((s) => s.pageSize);
   const setTemplate = useEditor((s) => s.setTemplate);
   const setPageSize = useEditor((s) => s.setPageSize);
+  const language = useSettings((s) => s.language);
 
   return (
     <>
@@ -24,7 +26,7 @@ export function TemplatePicker() {
             aria-pressed={template.id === templateId}
           >
             <span className="template-card-preview">
-              <img src={previewFor(template.id as TemplateId)} alt="" loading="lazy" />
+              <img src={previewFor(template.id as TemplateId, language)} alt="" loading="lazy" />
             </span>
             <span className="template-card-copy">
               <span className="template-card-name">{template.name}</span>

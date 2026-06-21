@@ -143,7 +143,7 @@ export function EditorPage() {
       const res = await fetch("/api/export-pdf", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ resume, templateId, pageSize: document.documentElement.dataset.pageSize || "A4", fileName })
+        body: JSON.stringify({ resume, templateId, pageSize: document.documentElement.dataset.pageSize || "A4", fileName, locale: language })
       });
       if (!res.ok) throw new Error("no-pdf-server");
       if (!(res.headers.get("content-type") || "").includes("pdf")) throw new Error("no-pdf-server");
@@ -289,7 +289,7 @@ export function EditorPage() {
           </div>
           <div id="preview" className="preview-frame" dir="ltr">
             <div className="zoom-wrap" style={{ transform: `scale(${zoom})` }}>
-              <ResumeView resume={resume} templateId={templateId} design={design} />
+              <ResumeView resume={resume} templateId={templateId} design={design} locale={language} />
             </div>
           </div>
         </section>

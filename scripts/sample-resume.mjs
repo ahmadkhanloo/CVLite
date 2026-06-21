@@ -1,429 +1,426 @@
-// Lore-based Shahnameh resume samples used by the README preview/gallery.
-// Each template gets a distinct character and profile image.
+// Bilingual Shahnameh resume samples used by gallery preview generation.
 
 const profile = (file) => `/assets/templates/profiles/${file}`;
 
-const publication = (id) => ({
-  id: `${id}-pub1`,
-  hidden: false,
-  title: "Immortalized in the Shahnameh (The Book of Kings)",
-  publisher: "Abolqasem Ferdowsi",
-  date: "c. 1010 CE",
-  description: "A legendary career preserved in Persian epic literature."
-});
+export const TEMPLATE_IDS = [
+  "dark-sidebar", "classic-blue-lines", "purple-compact", "modern-minimal",
+  "executive", "teal-pro", "warm-earth", "ats-clean",
+  "gordafarid-defender", "rudabeh-heritage"
+];
 
-export const SHAHNAMEH_SAMPLES = {
-  "dark-sidebar": {
-    resume: {
-      basics: {
-        firstName: "Rostam",
-        lastName: "Tahmtan",
-        headline: "Pahlavan of Iran | Champion of Sistan | Slayer of the White Demon",
-        email: "rostam@zabulistan.iran",
-        phone: "+98 - royal courier",
-        location: "Zabulistan, Sistan",
-        website: "shahnameh.iran/rostam",
-        linkedin: "rostam-tahmtan",
-        extra: "Steed: Rakhsh | Armor: Babr-e Bayan",
-        photo: profile("rostam_tahmtan.png")
-      },
-      summary: "Legendary defender of Iran across the reigns of the Kayanian kings. Completed the Seven Labors, rescued Kay Kavus from Mazandaran, and served as the final champion called upon when the realm faced impossible odds.",
-      skills: [
-        { id: "rostam-s1", hidden: false, name: "Battlefield Mastery", level: "5", keywords: ["Mace combat", "Mounted archery", "Wrestling", "Lasso tactics"] },
-        { id: "rostam-s2", hidden: false, name: "Command", level: "5", keywords: ["Frontier defense", "Royal rescue", "Army morale", "Hero mentorship"] },
-        { id: "rostam-s3", hidden: false, name: "Mythic Operations", level: "5", keywords: ["Demon slaying", "Dragon fighting", "Solo expeditions"] }
-      ],
-      experience: [
-        { id: "rostam-e1", hidden: false, title: "Champion of Iran", organization: "Kayanian Court", location: "Iran", period: "Kay Kavus to Kay Khosrow", bullets: ["Rescued the king and army from captivity in Mazandaran through a solo campaign.", "Defeated the White Demon and restored the king's sight.", "Held Iran's border against repeated Turanian invasions."] },
-        { id: "rostam-e2", hidden: false, title: "Hero of Sistan", organization: "House of Zal", location: "Sistan", period: "Youth onward", bullets: ["Tamed Rakhsh, the only steed strong enough to carry him.", "Defeated a raging white elephant with the mace of Sam."] }
-      ],
-      education: [{ id: "rostam-ed1", hidden: false, degree: "Warcraft and kingship counsel", organization: "Zal and the Simorgh", period: "Childhood", location: "Zabulistan", description: "Raised in the heroic house of Zal, guided by the wisdom passed down from the Simorgh." }],
-      projects: [
-        { id: "rostam-p1", hidden: false, name: "The Seven Labors", period: "Mazandaran campaign", website: "shahnameh.iran/haft-khan", bullets: ["Crossed wilderness, defeated monsters and demons, and completed the rescue without an army."] }
-      ],
-      certifications: [{ id: "rostam-c1", hidden: false, title: "Bearer of Babr-e Bayan", issuer: "Royal armory of Iran", date: "Legendary era", description: "Recognized for invulnerable battle readiness." }],
-      languages: [{ id: "rostam-l1", hidden: false, language: "Persian", fluency: "Native", level: "5" }, { id: "rostam-l2", hidden: false, language: "Turanian", fluency: "Working", level: "3" }],
-      interests: [{ id: "rostam-i1", hidden: false, name: "Hunting", keywords: [] }, { id: "rostam-i2", hidden: false, name: "Feasting", keywords: [] }, { id: "rostam-i3", hidden: false, name: "Horsemanship", keywords: [] }],
-      publications: [publication("rostam")],
-      achievements: [{ id: "rostam-a1", hidden: false, title: "Completed the Seven Labors", description: "" }, { id: "rostam-a2", hidden: false, title: "Undefeated champion of Iran", description: "" }],
-      customSections: []
-    },
-    templateId: "dark-sidebar",
-    pageSize: "A4"
+export const TEMPLATE_PERSONAS = {
+  en: {
+    "dark-sidebar": "Rostam Tahmtan",
+    "classic-blue-lines": "Gordafarid",
+    "purple-compact": "Sohrab",
+    "modern-minimal": "Siavash",
+    "executive": "Esfandiar",
+    "teal-pro": "Rudabeh",
+    "warm-earth": "Tahmineh",
+    "ats-clean": "Afrasiab",
+    "gordafarid-defender": "Gordafarid",
+    "rudabeh-heritage": "Rudabeh"
   },
-  "classic-blue-lines": {
-    resume: {
-      basics: {
-        firstName: "Gordafarid",
-        lastName: "Dezhban",
-        headline: "Warrior of the White Fortress | Defender against Turan",
-        email: "gordafarid@sepiddiz.iran",
-        phone: "+98 - fortress watch",
-        location: "White Fortress, Iran",
-        website: "shahnameh.iran/gordafarid",
-        linkedin: "gordafarid",
-        extra: "Known for courage, disguise, and tactical composure",
-        photo: profile("gordafarid.png")
-      },
-      summary: "A bold Iranian warrior who rode out from the White Fortress to challenge Sohrab and slow the Turanian advance. Remembered for battlefield courage, strategic deception, and the refusal to let reputation or gender define duty.",
-      skills: [
-        { id: "gord-s1", hidden: false, name: "Defense", level: "5", keywords: ["Fortress command", "Mounted combat", "Delay tactics"] },
-        { id: "gord-s2", hidden: false, name: "Strategy", level: "4", keywords: ["Disguise", "Negotiation under pressure", "Rapid retreat planning"] },
-        { id: "gord-s3", hidden: false, name: "Leadership", level: "4", keywords: ["Morale", "Crisis courage", "Symbolic resistance"] }
-      ],
-      experience: [
-        { id: "gord-e1", hidden: false, title: "Defender of the White Fortress", organization: "Iranian frontier command", location: "Sepid Dezh", period: "Sohrab campaign", bullets: ["Challenged Sohrab in single combat to protect the fortress and buy time for Iran.", "Used identity, speech, and timing to turn a losing duel into a successful defensive withdrawal.", "Preserved the honor and readiness of the garrison under overwhelming pressure."] }
-      ],
-      education: [{ id: "gord-ed1", hidden: false, degree: "Arms, riding, and fortress discipline", organization: "House of Gozhdaham", period: "Youth", location: "White Fortress", description: "Trained inside a frontier family responsible for guarding Iran's border." }],
-      projects: [{ id: "gord-p1", hidden: false, name: "White Fortress Stand", period: "Turanian incursion", website: "", bullets: ["Delayed a superior champion through personal risk and tactical misdirection."] }],
-      certifications: [{ id: "gord-c1", hidden: false, title: "Frontier Defender", issuer: "House of Gozhdaham", date: "Heroic age", description: "" }],
-      languages: [{ id: "gord-l1", hidden: false, language: "Persian", fluency: "Native", level: "5" }],
-      interests: [{ id: "gord-i1", hidden: false, name: "Riding", keywords: [] }, { id: "gord-i2", hidden: false, name: "Archery", keywords: [] }],
-      publications: [publication("gord")],
-      achievements: [{ id: "gord-a1", hidden: false, title: "First warrior to face Sohrab at the fortress", description: "" }],
-      customSections: []
-    },
-    templateId: "classic-blue-lines",
-    pageSize: "Letter"
-  },
-  "purple-compact": {
-    resume: {
-      basics: {
-        firstName: "Sohrab",
-        lastName: "Turanian",
-        headline: "Young Champion | Rapid Campaign Leader | Son of Rostam",
-        email: "sohrab@samangan.turan",
-        phone: "+98 - camp standard",
-        location: "Samangan and Turan",
-        website: "shahnameh.iran/sohrab",
-        linkedin: "sohrab-pahlavan",
-        extra: "Known for unmatched strength at a young age",
-        photo: profile("sohrab.png")
-      },
-      summary: "A prodigious young hero raised in Samangan who led a Turanian campaign while seeking his unknown father, Rostam. His story is remembered for speed, strength, ambition, and the tragedy of hidden identity.",
-      skills: [
-        { id: "sohrab-s1", hidden: false, name: "Combat", level: "5", keywords: ["Wrestling", "Spear fighting", "Siege pressure"] },
-        { id: "sohrab-s2", hidden: false, name: "Campaigning", level: "4", keywords: ["Rapid advance", "Troop command", "Frontline challenge"] },
-        { id: "sohrab-s3", hidden: false, name: "Presence", level: "5", keywords: ["Courage", "Charisma", "Fearless negotiation"] }
-      ],
-      experience: [
-        { id: "sohrab-e1", hidden: false, title: "Young Champion", organization: "Army of Turan", location: "Iranian frontier", period: "Sohrab campaign", bullets: ["Advanced rapidly toward Iran while searching for Rostam.", "Captured and pressured frontier positions with unusual speed for a first campaign.", "Defeated experienced warriors and forced Iran to summon its greatest champion."] }
-      ],
-      education: [{ id: "sohrab-ed1", hidden: false, degree: "Heroic arms and noble conduct", organization: "Court of Samangan", period: "Youth", location: "Samangan", description: "Raised by Tahmineh with the signs of Rostam's lineage and trained for kingship-level combat." }],
-      projects: [{ id: "sohrab-p1", hidden: false, name: "Search for Rostam", period: "Final campaign", website: "", bullets: ["Turned a military expedition into a personal mission to find his father and reshape the rule of Iran and Turan."] }],
-      certifications: [{ id: "sohrab-c1", hidden: false, title: "Recognized champion of Turan", issuer: "Turanian host", date: "Youth", description: "" }],
-      languages: [{ id: "sohrab-l1", hidden: false, language: "Turanian", fluency: "Native", level: "5" }, { id: "sohrab-l2", hidden: false, language: "Persian", fluency: "Fluent", level: "4" }],
-      interests: [{ id: "sohrab-i1", hidden: false, name: "Lineage", keywords: [] }, { id: "sohrab-i2", hidden: false, name: "Wrestling", keywords: [] }],
-      publications: [publication("sohrab")],
-      achievements: [{ id: "sohrab-a1", hidden: false, title: "Forced Iran to call Rostam to battle", description: "" }],
-      customSections: []
-    },
-    templateId: "purple-compact",
-    pageSize: "A4"
-  },
-  "modern-minimal": {
-    resume: {
-      basics: {
-        firstName: "Siavash",
-        lastName: "Kayanian",
-        headline: "Prince of Iran | Peace Envoy | Founder of Siavashgerd",
-        email: "siavash@kayanian.iran",
-        phone: "+98 - royal court",
-        location: "Iran and Turan",
-        website: "shahnameh.iran/siavash",
-        linkedin: "siavash-kayani",
-        extra: "Known for truth, restraint, and tragic innocence",
-        photo: profile("siavash.png")
-      },
-      summary: "A Kayanian prince famed for purity of character, diplomatic restraint, and the ordeal of passing through fire. Chose peace over needless bloodshed and founded Siavashgerd in Turan before becoming a central martyr of the epic.",
-      skills: [
-        { id: "siavash-s1", hidden: false, name: "Diplomacy", level: "5", keywords: ["Peace negotiation", "Hostage exchange", "Court protocol"] },
-        { id: "siavash-s2", hidden: false, name: "Ethics", level: "5", keywords: ["Truthfulness", "Restraint", "Public trust"] },
-        { id: "siavash-s3", hidden: false, name: "Leadership", level: "4", keywords: ["City founding", "Military discipline", "Alliance building"] }
-      ],
-      experience: [
-        { id: "siavash-e1", hidden: false, title: "Prince and Peace Envoy", organization: "Kayanian Court", location: "Iran", period: "Reign of Kay Kavus", bullets: ["Passed through fire to prove innocence and preserve public trust.", "Negotiated peace with Afrasiab after victory on the battlefield.", "Refused to betray sworn terms even when pressured by the Iranian court."] },
-        { id: "siavash-e2", hidden: false, title: "Founder", organization: "Siavashgerd", location: "Turan", period: "Exile", bullets: ["Built a city of order and beauty in foreign territory.", "Maintained dignity and loyalty while navigating dangerous Turanian politics."] }
-      ],
-      education: [{ id: "siavash-ed1", hidden: false, degree: "Royal conduct, arms, and governance", organization: "Training of Rostam", period: "Youth", location: "Zabulistan", description: "Entrusted to Rostam for heroic education away from court intrigue." }],
-      projects: [{ id: "siavash-p1", hidden: false, name: "Siavashgerd", period: "Turan exile", website: "", bullets: ["Founded a model city remembered as a sign of wisdom, grace, and order."] }],
-      certifications: [{ id: "siavash-c1", hidden: false, title: "Trial by Fire", issuer: "Public witness of Iran", date: "Kayanian era", description: "Passed the ordeal unharmed and proved innocence." }],
-      languages: [{ id: "siavash-l1", hidden: false, language: "Persian", fluency: "Native", level: "5" }, { id: "siavash-l2", hidden: false, language: "Turanian", fluency: "Diplomatic", level: "4" }],
-      interests: [{ id: "siavash-i1", hidden: false, name: "City building", keywords: [] }, { id: "siavash-i2", hidden: false, name: "Peacecraft", keywords: [] }],
-      publications: [publication("siavash")],
-      achievements: [{ id: "siavash-a1", hidden: false, title: "Passed through fire unharmed", description: "" }, { id: "siavash-a2", hidden: false, title: "Founded Siavashgerd", description: "" }],
-      customSections: []
-    },
-    templateId: "modern-minimal",
-    pageSize: "A4"
-  },
-  "executive": {
-    resume: {
-      basics: {
-        firstName: "Esfandiar",
-        lastName: "Ruyintan",
-        headline: "Crown Prince | Invulnerable Champion | Commander of the Seven Labors",
-        email: "esfandiar@goshtasp.iran",
-        phone: "+98 - royal summons",
-        location: "Kayanian Iran",
-        website: "shahnameh.iran/esfandiar",
-        linkedin: "esfandiar-ruyintan",
-        extra: "Ruyintan: bronze-bodied champion",
-        photo: profile("esfandiar.png")
-      },
-      summary: "Crown prince and invulnerable champion of Iran, renowned for faith, obedience, and military discipline. Completed his own Seven Labors, rescued his sisters from Arjasp, and led royal campaigns while caught between duty to father and justice toward heroes.",
-      skills: [
-        { id: "esf-s1", hidden: false, name: "Executive Command", level: "5", keywords: ["Campaign leadership", "Royal mandate", "Succession readiness"] },
-        { id: "esf-s2", hidden: false, name: "Elite Combat", level: "5", keywords: ["Invulnerable defense", "Swordsmanship", "Monster combat"] },
-        { id: "esf-s3", hidden: false, name: "Mission Delivery", level: "5", keywords: ["Seven Labors", "Hostage rescue", "High-risk obedience"] }
-      ],
-      experience: [
-        { id: "esf-e1", hidden: false, title: "Crown Prince and Commander", organization: "Court of Goshtasp", location: "Iran", period: "Kayanian era", bullets: ["Led campaigns against Arjasp and restored royal honor.", "Completed the Seven Labors of Esfandiar and rescued captive sisters.", "Accepted the impossible assignment to bind Rostam, revealing the cost of political obedience."] }
-      ],
-      education: [{ id: "esf-ed1", hidden: false, degree: "Royal command and sacred duty", organization: "Court of Goshtasp", period: "Youth", location: "Iran", description: "Prepared for kingship through military command, religious devotion, and court discipline." }],
-      projects: [{ id: "esf-p1", hidden: false, name: "Seven Labors of Esfandiar", period: "Campaign against Arjasp", website: "", bullets: ["Defeated wolves, lions, dragons, witches, storms, and fortress threats to complete a royal rescue mission."] }],
-      certifications: [{ id: "esf-c1", hidden: false, title: "Ruyintan invulnerability", issuer: "Divine fortune and royal legend", date: "Heroic age", description: "Known as bronze-bodied except for the vulnerable eyes." }],
-      languages: [{ id: "esf-l1", hidden: false, language: "Persian", fluency: "Native", level: "5" }],
-      interests: [{ id: "esf-i1", hidden: false, name: "Justice", keywords: [] }, { id: "esf-i2", hidden: false, name: "Kingship", keywords: [] }],
-      publications: [publication("esf")],
-      achievements: [{ id: "esf-a1", hidden: false, title: "Completed the Seven Labors of Esfandiar", description: "" }, { id: "esf-a2", hidden: false, title: "Rescued royal captives from Arjasp", description: "" }],
-      customSections: []
-    },
-    templateId: "executive",
-    pageSize: "Letter"
-  },
-  "teal-pro": {
-    resume: {
-      basics: {
-        firstName: "Rudabeh",
-        lastName: "Mehrabani",
-        headline: "Princess of Kabul | Alliance Builder | Mother of Rostam",
-        email: "rudabeh@kabul.shahnameh",
-        phone: "+98 - palace tower",
-        location: "Kabul",
-        website: "shahnameh.iran/rudabeh",
-        linkedin: "rudabeh-kabul",
-        extra: "Bridge between Kabul, Zabul, and Iran",
-        photo: profile("rudabeh.png")
-      },
-      summary: "Princess of Kabul whose courage and diplomacy joined the houses of Mehrab and Zal despite political danger. Her story anchors one of the Shahnameh's great unions and leads to the birth of Rostam through the miraculous aid of the Simorgh.",
-      skills: [
-        { id: "rud-s1", hidden: false, name: "Alliance Building", level: "5", keywords: ["Cross-house diplomacy", "Trust building", "Conflict de-escalation"] },
-        { id: "rud-s2", hidden: false, name: "Courage", level: "5", keywords: ["Personal agency", "Court pressure", "Risk acceptance"] },
-        { id: "rud-s3", hidden: false, name: "Legacy", level: "5", keywords: ["Dynastic continuity", "Heroic lineage", "Cultural memory"] }
-      ],
-      experience: [
-        { id: "rud-e1", hidden: false, title: "Princess and Diplomatic Catalyst", organization: "Court of Kabul", location: "Kabul", period: "Age of Zal", bullets: ["Built a bond with Zal that overcame ancestral suspicion and royal resistance.", "Helped transform a potential political crisis into an alliance between Kabul and Zabul.", "Became mother of Rostam, securing the heroic line that would defend Iran for generations."] }
-      ],
-      education: [{ id: "rud-ed1", hidden: false, degree: "Court culture, counsel, and royal diplomacy", organization: "House of Mehrab", period: "Youth", location: "Kabul", description: "Raised in a royal household skilled in negotiation, hospitality, and dynastic politics." }],
-      projects: [{ id: "rud-p1", hidden: false, name: "Union of Zal and Rudabeh", period: "Kabul-Zabul alliance", website: "", bullets: ["Navigated family, kingdom, and lineage risk to establish a lasting heroic union."] }],
-      certifications: [{ id: "rud-c1", hidden: false, title: "Simorgh-assisted birth of Rostam", issuer: "House of Zal", date: "Heroic age", description: "Central figure in the miraculous birth episode of the national champion." }],
-      languages: [{ id: "rud-l1", hidden: false, language: "Persian", fluency: "Fluent", level: "5" }, { id: "rud-l2", hidden: false, language: "Kabul court speech", fluency: "Native", level: "5" }],
-      interests: [{ id: "rud-i1", hidden: false, name: "Poetry", keywords: [] }, { id: "rud-i2", hidden: false, name: "Court diplomacy", keywords: [] }],
-      publications: [publication("rud")],
-      achievements: [{ id: "rud-a1", hidden: false, title: "Mother of Rostam", description: "" }, { id: "rud-a2", hidden: false, title: "United rival heroic houses", description: "" }],
-      customSections: []
-    },
-    templateId: "teal-pro",
-    pageSize: "A4"
-  },
-  "warm-earth": {
-    resume: {
-      basics: {
-        firstName: "Tahmineh",
-        lastName: "Samangani",
-        headline: "Princess of Samangan | Strategic Host | Mother of Sohrab",
-        email: "tahmineh@samangan.turan",
-        phone: "+98 - Samangan court",
-        location: "Samangan",
-        website: "shahnameh.iran/tahmineh",
-        linkedin: "tahmineh-samangan",
-        extra: "Known for resolve, hospitality, and lineage foresight",
-        photo: profile("tahmineh.png")
-      },
-      summary: "Princess of Samangan who recognized Rostam's stature and acted with rare directness to shape her own destiny. Mother of Sohrab, she preserved the signs of his lineage and stands at the emotional center of one of the epic's greatest tragedies.",
-      skills: [
-        { id: "tah-s1", hidden: false, name: "Court Strategy", level: "5", keywords: ["Hospitality", "Private negotiation", "Lineage planning"] },
-        { id: "tah-s2", hidden: false, name: "Resolve", level: "5", keywords: ["Courage", "Self-advocacy", "High-stakes choice"] },
-        { id: "tah-s3", hidden: false, name: "Stewardship", level: "4", keywords: ["Heir raising", "Memory keeping", "Cultural continuity"] }
-      ],
-      experience: [
-        { id: "tah-e1", hidden: false, title: "Princess and Lineage Steward", organization: "Court of Samangan", location: "Samangan", period: "Age of Rostam", bullets: ["Hosted Rostam after the loss and recovery of Rakhsh, creating a pivotal link between Sistan and Samangan.", "Raised Sohrab with knowledge of his heroic ancestry and the token of Rostam's identity.", "Preserved dignity and agency in a political world shaped by kings and armies."] }
-      ],
-      education: [{ id: "tah-ed1", hidden: false, degree: "Royal household leadership", organization: "Court of Samangan", period: "Youth", location: "Samangan", description: "Prepared in courtly diplomacy, household command, and noble alliance customs." }],
-      projects: [{ id: "tah-p1", hidden: false, name: "Safeguarding Sohrab's lineage", period: "Sohrab's youth", website: "", bullets: ["Maintained the identifying armlet and story of Rostam so Sohrab could seek his father."] }],
-      certifications: [{ id: "tah-c1", hidden: false, title: "Keeper of Rostam's token", issuer: "House of Samangan", date: "Heroic age", description: "" }],
-      languages: [{ id: "tah-l1", hidden: false, language: "Turanian", fluency: "Native", level: "5" }, { id: "tah-l2", hidden: false, language: "Persian", fluency: "Courtly", level: "4" }],
-      interests: [{ id: "tah-i1", hidden: false, name: "Genealogy", keywords: [] }, { id: "tah-i2", hidden: false, name: "Court music", keywords: [] }],
-      publications: [publication("tah")],
-      achievements: [{ id: "tah-a1", hidden: false, title: "Mother of Sohrab", description: "" }, { id: "tah-a2", hidden: false, title: "Linked Samangan to the house of Rostam", description: "" }],
-      customSections: []
-    },
-    templateId: "warm-earth",
-    pageSize: "A4"
-  },
-  "ats-clean": {
-    resume: {
-      basics: {
-        firstName: "Afrasiab",
-        lastName: "Turan",
-        headline: "King of Turan | Long-Range Rival of Iran | Strategic Adversary",
-        email: "afrasiab@turan.kingdom",
-        phone: "+98 - royal war camp",
-        location: "Turan",
-        website: "shahnameh.iran/afrasiab",
-        linkedin: "afrasiab-turan",
-        extra: "Primary geopolitical rival across the Kayanian age",
-        photo: profile("afrasiab.png")
-      },
-      summary: "King of Turan and enduring adversary of Iran, remembered for ambition, strategic persistence, and a long cycle of war with the Kayanian realm. His rule shaped the destinies of Siyavash, Kay Khosrow, Rostam, and generations of Iranian heroes.",
-      skills: [
-        { id: "afr-s1", hidden: false, name: "Grand Strategy", level: "5", keywords: ["War planning", "Alliance pressure", "Long campaigns"] },
-        { id: "afr-s2", hidden: false, name: "Rule", level: "4", keywords: ["Court command", "Resource mobilization", "Dynastic politics"] },
-        { id: "afr-s3", hidden: false, name: "Adversarial Operations", level: "5", keywords: ["Border raids", "Psychological pressure", "Hero containment"] }
-      ],
-      experience: [
-        { id: "afr-e1", hidden: false, title: "King of Turan", organization: "Turanian realm", location: "Turan", period: "Kayanian age", bullets: ["Led repeated campaigns against Iran and forced the Kayanian court into prolonged strategic defense.", "Hosted Siavash in exile before court suspicion and political fear led to tragedy.", "Became the central adversary whose defeat defined Kay Khosrow's mission."] }
-      ],
-      education: [{ id: "afr-ed1", hidden: false, degree: "Kingship and warcraft", organization: "House of Pashang", period: "Youth", location: "Turan", description: "Raised for command in a court defined by rivalry with Iran." }],
-      projects: [{ id: "afr-p1", hidden: false, name: "Iran-Turan long war", period: "Multiple reigns", website: "", bullets: ["Sustained a multi-generational conflict that shaped the heroic age of both kingdoms."] }],
-      certifications: [{ id: "afr-c1", hidden: false, title: "Sovereign of Turan", issuer: "House of Pashang", date: "Heroic age", description: "" }],
-      languages: [{ id: "afr-l1", hidden: false, language: "Turanian", fluency: "Native", level: "5" }, { id: "afr-l2", hidden: false, language: "Persian", fluency: "Diplomatic", level: "4" }],
-      interests: [{ id: "afr-i1", hidden: false, name: "Kingship", keywords: [] }, { id: "afr-i2", hidden: false, name: "War councils", keywords: [] }],
-      publications: [publication("afr")],
-      achievements: [{ id: "afr-a1", hidden: false, title: "Longest-running royal rival of Iran", description: "" }, { id: "afr-a2", hidden: false, title: "Shaped the fate of Siavash and Kay Khosrow", description: "" }],
-      customSections: []
-    },
-    templateId: "ats-clean",
-    pageSize: "Letter"
+  fa: {
+    "dark-sidebar": "رستم تهمتن",
+    "classic-blue-lines": "گردآفرید",
+    "purple-compact": "سهراب",
+    "modern-minimal": "سیاوش",
+    "executive": "اسفندیار",
+    "teal-pro": "رودابه",
+    "warm-earth": "تهمینه",
+    "ats-clean": "افراسیاب",
+    "gordafarid-defender": "گردآفرید",
+    "rudabeh-heritage": "رودابه"
   }
 };
 
-export const TEMPLATE_PERSONAS = {
-  "dark-sidebar": "Rostam Tahmtan",
-  "classic-blue-lines": "Gordafarid",
-  "purple-compact": "Sohrab",
-  "modern-minimal": "Siavash",
-  "executive": "Esfandiar",
-  "teal-pro": "Rudabeh",
-  "warm-earth": "Tahmineh",
-  "ats-clean": "Afrasiab",
-  "gordafarid-defender": "Gordafarid",
-  "rudabeh-heritage": "Rudabeh"
-};
-
-SHAHNAMEH_SAMPLES["gordafarid-defender"] = {
-  ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["classic-blue-lines"])),
-  resume: {
-    ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["classic-blue-lines"].resume)),
-    basics: {
+const PERSONAS = {
+  "dark-sidebar": {
+    pageSize: "A4",
+    photo: "rostam_tahmtan.png",
+    en: {
+      firstName: "Rostam",
+      lastName: "Tahmtan",
+      headline: "Champion of Iran | Hero of Sistan | Keeper of the Seven Labors",
+      location: "Zabulistan and the court of Iran",
+      contact: ["royal courier of Sistan", "Rakhsh stable route", "House of Zal", "Book of Kings record"],
+      summary: "Legendary champion of Iran whose strength, judgment, and loyalty carried the realm through its hardest wars. Rescued kings, broke demonic sieges, guarded the frontier against Turan, and became the final name called when ordinary armies could no longer protect the crown.",
+      quote: "I stand where Iran needs a shield, whether the road leads to mountains, demons, or kings.",
+      skills: [["Heroic combat", ["Mace mastery", "Mounted archery", "Wrestling", "Lasso tactics"]], ["Command", ["Frontier defense", "Royal rescue", "Army morale", "Mentoring heroes"]], ["Mythic endurance", ["Seven Labors", "Demon slaying", "Desert crossing", "Night watch"]], ["Judgment", ["Court counsel", "Oath keeping", "Mercy after victory", "Crisis reading"]]],
+      experience: [["Champion of Iran", "Kayanian Court", "Reigns of Kay Kavus to Kay Khosrow", "Iran", ["Rescued Kay Kavus and the Iranian host from Mazandaran after the army was blinded and imprisoned.", "Defeated the White Demon, restored the king's sight, and returned the court to power.", "Held the eastern frontier when Turanian pressure threatened the realm."]], ["Hero of Sistan", "House of Zal", "Youth onward", "Zabulistan", ["Tamed Rakhsh, the only steed strong enough to bear him into war.", "Defeated the white elephant with the mace of Sam and proved readiness for royal service.", "Protected Sistan as a stable power behind the Iranian throne."]], ["Mentor and last resort", "Iranian host", "Heroic age", "Iran and Turan", ["Trained and advised younger princes in arms, discipline, and restraint.", "Entered impossible conflicts only after counsel, oath, and duty had been weighed."]]],
+      projects: [["The Seven Labors", "Mazandaran campaign", "shahnameh.example/haft-khan", ["Crossed wilderness, fought beasts and demons, and completed a royal rescue without an army."]], ["Defense of Iran", "Long war with Turan", "shahnameh.example/iran-turan", ["Stabilized the border through repeated duels, raids, and battlefield interventions."]], ["Rakhsh partnership", "Life-long campaign", "shahnameh.example/rakhsh", ["Built the most famous rider-and-steed partnership in Persian epic memory."]]],
+      education: ["Heroic arms and royal counsel", "House of Zal and wisdom of the Simorgh", "Childhood to youth", "Zabulistan", "Raised in the house of Zal with inherited knowledge from Sam and the protective wisdom of the Simorgh."],
+      achievements: [["Completed the Seven Labors", "Saved the king and army from Mazandaran."], ["Defeated the White Demon", "Restored sight, honor, and command to the Iranian court."], ["Defender of Sistan", "Kept the eastern stronghold loyal and battle-ready."], ["Undefeated champion", "Became the measure against which all heroes were tested."]],
+      interests: ["Horsemanship", "Hunting", "Feasting after victory", "Counsel of elders", "Keeping oaths"],
+      publications: [["Rostam in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A heroic career preserved in the Persian Book of Kings."]]
+    },
+    fa: {
+      firstName: "رستم",
+      lastName: "تهمتن",
+      headline: "پهلوان ایران | قهرمان سیستان | گذرنده هفت خان",
+      location: "زابلستان و دربار ایران",
+      contact: ["پیک شاهی سیستان", "راه اصطبل رخش", "خانه زال", "دفتر شاهنامه"],
+      summary: "پهلوان نامدار ایران که زور بازو، خرد عملی و وفاداری او پناه کشور در سخت ترین روزگارها بود. شاهان را از بند رهانید، دیوان را شکست، مرزهای ایران را در برابر توران نگه داشت و هرگاه سپاه از چاره می ماند، نام او آخرین امید دربار بود.",
+      quote: "هر جا ایران سپر بخواهد، من می ایستم؛ خواه راه به کوه برسد، خواه به دیو، خواه به تخت شاهی.",
+      skills: [["رزم پهلوانی", ["گرزآوری", "تیراندازی بر اسب", "کشتی", "کمنداندازی"]], ["فرماندهی", ["دفاع مرزی", "رهایی شاه", "روحیه سپاه", "پرورش پهلوانان"]], ["تاب اسطوره ای", ["هفت خان", "دیوکشی", "گذر از بیابان", "نگهبانی شبانه"]], ["داوری", ["رایزنی دربار", "پایبندی به سوگند", "بخشایش پس از پیروزی", "شناخت بحران"]]],
+      experience: [["پهلوان ایران", "دربار کیانی", "از کاووس تا کیخسرو", "ایران", ["کاووس و سپاه ایران را پس از گرفتاری در مازندران از بند و نابینایی رهانید.", "دیو سپید را شکست، بینایی شاه را بازگرداند و شکوه دربار را احیا کرد.", "هنگام فشار تورانیان، مرزهای شرقی ایران را استوار نگه داشت."]], ["قهرمان سیستان", "خانه زال", "از جوانی", "زابلستان", ["رخش را رام کرد؛ اسبی که تنها او توان کشیدن پهلوان را داشت.", "فیل سپید خشمگین را با گرز سام از پا انداخت و شایستگی خدمت شاهی را نشان داد.", "سیستان را به پشتوانه ای نیرومند برای تخت ایران بدل کرد."]], ["رایزن و آخرین پناه", "سپاه ایران", "روزگار پهلوانی", "ایران و توران", ["شاهزادگان جوان را در رزم، خویشتن داری و آیین پهلوانی راه نمود.", "تنها پس از سنجیدن سوگند، داد و وظیفه وارد نبردهای ناممکن شد."]]],
+      projects: [["هفت خان رستم", "لشکرکشی مازندران", "روایت شاهنامه", ["از بیابان و کوه گذشت، با جانوران و دیوان جنگید و شاه را بی سپاه نجات داد."]], ["پاسداری از ایران", "نبردهای ایران و توران", "روایت شاهنامه", ["با دوئل ها، یورش ها و حضور در میدان، مرز را از فروپاشی دور نگه داشت."]], ["همراهی با رخش", "همه عمر پهلوانی", "روایت شاهنامه", ["نامدارترین پیوند سوار و اسب را در حافظه حماسی ایران ساخت."]]],
+      education: ["رزم پهلوانی و رای شاهی", "خانه زال و فرزانگی سیمرغ", "کودکی تا جوانی", "زابلستان", "در خاندان زال پرورش یافت و دانش سام و راهنمایی سیمرغ را پشتوانه خود کرد."],
+      achievements: [["گذر از هفت خان", "شاه و سپاه را از مازندران نجات داد."], ["شکست دیو سپید", "بینایی و فرمانروایی را به دربار بازگرداند."], ["پاسدار سیستان", "مرز شرقی را وفادار و آماده نگه داشت."], ["پهلوان بی همتا", "معیار سنجش همه پهلوانان پس از خود شد."]],
+      interests: ["سوارکاری", "شکار", "بزم پس از پیروزی", "رای پیران", "وفاداری به سوگند"],
+      publications: [["رستم در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "کارنامه پهلوانی که در کتاب شاهان ایران ماندگار شد."]]
+    }
+  },
+  "classic-blue-lines": {
+    pageSize: "Letter",
+    photo: "gordafarid.png",
+    en: {
+      firstName: "Gordafarid",
+      lastName: "Dezhban",
+      headline: "Defender of the White Fortress | Warrior and strategist",
+      location: "White Fortress on the Iranian frontier",
+      contact: ["fortress watch", "eastern gate", "House of Gozhdaham", "frontier dispatch"],
+      summary: "Courageous Iranian warrior who rode out when Sohrab pressed the White Fortress. Used speed, disguise, negotiation, and nerve to delay a stronger champion, protect the garrison, and prove that duty to Iran was not limited by expectation or fear.",
+      quote: "A fortress is kept first in the heart, then by stone, gate, and spear.",
+      skills: [["Defense", ["Fortress command", "Mounted combat", "Delay tactics", "Gate security"]], ["Strategy", ["Disguise", "Rapid retreat", "Reading rivals", "Pressure negotiation"]], ["Leadership", ["Morale", "Symbolic courage", "Crisis calm", "Frontier loyalty"]], ["Arms", ["Spear", "Sword", "Helmet craft", "War horse handling"]]],
+      experience: [["Defender of the White Fortress", "Iranian frontier command", "Sohrab campaign", "Sepid Dezh", ["Rode out in armor to challenge Sohrab and buy time for the fortress.", "Turned a losing duel into a successful withdrawal through timing and speech.", "Kept the garrison from panic while Turanian pressure mounted."]], ["Daughter of Gozhdaham", "House of the fortress keeper", "Youth to campaign", "White Fortress", ["Trained in arms, riding, and border discipline inside a military household.", "Learned to treat honor as a practical defense resource, not only a courtly word."]], ["Symbol of resistance", "Iranian memory", "After the duel", "Epic tradition", ["Became a model of courage for defenders facing superior force.", "Showed that tactical survival can protect national honor as much as victory."]]],
+      projects: [["White Fortress Stand", "Turanian incursion", "shahnameh.example/white-fortress", ["Delayed Sohrab and preserved time for Iran to answer the invasion."]], ["Masked duel", "Single combat", "shahnameh.example/gordafarid", ["Used concealed identity and battlefield wit to survive a stronger opponent."]], ["Garrison morale", "Frontier crisis", "shahnameh.example/frontier", ["Kept defenders organized under the shock of Sohrab's advance."]]],
+      education: ["Arms, riding, and fortress discipline", "House of Gozhdaham", "Youth", "White Fortress", "Raised in a border family responsible for watching the dangerous road between Iran and Turan."],
+      achievements: [["Faced Sohrab first", "Met the young champion before Iran's great heroes arrived."], ["Protected the fortress", "Bought time for warning and defense."], ["Preserved honor", "Transformed retreat into strategy."], ["Inspired later defenders", "Became a lasting emblem of courage."]],
+      interests: ["Archery", "Riding", "Fortress design", "Border intelligence", "Honor codes"],
+      publications: [["Gordafarid in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A compact but powerful episode of courage at the frontier."]]
+    },
+    fa: {
       firstName: "گردآفرید",
-      lastName: "",
-      headline: "استراتژیست دفاعی، رهبر میدانی و الهام بخش",
-      email: "gordafarid@sepiddiz.ir",
-      phone: "دژ سپید، مرزهای شرقی ایران",
-      location: "دژ سپید",
-      website: "gordafarid-defender.ir",
-      linkedin: "مدافع مرزها",
-      extra: "من به نام خویش، به نام ایران می جنگم و پاسدار مرزهایم.",
-      photo: profile("gordafarid.png")
-    },
-    summary: "زنی از مرزهای ایران؛ شجاع، خردمند و وفادار به میهن. با تکیه بر دانش، شهامت و تدبیر از دژ سپید و مرزهای سرزمین پاسداری کردم و در سخت ترین نبردها ایستادگی ساختم.",
-    skills: [
-      { id: "gd-s1", hidden: false, name: "رهبری", level: "5", keywords: ["شجاعت", "تفکر تاکتیکی", "ارتباط موثر"] },
-      { id: "gd-s2", hidden: false, name: "تاب آوری", level: "5", keywords: ["مدیریت بحران", "مذاکره در شرایط دشوار", "تصمیم گیری سریع"] },
-      { id: "gd-s3", hidden: false, name: "دفاع", level: "5", keywords: ["مدافع مرزها", "وفادار به میهن", "روحیه بخشی"] }
-    ],
-    experience: [
-      { id: "gd-e1", hidden: false, title: "فرمانده در دژ سپید", organization: "سال های کیانی", location: "دژ سپید", period: "سال های کیانی", bullets: ["مدیریت دفاعی دژ و مرزهای شرقی، سازماندهی نیروها و تامین آمادگی همیشگی در برابر تهدیدها."] },
-      { id: "gd-e2", hidden: false, title: "رهبر میدانی", organization: "نبرد با تورانیان", location: "میدان نبرد", period: "نبرد با تورانیان", bullets: ["هدایت مستقیم نیروها در میدان نبرد، طراحی تاکتیک های دفاعی و جلوگیری از نفوذ دشمن."] },
-      { id: "gd-e3", hidden: false, title: "استراتژیست و مذاکره کننده", organization: "ماموریت پنهان", location: "اردوگاه دشمن", period: "ماموریت پنهان", bullets: ["نفوذ با هویت پنهان برای شناسایی نقشه ها و حفاظت از مردم و سرزمین."] },
-      { id: "gd-e4", hidden: false, title: "الگوی الهام بخش", organization: "پس از پیروزی", location: "ایران", period: "پس از پیروزی", bullets: ["الهام بخش نسل های بعدی با تکیه بر تجربه، خرد و داستان ایستادگی در راه میهن."] }
-    ],
-    projects: [
-      { id: "gd-p1", hidden: false, name: "دفاع از دژ سپید", period: "مرزهای ایران", website: "", bullets: ["رهبری موفق در دفاع از دژ سپید در برابر یورش دشمنان تورانی و حفظ امنیت مرزهای شرقی ایران."] },
-      { id: "gd-p2", hidden: false, name: "رویارویی با سهراب", period: "نبرد تن به تن", website: "", bullets: ["مبارزه شجاعانه و برابر در میدان نبرد؛ نمادی از شهامت و شایستگی زنان ایرانی."] }
-    ],
-    achievements: [
-      { id: "gd-a1", hidden: false, title: "دفاع از دژ سپید", description: "حفظ امنیت مرزهای شرقی ایران" },
-      { id: "gd-a2", hidden: false, title: "رویارویی با سهراب", description: "ایستادگی در برابر نیروی برتر" },
-      { id: "gd-a3", hidden: false, title: "پنهان سازی هویت برای ماموریت", description: "شناخت نقشه های دشمن" },
-      { id: "gd-a4", hidden: false, title: "ایجاد روحیه در مدافعان", description: "تبدیل ترس به امید و مقاومت" }
-    ],
-    interests: [
-      { id: "gd-i1", hidden: false, name: "هدف محور", keywords: [] },
-      { id: "gd-i2", hidden: false, name: "مردم محور", keywords: [] },
-      { id: "gd-i3", hidden: false, name: "عادل و منصف", keywords: [] },
-      { id: "gd-i4", hidden: false, name: "پایدار و مقاوم", keywords: [] }
-    ],
-    education: [],
-    certifications: [],
-    languages: [],
-    publications: [],
-    customSections: []
+      lastName: "دژبان",
+      headline: "مدافع دژ سپید | جنگاور و تدبیرگر مرز",
+      location: "دژ سپید در مرز ایران",
+      contact: ["دیدبان دژ", "دروازه شرقی", "خانه گژدهم", "نامه مرزی"],
+      summary: "جنگاور دلیر ایرانی که هنگام فشار سهراب بر دژ سپید به میدان رفت. با شتاب، پوشش جنگی، گفتار سنجیده و آرامش در بحران، پهلوانی نیرومندتر را درنگ داد، پادگان را نگه داشت و نشان داد وظیفه نسبت به ایران مرز جنسیت و هراس نمی شناسد.",
+      quote: "دژ نخست در دل نگاه داشته می شود، سپس با سنگ و دروازه و نیزه.",
+      skills: [["دفاع", ["فرماندهی دژ", "نبرد سواره", "تاکتیک تاخیر", "امنیت دروازه"]], ["تدبیر", ["پوشش هویت", "عقب نشینی سریع", "شناخت حریف", "مذاکره زیر فشار"]], ["رهبری", ["روحیه بخشی", "شجاعت نمادین", "آرامش بحران", "وفاداری مرزی"]], ["جنگ افزار", ["نیزه", "شمشیر", "کلاهخود", "اسب جنگی"]]],
+      experience: [["مدافع دژ سپید", "فرماندهی مرزی ایران", "لشکرکشی سهراب", "سپید دژ", ["با زره به میدان رفت تا سهراب را به نبرد بخواند و برای دژ زمان بخرد.", "دوئل دشوار را با زمان شناسی و سخن سنجیده به عقب نشینی موفق بدل کرد.", "پادگان را در برابر فشار تورانیان از آشفتگی دور نگه داشت."]], ["دختر گژدهم", "خانه نگهبان دژ", "جوانی تا نبرد", "دژ سپید", ["در خانواده ای مرزی، رزم، سوارکاری و آیین پاسداری آموخت.", "آموخت که ناموس و شرف تنها واژه درباری نیست، بلکه سرمایه عملی دفاع است."]], ["نماد ایستادگی", "حافظه ایرانی", "پس از دوئل", "روایت حماسی", ["برای مدافعانی که با نیروی برتر روبه رو می شوند، نمونه شجاعت شد.", "نشان داد زنده ماندن هوشمندانه نیز می تواند آبرو و کشور را حفظ کند."]]],
+      projects: [["ایستادگی دژ سپید", "یورش تورانیان", "روایت شاهنامه", ["سهراب را درنگ داد و برای رسیدن هشدار به ایران زمان ساخت."]], ["نبرد با پوشش هویت", "رزم تن به تن", "روایت شاهنامه", ["با هویت پنهان و هوش میدان از حریفی نیرومندتر جان به در برد."]], ["نگهداشت روحیه پادگان", "بحران مرزی", "روایت شاهنامه", ["مدافعان را در شوک پیشروی سهراب منظم نگه داشت."]]],
+      education: ["رزم، سوارکاری و آیین دژبانی", "خانه گژدهم", "جوانی", "دژ سپید", "در خاندان نگهبان مرز پرورش یافت؛ جایی که راه ایران و توران همواره زیر نظر بود."],
+      achievements: [["نخستین رویارویی با سهراب", "پیش از رسیدن پهلوانان بزرگ ایران به میدان رفت."], ["حفظ دژ", "برای هشدار و دفاع زمان خرید."], ["نگهداشت آبرو", "عقب نشینی را به تدبیر بدل کرد."], ["الهام مدافعان", "نماد پایدار شجاعت مرزی شد."]],
+      interests: ["تیراندازی", "سوارکاری", "ساختار دژ", "خبر مرزی", "آیین جوانمردی"],
+      publications: [["گردآفرید در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "روایتی کوتاه و نیرومند از شجاعت در مرز."]]
+    }
   },
-  templateId: "gordafarid-defender",
-  pageSize: "A4"
+  "purple-compact": {
+    pageSize: "A4",
+    photo: "sohrab.png",
+    en: {
+      firstName: "Sohrab",
+      lastName: "Samangan",
+      headline: "Young champion of Turan | Seeker of Rostam",
+      location: "Samangan and the Iranian frontier",
+      contact: ["camp standard", "Samangan court", "armlet of lineage", "campaign record"],
+      summary: "Prodigious young hero raised in Samangan with the signs of Rostam's lineage. Led a swift Turanian campaign while searching for his unknown father, combining strength, charisma, and tragic innocence in one of the Shahnameh's most moving stories.",
+      quote: "I came for a father and found a battlefield between two worlds.",
+      skills: [["Combat", ["Wrestling", "Spear fighting", "Siege pressure", "Duel courage"]], ["Campaigning", ["Rapid advance", "Troop command", "Frontline challenge", "Fortress pressure"]], ["Presence", ["Charisma", "Fearless speech", "Youthful force", "Mercy to captives"]], ["Lineage", ["Identity seeking", "Token keeping", "Heroic ambition", "Dynastic vision"]]],
+      experience: [["Young champion", "Army of Turan", "Sohrab campaign", "Iranian frontier", ["Advanced rapidly toward Iran while seeking Rostam.", "Captured frontier positions and forced Iran to summon its greatest champion.", "Showed mercy and curiosity even while leading an invading host."]], ["Prince of Samangan", "Court of Tahmineh", "Youth", "Samangan", ["Grew under Tahmineh's protection with the armlet of Rostam as proof of lineage.", "Mastered arms unusually early and drew warriors to his banner."]], ["Tragic challenger", "Field of single combat", "Final duel", "Iran", ["Faced Rostam without knowing the bond between them.", "Turned hidden identity into the central wound of the epic."]]],
+      projects: [["Search for Rostam", "Final campaign", "shahnameh.example/sohrab", ["Transformed a military expedition into a personal search for father and rightful order."]], ["Frontier breakthrough", "Opening campaign", "shahnameh.example/frontier", ["Overran defensive positions quickly enough to alarm the Iranian court."]], ["Armlet of recognition", "Life-long sign", "shahnameh.example/armlet", ["Carried the token meant to reveal his father, though fate delayed recognition."]]],
+      education: ["Heroic arms and noble conduct", "Court of Samangan", "Youth", "Samangan", "Raised by Tahmineh with the signs of Rostam's house and trained for kingly combat."],
+      achievements: [["Forced Iran to call Rostam", "Made the court summon its greatest defender."], ["United youth and command", "Led warriors while still very young."], ["Captured frontier ground", "Shook the first defenses of Iran."], ["Became a tragic emblem", "His story warns against hidden truth and delayed recognition."]],
+      interests: ["Lineage", "Wrestling", "Horses", "Royal destiny", "Questions of identity"],
+      publications: [["Sohrab in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "The great tragedy of youth, power, and unknown kinship."]]
+    },
+    fa: {
+      firstName: "سهراب",
+      lastName: "سمنگان",
+      headline: "پهلوان جوان توران | جوینده رستم",
+      location: "سمنگان و مرز ایران",
+      contact: ["درفش اردو", "دربار سمنگان", "بازوبند تبار", "دفتر لشکر"],
+      summary: "پهلوان جوان و شگفت انگیزی که در سمنگان با نشان تبار رستم پرورش یافت. در جست و جوی پدر ناشناخته خود، سپاهی تندرو را به مرز ایران رساند و نیرو، گیرایی و معصومیت تراژیک را در یکی از جانسوزترین داستان های شاهنامه به هم پیوند زد.",
+      quote: "برای یافتن پدر آمدم و میدان جنگی میان دو جهان یافتم.",
+      skills: [["رزم", ["کشتی", "نیزه داری", "فشار بر دژ", "شجاعت دوئل"]], ["لشکرکشی", ["پیشروی سریع", "فرماندهی سپاه", "چالش پیشانی", "فشار مرزی"]], ["حضور", ["گیرایی", "سخن بی هراس", "نیروی جوانی", "بخشش اسیران"]], ["تبار", ["جست و جوی هویت", "نگهداری نشان", "بلندپروازی پهلوانی", "تصور پادشاهی"]]],
+      experience: [["پهلوان جوان", "سپاه توران", "لشکرکشی سهراب", "مرز ایران", ["به شتاب به سوی ایران آمد و همزمان رستم را می جست.", "مواضع مرزی را گرفت و دربار ایران را واداشت بزرگ ترین پهلوان را فراخواند.", "با وجود فرماندهی سپاه مهاجم، کنجکاوی و بخشندگی خود را نشان داد."]], ["شاهزاده سمنگان", "دربار تهمینه", "جوانی", "سمنگان", ["زیر حمایت تهمینه و با بازوبند رستم به عنوان نشان تبار رشد کرد.", "بسیار زودتر از سن خود رزم آموخت و جنگاوران را به سوی درفش خود کشاند."]], ["چالشگر تراژیک", "میدان نبرد تن به تن", "دوئل پایانی", "ایران", ["با رستم روبه رو شد بی آن که پیوند خون میانشان آشکار باشد.", "هویت پنهان را به زخم مرکزی داستان بدل کرد."]]],
+      projects: [["جست و جوی رستم", "لشکرکشی پایانی", "روایت شاهنامه", ["یک حرکت نظامی را به جست و جویی شخصی برای پدر و سامان درست جهان بدل کرد."]], ["شکستن مرز", "آغاز لشکرکشی", "روایت شاهنامه", ["دفاع های نخستین ایران را چنان سریع شکست که دربار را هراسان کرد."]], ["بازوبند شناسایی", "نشان زندگی", "روایت شاهنامه", ["نشانی را حمل کرد که باید پدر را آشکار می کرد، اما تقدیر شناخت را دیر کرد."]]],
+      education: ["رزم پهلوانی و آیین بزرگی", "دربار سمنگان", "جوانی", "سمنگان", "تهمینه او را با نشان خاندان رستم پرورد و برای نبرد شاهانه آماده کرد."],
+      achievements: [["فراخواندن رستم", "دربار ایران را واداشت بزرگ ترین مدافع خود را بخواهد."], ["فرماندهی در جوانی", "در سن کم سپاه را رهبری کرد."], ["گشودن مرز", "دفاع نخست ایران را لرزاند."], ["نماد تراژدی", "داستان او هشدار پنهان ماندن حقیقت شد."]],
+      interests: ["تبار", "کشتی", "اسب", "سرنوشت شاهی", "پرسش هویت"],
+      publications: [["سهراب در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "تراژدی بزرگ جوانی، نیرو و خویشاوندی ناشناخته."]]
+    }
+  },
+  "modern-minimal": {
+    pageSize: "A4",
+    photo: "siavash.png",
+    en: {
+      firstName: "Siavash",
+      lastName: "Kayanian",
+      headline: "Prince of Iran | Peace envoy | Founder of Siavashgerd",
+      location: "Iran, Turan, and Siavashgerd",
+      contact: ["royal court", "peace embassy", "Siavashgerd record", "Kayanian archive"],
+      summary: "Kayanian prince remembered for truthfulness, restraint, and tragic innocence. Passed through fire to prove purity, chose peace over needless bloodshed, honored sworn terms even under pressure, and founded Siavashgerd before becoming a martyr whose death reshaped Iran and Turan.",
+      quote: "A promise kept in exile is stronger than a throne kept by deceit.",
+      skills: [["Diplomacy", ["Peace negotiation", "Hostage exchange", "Court protocol", "Treaty keeping"]], ["Ethics", ["Truthfulness", "Restraint", "Public trust", "Fire ordeal"]], ["Leadership", ["City founding", "Alliance building", "Military discipline", "Calm command"]], ["Governance", ["Justice", "Order", "Ritual care", "Civic beauty"]]],
+      experience: [["Prince and peace envoy", "Kayanian Court", "Reign of Kay Kavus", "Iran", ["Passed through fire to answer accusation and restore public trust.", "Defeated Turan in battle but chose negotiated peace over wasteful killing.", "Refused to violate sworn terms even when his own court demanded it."]], ["Founder", "Siavashgerd", "Exile in Turan", "Turan", ["Built a city remembered for order, beauty, and just rule.", "Maintained dignity while navigating suspicion inside Afrasiab's court."]], ["Martyred prince", "Iranian memory", "After betrayal", "Epic tradition", ["His death became the moral wound that drove Kay Khosrow's mission.", "Transformed private injustice into a national call for justice."]]],
+      projects: [["Trial by fire", "Court accusation", "shahnameh.example/fire", ["Entered flame to prove innocence and emerged unharmed."]], ["Peace with Turan", "Border campaign", "shahnameh.example/peace", ["Turned victory into a treaty and protected captives by honoring terms."]], ["Siavashgerd", "Exile project", "shahnameh.example/siavashgerd", ["Founded a model city that embodied grace, order, and restraint."]]],
+      education: ["Royal conduct, arms, and governance", "Training of Rostam", "Youth", "Zabulistan", "Entrusted to Rostam for heroic education away from court intrigue."],
+      achievements: [["Passed through fire", "Proved innocence before the realm."], ["Protected the treaty", "Chose oath over political pressure."], ["Founded Siavashgerd", "Built beauty and order in exile."], ["Inspired Kay Khosrow", "His death became a force of justice."]],
+      interests: ["Peacecraft", "City building", "Ritual purity", "Horses", "Just law"],
+      publications: [["Siavash in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A story of purity, politics, exile, and martyrdom."]]
+    },
+    fa: {
+      firstName: "سیاوش",
+      lastName: "کیانی",
+      headline: "شاهزاده ایران | فرستاده صلح | بنیان گذار سیاوشگرد",
+      location: "ایران، توران و سیاوشگرد",
+      contact: ["دربار شاهی", "فرستادگی صلح", "دفتر سیاوشگرد", "بایگانی کیانی"],
+      summary: "شاهزاده کیانی که به راستی، خویشتن داری و بی گناهی تراژیک شناخته می شود. برای اثبات پاکی از آتش گذشت، صلح را بر خونریزی بیهوده برگزید، به پیمان وفادار ماند و پیش از شهادتی که سرنوشت ایران و توران را دگرگون کرد، سیاوشگرد را بنیاد نهاد.",
+      quote: "پیمانی که در غربت نگاه داشته شود، از تختی که با فریب بماند نیرومندتر است.",
+      skills: [["دیپلماسی", ["مذاکره صلح", "مبادله گروگان", "آیین دربار", "نگهداشت پیمان"]], ["اخلاق", ["راستی", "خویشتن داری", "اعتماد عمومی", "گذر از آتش"]], ["رهبری", ["بنیان گذاری شهر", "اتحادسازی", "انضباط سپاه", "فرمان آرام"]], ["حکمرانی", ["داد", "نظم", "آیین پاکی", "زیبایی شهری"]]],
+      experience: [["شاهزاده و فرستاده صلح", "دربار کیانی", "پادشاهی کاووس", "ایران", ["برای پاسخ به اتهام و بازگرداندن اعتماد مردم از آتش گذشت.", "پس از پیروزی بر توران، صلح را بر کشتار بیهوده ترجیح داد.", "حتی زیر فشار دربار خود، پیمان بسته را نشکست."]], ["بنیان گذار", "سیاوشگرد", "تبعید در توران", "توران", ["شهری ساخت که به نظم، زیبایی و دادگری شناخته شد.", "در دربار افراسیاب، با وجود بدگمانی ها، وقار خود را نگه داشت."]], ["شاهزاده شهید", "حافظه ایران", "پس از خیانت", "روایت حماسی", ["مرگ او زخم اخلاقی بزرگی شد که ماموریت کیخسرو را شکل داد.", "ستم شخصی را به ندای ملی دادخواهی بدل کرد."]]],
+      projects: [["گذر از آتش", "اتهام دربار", "روایت شاهنامه", ["برای اثبات بی گناهی در آتش رفت و بی گزند بیرون آمد."]], ["صلح با توران", "لشکرکشی مرزی", "روایت شاهنامه", ["پیروزی را به پیمان بدل کرد و اسیران را با وفاداری به عهد حفظ کرد."]], ["سیاوشگرد", "پروژه تبعید", "روایت شاهنامه", ["شهری نمونه ساخت که وقار، نظم و خویشتن داری را نشان می داد."]]],
+      education: ["آیین شاهی، رزم و کشورداری", "آموزش رستم", "جوانی", "زابلستان", "برای دوری از فتنه دربار به رستم سپرده شد تا تربیت پهلوانی و شاهانه بیاموزد."],
+      achievements: [["گذر از آتش", "بی گناهی خود را پیش چشم کشور ثابت کرد."], ["پاسداری از پیمان", "سوگند را بر فشار سیاسی ترجیح داد."], ["بنیان گذاری سیاوشگرد", "در غربت زیبایی و نظم ساخت."], ["الهام کیخسرو", "مرگ او نیروی دادخواهی شد."]],
+      interests: ["صلح سازی", "شهرسازی", "پاکی آیینی", "اسب", "قانون دادگر"],
+      publications: [["سیاوش در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "داستان پاکی، سیاست، تبعید و شهادت."]]
+    }
+  },
+  "executive": {
+    pageSize: "Letter",
+    photo: "esfandiar.png",
+    en: {
+      firstName: "Esfandiar",
+      lastName: "Ruyintan",
+      headline: "Crown prince of Iran | Invulnerable champion | Commander of the Seven Labors",
+      location: "Court of Goshtasp and Iranian campaigns",
+      contact: ["royal summons", "crown command", "bronze-bodied record", "Kayanian mandate"],
+      summary: "Crown prince and invulnerable champion of Iran, famed for discipline, sacred duty, and command under impossible orders. Completed his own Seven Labors, rescued royal captives, defeated Arjasp's forces, and entered the fatal mission to bind Rostam while caught between obedience and justice.",
+      quote: "Duty without wisdom becomes a chain, yet a prince must still face the chain.",
+      skills: [["Executive command", ["Campaign leadership", "Royal mandate", "Succession readiness", "High-stakes judgment"]], ["Elite combat", ["Invulnerable defense", "Swordsmanship", "Monster fighting", "Siege assault"]], ["Mission delivery", ["Seven Labors", "Hostage rescue", "Deep campaign", "Relentless execution"]], ["Faith and order", ["Sacred duty", "Court discipline", "Lawful command", "Personal sacrifice"]]],
+      experience: [["Crown prince and commander", "Court of Goshtasp", "Kayanian era", "Iran", ["Led campaigns against Arjasp and restored royal authority.", "Completed the Seven Labors of Esfandiar and rescued captive sisters.", "Accepted the impossible charge to bind Rostam, revealing the cost of obedience."]], ["Invulnerable champion", "Iranian host", "Royal campaigns", "Iran and foreign lands", ["Carried the reputation of Ruyintan, vulnerable only in the eyes.", "Used personal courage to turn difficult campaigns into royal victories."]], ["Heir under pressure", "Kayanian succession", "Final mission", "Sistan road", ["Balanced desire for the throne with command from his father.", "Met Rostam as both rival and elder hero, making the conflict morally unbearable."]]],
+      projects: [["Seven Labors of Esfandiar", "Campaign against Arjasp", "shahnameh.example/esfandiar-labors", ["Defeated wolves, lions, dragons, witches, storms, and fortress threats to complete a rescue mission."]], ["Rescue of royal captives", "Ruyin Dezh campaign", "shahnameh.example/ruyin-dezh", ["Broke enemy power and restored the honor of Goshtasp's house."]], ["Mission to Sistan", "Final royal order", "shahnameh.example/rostam-esfandiar", ["Carried a command that placed loyalty, justice, and heroism in open conflict."]]],
+      education: ["Royal command and sacred duty", "Court of Goshtasp", "Youth", "Iran", "Prepared for kingship through arms, faith, discipline, and the burden of command."],
+      achievements: [["Completed the Seven Labors", "Delivered a royal rescue through impossible hazards."], ["Rescued royal captives", "Restored honor after Arjasp's aggression."], ["Ruyintan champion", "Became the bronze-bodied defender of Iran."], ["Faced Rostam", "Entered the epic's hardest conflict of duty and justice."]],
+      interests: ["Kingship", "Sacred law", "Military discipline", "Succession", "Justice"],
+      publications: [["Esfandiar in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A royal tragedy of obedience, power, and invulnerable courage."]]
+    },
+    fa: {
+      firstName: "اسفندیار",
+      lastName: "رویین تن",
+      headline: "ولیعهد ایران | پهلوان رویین تن | فرمانده هفت خان",
+      location: "دربار گشتاسپ و کارزارهای ایران",
+      contact: ["فرمان شاهی", "درفش ولیعهدی", "دفتر رویین تنی", "ماموریت کیانی"],
+      summary: "ولیعهد و پهلوان رویین تن ایران که به انضباط، وظیفه مقدس و فرماندهی در ماموریت های ناممکن شناخته می شود. هفت خان خود را گذراند، اسیران شاهی را رهانید، سپاه ارجاسپ را شکست و در ماموریت بستن رستم، میان فرمانبری و داد گرفتار شد.",
+      quote: "وظیفه اگر بی خردی باشد زنجیر می شود، اما شاهزاده باید همان زنجیر را نیز رو در رو ببیند.",
+      skills: [["فرماندهی شاهانه", ["رهبری کارزار", "ماموریت شاهی", "آمادگی جانشینی", "داوری پرخطر"]], ["رزم برگزیده", ["دفاع رویین تن", "شمشیرزنی", "نبرد با هیولا", "گشودن دژ"]], ["انجام ماموریت", ["هفت خان", "رهایی گروگان", "لشکرکشی دور", "اجرای پیگیر"]], ["دین و نظم", ["وظیفه مقدس", "انضباط دربار", "فرمان قانونی", "فداکاری شخصی"]]],
+      experience: [["ولیعهد و فرمانده", "دربار گشتاسپ", "روزگار کیانی", "ایران", ["بر ضد ارجاسپ لشکر کشید و اقتدار شاهی را بازگرداند.", "هفت خان اسفندیار را گذراند و خواهران اسیر را رهانید.", "ماموریت ناممکن بستن رستم را پذیرفت و هزینه فرمانبری را آشکار کرد."]], ["پهلوان رویین تن", "سپاه ایران", "کارزارهای شاهی", "ایران و سرزمین های دور", ["آوازه رویین تنی را داشت؛ تنها چشمانش آسیب پذیر بود.", "با شجاعت شخصی، کارزارهای دشوار را به پیروزی شاهی بدل کرد."]], ["وارث زیر فشار", "جانشینی کیانی", "ماموریت پایانی", "راه سیستان", ["میل به تخت را با فرمان پدر در ترازوی سختی گذاشت.", "با رستم چنان روبه رو شد که هم رقیب بود و هم پهلوان بزرگ پیشین."]]],
+      projects: [["هفت خان اسفندیار", "کارزار ارجاسپ", "روایت شاهنامه", ["گرگ، شیر، اژدها، جادو، توفان و دژ را پشت سر گذاشت تا ماموریت رهایی را به پایان برد."]], ["رهایی اسیران شاهی", "کارزار رویین دژ", "روایت شاهنامه", ["قدرت دشمن را شکست و آبروی خاندان گشتاسپ را بازگرداند."]], ["ماموریت سیستان", "فرمان پایانی شاه", "روایت شاهنامه", ["فرمانی را برد که وفاداری، داد و پهلوانی را در برابر هم گذاشت."]]],
+      education: ["فرماندهی شاهی و وظیفه مقدس", "دربار گشتاسپ", "جوانی", "ایران", "برای پادشاهی با رزم، دین، انضباط و بار فرمان آماده شد."],
+      achievements: [["گذر از هفت خان", "ماموریت رهایی شاهانه را از خطرهای ناممکن گذراند."], ["رهایی اسیران", "آبرو را پس از یورش ارجاسپ بازگرداند."], ["پهلوان رویین تن", "مدافع زرهین ایران شد."], ["رویارویی با رستم", "سخت ترین کشمکش وظیفه و داد را پذیرفت."]],
+      interests: ["پادشاهی", "آیین مقدس", "انضباط سپاه", "جانشینی", "داد"],
+      publications: [["اسفندیار در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "تراژدی شاهانه فرمانبری، قدرت و شجاعت رویین تن."]]
+    }
+  },
+  "teal-pro": {
+    pageSize: "A4",
+    photo: "rudabeh.png",
+    enKey: "rudabeh"
+  },
+  "warm-earth": {
+    pageSize: "A4",
+    photo: "tahmineh.png",
+    enKey: "tahmineh"
+  },
+  "ats-clean": {
+    pageSize: "Letter",
+    photo: "afrasiab.png",
+    enKey: "afrasiab"
+  },
+  "gordafarid-defender": {
+    pageSize: "A4",
+    photo: "gordafarid.png",
+    aliasOf: "classic-blue-lines",
+    headlineOverride: { en: "Defensive strategist of the White Fortress", fa: "راهبردپرداز دفاعی دژ سپید" }
+  },
+  "rudabeh-heritage": {
+    pageSize: "A4",
+    photo: "rudabeh.png",
+    enKey: "rudabeh"
+  }
 };
 
-SHAHNAMEH_SAMPLES["rudabeh-heritage"] = {
-  ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["teal-pro"])),
-  resume: {
-    ...JSON.parse(JSON.stringify(SHAHNAMEH_SAMPLES["teal-pro"].resume)),
-    basics: {
+const EXTRA_PERSONAS = {
+  rudabeh: {
+    en: {
+      firstName: "Rudabeh",
+      lastName: "Mehrabani",
+      headline: "Princess of Kabul | Alliance builder | Mother of Rostam",
+      location: "Kabul, Zabul, and the house of Zal",
+      contact: ["palace tower", "Kabul court", "house of Mehrab", "Simorgh record"],
+      summary: "Princess of Kabul whose courage and diplomacy joined the houses of Mehrab and Zal despite ancestral suspicion and political danger. Her decision created the union that led to Rostam's birth, making her one of the central builders of Iran's heroic future.",
+      quote: "Love without wisdom burns quickly; wisdom without courage never crosses the tower.",
+      skills: [["Alliance building", ["Cross-house diplomacy", "Trust making", "Conflict softening", "Family negotiation"]], ["Courage", ["Personal agency", "Court pressure", "Risk acceptance", "Steadfast speech"]], ["Legacy", ["Heroic lineage", "Cultural memory", "Maternal leadership", "Dynastic continuity"]], ["Care", ["Hospitality", "Listening", "Ritual respect", "Emotional clarity"]]],
+      experience: [["Princess and diplomatic catalyst", "Court of Kabul", "Age of Zal", "Kabul", ["Built trust with Zal despite the danger between Kabul, Zabul, and Iran.", "Helped turn a possible royal crisis into an alliance of houses.", "Became mother of Rostam and secured the heroic line that would defend Iran."]], ["Bridge between houses", "House of Mehrab and House of Zal", "Kabul-Zabul union", "Kabul and Zabul", ["Moved between love, family honor, and political risk with unusual steadiness.", "Accepted counsel while keeping her own choice clear and active."]], ["Mother of the champion", "House of Zal", "Birth of Rostam", "Zabulistan", ["Endured the dangerous birth of Rostam through the miraculous help of the Simorgh.", "Anchored the family story that gave Iran its greatest defender."]]],
+      projects: [["Union of Zal and Rudabeh", "Kabul-Zabul alliance", "shahnameh.example/rudabeh", ["Navigated family, kingdom, and lineage risk to establish a lasting heroic union."]], ["Birth of Rostam", "Simorgh-assisted delivery", "shahnameh.example/rostam-birth", ["Became central to the miraculous birth episode that saved mother and child."]], ["Cultural bridge", "After the union", "shahnameh.example/kabul-zabul", ["Linked courtly grace, personal courage, and future national defense."]]],
+      education: ["Court culture, counsel, and royal diplomacy", "House of Mehrab", "Youth", "Kabul", "Raised in a royal household skilled in negotiation, hospitality, poetry, and dynastic politics."],
+      achievements: [["United rival houses", "Joined Kabul and Zabul through a courageous choice."], ["Mother of Rostam", "Brought Iran's greatest champion into the heroic line."], ["Protected agency", "Acted with clarity under royal pressure."], ["Preserved legacy", "Made family love part of national destiny."]],
+      interests: ["Poetry", "Court diplomacy", "Family memory", "Hospitality", "Courageous choice"],
+      publications: [["Rudabeh in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A luminous story of love, alliance, and heroic birth."]]
+    },
+    fa: {
       firstName: "رودابه",
-      lastName: "",
-      headline: "بانوی دیپلماسی فرهنگی و پیوندساز خاندان ها",
-      email: "rudabeh.shahnameh@heritage.ir",
-      phone: "کابل، سرزمین خورشید و فرهنگ",
-      location: "کابل",
-      website: "rudabeh-legacy.ir",
-      linkedin: "الهام بخش زنان امروز",
-      extra: "عشق را با خرد درآمیختم تا پیوندی بسازم که تا ابد، دو سرزمین و دو خاندان را به شکوهی واحد برساند.",
-      photo: profile("rudabeh.png")
-    },
-    summary: "من، رودابه، دختر مهراب کابل، با تکیه بر خرد، وقار و هوش هیجانی، پلی میان دو سرزمین و دو فرهنگ ساختم. با انتخابی آگاهانه، سرنوشت خود را رقم زدم و بنیان خانواده ای را نهادم که قهرمانی چون رستم از آن زاده شد.",
-    skills: [
-      { id: "rh-s1", hidden: false, name: "دیپلماسی", level: "5", keywords: ["مذاکره", "ارتباط بین فرهنگی", "نفوذ کلام"] },
-      { id: "rh-s2", hidden: false, name: "رهبری انسانی", level: "5", keywords: ["مدیریت روابط", "هوش هیجانی", "الهام بخشی"] },
-      { id: "rh-s3", hidden: false, name: "میراث فرهنگی", level: "5", keywords: ["حفظ سنت ها", "تصمیم گیری آگاهانه", "شجاعت"] }
-    ],
-    achievements: [
-      { id: "rh-a1", hidden: false, title: "مادری رستم", description: "پرورش رستم، پهلوان بی بدیل ایران" },
-      { id: "rh-a2", hidden: false, title: "پرورش میراث خانوادگی", description: "حفظ عزت، فرهنگ و تربیت نسلی بزرگ" },
-      { id: "rh-a3", hidden: false, title: "ایستادگی در عشق و انتخاب", description: "انتخابی خردمندانه و ماندگار" },
-      { id: "rh-a4", hidden: false, title: "پیوند میان کابل و زابل", description: "برقراری اتحاد میان دو خاندان بزرگ" }
-    ],
-    experience: [
-      { id: "rh-e1", hidden: false, title: "پرورش در محیطی سرشار از فرهنگ، ادب و خرد", organization: "زادگاه و ریشه ها", location: "کابل", period: "زادگاه و ریشه ها", bullets: ["دختر مهراب شاه کابل؛ پرورش در محیطی سرشار از فرهنگ، ادب و خرد."] },
-      { id: "rh-e2", hidden: false, title: "ازدواج با زال و بنیان اتحاد دو خاندان", organization: "پیوند سرنوشت ها", location: "کابل و زابل", period: "پیوند سرنوشت ها", bullets: ["ازدواج با زال، بنیان اتحاد دو خاندان بزرگ ایرانی و نقطه ای نو از همدلی و شکوه."] },
-      { id: "rh-e3", hidden: false, title: "حامل و همراه زال در ساختن زندگی", organization: "سال های پختگی", location: "زابل", period: "سال های پختگی", bullets: ["حامی و همراه زال در ساختن زندگی، تربیت رستم و حفظ کرامت و انسجام خانواده."] },
-      { id: "rh-e4", hidden: false, title: "الهام بخش نسل های بعد", organization: "میراث جاودان", location: "ایران", period: "میراث جاودان", bullets: ["الهام بخشی نسل های بعد در ارزش های زنانه، عشق آگاهانه و نقش آفرینی سازنده در سرنوشت سرزمین."] }
-    ],
-    projects: [],
-    interests: [
-      { id: "rh-i1", hidden: false, name: "بلندهمتی و اصالت", keywords: [] },
-      { id: "rh-i2", hidden: false, name: "خردمندی و آینده نگری", keywords: [] },
-      { id: "rh-i3", hidden: false, name: "وفاداری به ارزش ها", keywords: [] },
-      { id: "rh-i4", hidden: false, name: "قدرت عشق همراه با مسئولیت", keywords: [] },
-      { id: "rh-i5", hidden: false, name: "توانایی ایجاد اتحاد", keywords: [] }
-    ],
-    education: [],
-    certifications: [],
-    languages: [],
-    publications: [],
-    customSections: []
+      lastName: "مهرابانی",
+      headline: "شاهزاده کابل | پیوندساز خاندان ها | مادر رستم",
+      location: "کابل، زابل و خانه زال",
+      contact: ["برج کاخ", "دربار کابل", "خانه مهراب", "دفتر سیمرغ"],
+      summary: "شاهزاده کابل که با دلیری و دیپلماسی، خانه مهراب و زال را با وجود بدگمانی های کهن و خطر سیاسی به هم پیوند داد. انتخاب او اتحادی را ساخت که به زادن رستم انجامید و رودابه را از سازندگان اصلی آینده پهلوانی ایران کرد.",
+      quote: "عشق بی خردی زود می سوزد؛ خرد بی دلیری هرگز از برج نمی گذرد.",
+      skills: [["پیوندسازی", ["دیپلماسی میان خاندان ها", "اعتمادسازی", "آرام کردن تعارض", "گفت و گوی خانوادگی"]], ["دلیری", ["کنشگری شخصی", "فشار دربار", "پذیرش خطر", "سخن استوار"]], ["میراث", ["تبار پهلوانی", "حافظه فرهنگی", "رهبری مادرانه", "پیوستگی دودمان"]], ["مراقبت", ["مهمان نوازی", "شنیدن", "احترام آیینی", "روشنی عاطفی"]]],
+      experience: [["شاهزاده و کاتالیزور دیپلماسی", "دربار کابل", "روزگار زال", "کابل", ["با وجود خطر میان کابل، زابل و ایران، با زال اعتماد ساخت.", "بحران احتمالی شاهانه را به اتحاد خاندان ها بدل کرد.", "مادر رستم شد و تبار پهلوانی نگهبان ایران را پایدار کرد."]], ["پل میان خاندان ها", "خانه مهراب و خانه زال", "پیوند کابل و زابل", "کابل و زابل", ["میان عشق، آبروی خانواده و خطر سیاسی با آرامش کم نظیر حرکت کرد.", "رای بزرگان را شنید اما انتخاب خود را روشن و زنده نگه داشت."]], ["مادر پهلوان", "خانه زال", "زادن رستم", "زابلستان", ["زادن دشوار رستم را با یاری معجزه آسای سیمرغ از سر گذراند.", "داستان خانوادگی ای را بنیاد گذاشت که بزرگ ترین مدافع ایران از آن برخاست."]]],
+      projects: [["پیوند زال و رودابه", "اتحاد کابل و زابل", "روایت شاهنامه", ["خطر خانواده، کشور و تبار را گذراند تا اتحادی پایدار بسازد."]], ["زادن رستم", "یاری سیمرغ", "روایت شاهنامه", ["در رخداد معجزه آسایی که مادر و کودک را نجات داد، محور داستان شد."]], ["پل فرهنگی", "پس از پیوند", "روایت شاهنامه", ["وقار دربار، دلیری شخصی و آینده دفاع از ایران را به هم وصل کرد."]]],
+      education: ["فرهنگ دربار، رایزنی و دیپلماسی شاهی", "خانه مهراب", "جوانی", "کابل", "در خانه ای شاهانه پرورش یافت که گفت و گو، مهمان نوازی، شعر و سیاست دودمانی را می شناخت."],
+      achievements: [["پیوند خاندان های رقیب", "کابل و زابل را با انتخابی دلیرانه به هم رساند."], ["مادر رستم", "بزرگ ترین پهلوان ایران را به تبار حماسی آورد."], ["نگهداشت اختیار", "زیر فشار شاهانه روشن و کنشگر ماند."], ["پاسداری میراث", "عشق خانوادگی را به سرنوشت ملی پیوند زد."]],
+      interests: ["شعر", "دیپلماسی دربار", "حافظه خانواده", "مهمان نوازی", "انتخاب دلیرانه"],
+      publications: [["رودابه در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "داستانی روشن از عشق، اتحاد و زایش پهلوانی."]]
+    }
   },
-  templateId: "rudabeh-heritage",
-  pageSize: "A4"
+  tahmineh: {
+    en: {
+      firstName: "Tahmineh",
+      lastName: "Samangani",
+      headline: "Princess of Samangan | Strategic host | Mother of Sohrab",
+      location: "Samangan and the house of Rostam",
+      contact: ["Samangan court", "royal chamber", "armlet keeper", "lineage memory"],
+      summary: "Princess of Samangan who recognized Rostam's stature and acted with direct courage to shape her destiny. Hosted the hero after the loss of Rakhsh, preserved the token of lineage, and raised Sohrab at the emotional center of the epic's greatest tragedy.",
+      quote: "A single token may carry a whole bloodline when the world forgets to ask the truth.",
+      skills: [["Court strategy", ["Hospitality", "Private negotiation", "Lineage planning", "Political reading"]], ["Resolve", ["Self-advocacy", "Courage", "Dignity", "High-stakes choice"]], ["Stewardship", ["Heir raising", "Memory keeping", "Token protection", "Cultural continuity"]], ["Emotional intelligence", ["Direct speech", "Care", "Grief bearing", "Trust making"]]],
+      experience: [["Princess and lineage steward", "Court of Samangan", "Age of Rostam", "Samangan", ["Hosted Rostam after the loss and recovery of Rakhsh.", "Created the bond that led to Sohrab's birth and preserved Rostam's identifying token.", "Raised Sohrab with knowledge of his heroic ancestry."]], ["Strategic host", "Samangan palace", "Rostam's arrival", "Samangan", ["Read the moment clearly and spoke with direct agency inside a royal setting.", "Balanced hospitality, desire, and future responsibility."]], ["Keeper of memory", "House of Sohrab", "Sohrab's youth", "Samangan", ["Maintained the story of Rostam so Sohrab could seek his father.", "Carried the sorrow of a truth that arrived too late."]]],
+      projects: [["Safeguarding Sohrab's lineage", "Sohrab's youth", "shahnameh.example/tahmineh", ["Protected the armlet and story that connected Sohrab to Rostam."]], ["Hospitality to Rostam", "Rakhsh episode", "shahnameh.example/rakhsh", ["Turned an unexpected royal visit into a destiny-shaping encounter."]], ["Memory of Samangan", "After Sohrab", "shahnameh.example/samangan", ["Preserved dignity amid grief and gave the tragedy its human center."]]],
+      education: ["Royal household leadership", "Court of Samangan", "Youth", "Samangan", "Prepared in courtly diplomacy, household command, noble alliance customs, and ceremonial speech."],
+      achievements: [["Mother of Sohrab", "Raised the young champion of Samangan."], ["Keeper of Rostam's token", "Preserved the sign of fatherhood."], ["Linked heroic houses", "Connected Samangan to the house of Zal."], ["Voice of agency", "Acted directly in a world ruled by kings and armies."]],
+      interests: ["Genealogy", "Court music", "Hospitality", "Memory keeping", "Private counsel"],
+      publications: [["Tahmineh in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A story of direct choice, motherhood, memory, and grief."]]
+    },
+    fa: {
+      firstName: "تهمینه",
+      lastName: "سمنگانی",
+      headline: "شاهزاده سمنگان | میزبان تدبیرگر | مادر سهراب",
+      location: "سمنگان و خانه رستم",
+      contact: ["دربار سمنگان", "شبستان شاهی", "نگهبان بازوبند", "حافظه تبار"],
+      summary: "شاهزاده سمنگان که بزرگی رستم را شناخت و با دلیری مستقیم سرنوشت خود را شکل داد. پس از گم شدن رخش، پهلوان را میزبانی کرد، نشان تبار را نگه داشت و سهراب را در مرکز عاطفی بزرگ ترین تراژدی شاهنامه پرورد.",
+      quote: "گاه نشانی کوچک، همه خون یک خاندان را حمل می کند؛ وقتی جهان حقیقت را دیر می پرسد.",
+      skills: [["تدبیر دربار", ["مهمان نوازی", "گفت و گوی خصوصی", "برنامه تبار", "شناخت سیاست"]], ["استواری", ["دفاع از خواست خود", "دلیری", "وقار", "انتخاب پرخطر"]], ["نگهبانی میراث", ["پرورش وارث", "حفظ خاطره", "نگهداری نشان", "پیوستگی فرهنگی"]], ["هوش عاطفی", ["سخن مستقیم", "مراقبت", "تحمل اندوه", "اعتمادسازی"]]],
+      experience: [["شاهزاده و نگهبان تبار", "دربار سمنگان", "روزگار رستم", "سمنگان", ["پس از گم شدن و بازیافتن رخش، میزبان رستم شد.", "پیوندی ساخت که به زادن سهراب انجامید و نشان رستم را نگه داشت.", "سهراب را با آگاهی از تبار پهلوانی خود پرورش داد."]], ["میزبان راهبردی", "کاخ سمنگان", "آمدن رستم", "سمنگان", ["لحظه را درست شناخت و در فضای شاهانه با اختیار سخن گفت.", "مهمان نوازی، خواست دل و مسئولیت آینده را در تعادل نگه داشت."]], ["نگهبان خاطره", "خانه سهراب", "جوانی سهراب", "سمنگان", ["داستان رستم را زنده نگه داشت تا سهراب پدر را بجوید.", "اندوه حقیقتی را حمل کرد که دیر آشکار شد."]]],
+      projects: [["نگهداشت تبار سهراب", "جوانی سهراب", "روایت شاهنامه", ["بازوبند و داستانی را حفظ کرد که سهراب را به رستم پیوند می داد."]], ["میزبانی رستم", "رخداد رخش", "روایت شاهنامه", ["دیداری ناگهانی را به رویدادی سرنوشت ساز بدل کرد."]], ["حافظه سمنگان", "پس از سهراب", "روایت شاهنامه", ["در میان اندوه، وقار را نگه داشت و تراژدی را انسانی کرد."]]],
+      education: ["مدیریت خانه شاهی", "دربار سمنگان", "جوانی", "سمنگان", "در دیپلماسی دربار، فرمان خانه، رسم اتحاد و سخن آیینی پرورش یافت."],
+      achievements: [["مادر سهراب", "پهلوان جوان سمنگان را پرورد."], ["نگهبان نشان رستم", "نشانه پدری را حفظ کرد."], ["پیوند خاندان ها", "سمنگان را به خانه زال وصل کرد."], ["صدای اختیار", "در جهانی زیر فرمان شاهان و سپاهان، مستقیم عمل کرد."]],
+      interests: ["تبارشناسی", "موسیقی دربار", "مهمان نوازی", "حفظ خاطره", "رایزنی خصوصی"],
+      publications: [["تهمینه در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "داستان انتخاب مستقیم، مادری، خاطره و اندوه."]]
+    }
+  },
+  afrasiab: {
+    en: {
+      firstName: "Afrasiab",
+      lastName: "Turan",
+      headline: "King of Turan | Strategic rival of Iran",
+      location: "Turan and the Iran-Turan frontier",
+      contact: ["royal war camp", "Turanian court", "house of Pashang", "campaign archive"],
+      summary: "Long-ruling king of Turan and enduring adversary of Iran. His ambition, fear, political suspicion, and military persistence shaped generations of conflict, from the fate of Siavash to the rise of Kay Khosrow and the final reckoning of the heroic age.",
+      quote: "A kingdom won by fear must spend every season guarding its own shadow.",
+      skills: [["Grand strategy", ["War planning", "Alliance pressure", "Long campaigns", "Border raids"]], ["Rule", ["Court command", "Resource mobilization", "Dynastic politics", "Hard bargaining"]], ["Adversarial operations", ["Psychological pressure", "Hero containment", "Espionage", "Rapid reprisal"]], ["Survival", ["Retreat planning", "Hidden bases", "Risk sensing", "Last stands"]]],
+      experience: [["King of Turan", "Turanian realm", "Kayanian age", "Turan", ["Led repeated campaigns against Iran and forced the Kayanian court into strategic defense.", "Hosted Siavash in exile before suspicion and court fear turned hospitality into tragedy.", "Became the central adversary whose defeat defined Kay Khosrow's mission."]], ["Rival of Iranian kings", "Iran-Turan conflict", "Multiple reigns", "Frontier lands", ["Applied pressure through raids, alliances, and court intrigue.", "Kept conflict alive across generations of heroes and kings."]], ["Fugitive sovereign", "Late heroic age", "After Kay Khosrow's rise", "Turan", ["Retreated into hidden places as the moral consequences of Siavash's death closed in.", "Met the end of a reign built on fear, strategy, and unresolved guilt."]]],
+      projects: [["Iran-Turan long war", "Multiple reigns", "shahnameh.example/iran-turan", ["Sustained a multi-generational conflict that shaped both kingdoms."]], ["Siavash exile crisis", "Turan court", "shahnameh.example/siavash", ["Turned a chance for peace into the wound that doomed his house."]], ["Kay Khosrow pursuit", "Final reckoning", "shahnameh.example/kay-khosrow", ["Became the target of a justice mission rooted in family and nation."]]],
+      education: ["Kingship and warcraft", "House of Pashang", "Youth", "Turan", "Raised for command in a court defined by rivalry with Iran and the burden of dynastic ambition."],
+      achievements: [["Longest royal rival", "Sustained pressure on Iran over generations."], ["Shaped Siavash's fate", "His suspicion created the tragedy that changed the epic."], ["Defined Kay Khosrow's mission", "Became the adversary justice had to answer."], ["Mobilized Turan", "Held a vast realm through war and fear."]],
+      interests: ["Kingship", "War councils", "Border politics", "Dynastic survival", "Hidden strongholds"],
+      publications: [["Afrasiab in the Shahnameh", "Abolqasem Ferdowsi", "c. 1010 CE", "A portrait of power, fear, rivalry, and consequence."]]
+    },
+    fa: {
+      firstName: "افراسیاب",
+      lastName: "توران",
+      headline: "شاه توران | رقیب راهبردی ایران",
+      location: "توران و مرز ایران و توران",
+      contact: ["اردوی شاهی", "دربار توران", "خانه پشنگ", "بایگانی کارزار"],
+      summary: "شاه دیرپای توران و دشمن ماندگار ایران که بلندپروازی، هراس، بدگمانی سیاسی و پایداری نظامی او نسل های پیاپی جنگ را شکل داد؛ از سرنوشت سیاوش تا برآمدن کیخسرو و حساب نهایی روزگار پهلوانی.",
+      quote: "پادشاهی که با ترس به دست آید، هر فصل باید سایه خود را نگهبانی کند.",
+      skills: [["راهبرد کلان", ["طرح جنگ", "فشار اتحاد", "کارزار بلند", "یورش مرزی"]], ["فرمانروایی", ["فرمان دربار", "بسیج منابع", "سیاست دودمانی", "چانه زنی سخت"]], ["عملیات خصمانه", ["فشار روانی", "مهار پهلوان", "جاسوسی", "پاسخ سریع"]], ["بقا", ["برنامه عقب نشینی", "پناهگاه پنهان", "شناخت خطر", "ایستادگی پایانی"]]],
+      experience: [["شاه توران", "پادشاهی توران", "روزگار کیانی", "توران", ["بارها بر ایران لشکر کشید و دربار کیانی را به دفاع راهبردی واداشت.", "سیاوش را در تبعید پذیرفت، اما بدگمانی و هراس دربار مهمان نوازی را به تراژدی بدل کرد.", "دشمن مرکزی شد که شکست او ماموریت کیخسرو را تعریف کرد."]], ["رقیب شاهان ایران", "نبرد ایران و توران", "چندین پادشاهی", "سرزمین های مرزی", ["با یورش، اتحاد و فتنه دربار فشار می آورد.", "آتش کشمکش را در نسل های پیاپی شاهان و پهلوانان روشن نگه داشت."]], ["شاه گریزنده", "پایان روزگار پهلوانی", "پس از برآمدن کیخسرو", "توران", ["با نزدیک شدن پیامد اخلاقی مرگ سیاوش، به پناهگاه های پنهان عقب نشست.", "پایان پادشاهی ای را دید که بر ترس، تدبیر و گناه حل نشده بنا شده بود."]]],
+      projects: [["جنگ بلند ایران و توران", "چندین پادشاهی", "روایت شاهنامه", ["کشمکشی چندنسلی را نگه داشت که هر دو کشور را شکل داد."]], ["بحران تبعید سیاوش", "دربار توران", "روایت شاهنامه", ["فرصت صلح را به زخمی بدل کرد که خاندان خود او را نابود ساخت."]], ["پیگرد کیخسرو", "حساب نهایی", "روایت شاهنامه", ["هدف ماموریت دادخواهی شد که ریشه در خانواده و کشور داشت."]]],
+      education: ["شاهی و جنگاوری", "خانه پشنگ", "جوانی", "توران", "در درباری پرورش یافت که رقابت با ایران و سنگینی بلندپروازی دودمانی آن را تعریف می کرد."],
+      achievements: [["دیرپاترین رقیب شاهی", "نسل ها بر ایران فشار آورد."], ["شکل دادن سرنوشت سیاوش", "بدگمانی او تراژدی بزرگ را ساخت."], ["تعریف ماموریت کیخسرو", "دشمنی شد که داد باید به آن پاسخ می داد."], ["بسیج توران", "قلمرویی بزرگ را با جنگ و هراس نگه داشت."]],
+      interests: ["پادشاهی", "شورای جنگ", "سیاست مرزی", "بقای دودمان", "پناهگاه پنهان"],
+      publications: [["افراسیاب در شاهنامه", "ابوالقاسم فردوسی", "حدود ۴۰۰ هجری", "تصویری از قدرت، هراس، رقابت و پیامد."]]
+    }
+  }
 };
 
-export function sampleForTemplate(templateId) {
-  return SHAHNAMEH_SAMPLES[templateId] || SHAHNAMEH_SAMPLES["dark-sidebar"];
+function resolvePersona(templateId) {
+  const base = PERSONAS[templateId] || PERSONAS["dark-sidebar"];
+  if (base.aliasOf) {
+    const source = structuredClone(resolvePersona(base.aliasOf));
+    source.pageSize = base.pageSize || source.pageSize;
+    source.photo = base.photo || source.photo;
+    if (base.headlineOverride) {
+      source.en.headline = base.headlineOverride.en;
+      source.fa.headline = base.headlineOverride.fa;
+    }
+    return source;
+  }
+  if (base.enKey) {
+    return { ...base, en: EXTRA_PERSONAS[base.enKey].en, fa: EXTRA_PERSONAS[base.enKey].fa };
+  }
+  return base;
 }
 
-// Main GitHub/social preview: Rostam rendered in the Product & Design template.
+function buildResume(templateId, locale = "en") {
+  const persona = resolvePersona(templateId);
+  const data = persona[locale === "fa" ? "fa" : "en"];
+  return {
+    basics: {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      headline: data.headline,
+      email: data.contact[0],
+      phone: data.contact[1],
+      location: data.location,
+      website: data.contact[2],
+      linkedin: data.contact[3],
+      extra: data.quote,
+      photo: profile(persona.photo)
+    },
+    summary: data.summary,
+    experience: data.experience.map((e, i) => ({ id: `${templateId}-e${i}`, hidden: false, title: e[0], organization: e[1], period: e[2], location: e[3], bullets: e[4] })),
+    education: [{ id: `${templateId}-ed1`, hidden: false, degree: data.education[0], organization: data.education[1], period: data.education[2], location: data.education[3], description: data.education[4] }],
+    skills: data.skills.map((s, i) => ({ id: `${templateId}-s${i}`, hidden: false, name: s[0], level: String(5 - (i % 2)), keywords: s[1] })),
+    projects: data.projects.map((p, i) => ({ id: `${templateId}-p${i}`, hidden: false, name: p[0], period: p[1], website: p[2], bullets: p[3] })),
+    certifications: [
+      { id: `${templateId}-c1`, hidden: false, title: locale === "fa" ? "شناخته شده در روایت پهلوانی" : "Recognized in heroic tradition", issuer: locale === "fa" ? "حافظه شاهنامه" : "Shahnameh tradition", date: data.publications[0][2], description: data.publications[0][3] },
+      { id: `${templateId}-c2`, hidden: false, title: locale === "fa" ? "دارنده نقش سرنوشت ساز" : "Bearer of a fate-shaping role", issuer: locale === "fa" ? "دربار و میدان" : "Court and battlefield", date: data.experience[0][2], description: data.quote }
+    ],
+    languages: locale === "fa"
+      ? [{ id: `${templateId}-l1`, hidden: false, language: "فارسی", fluency: "زبان روایت", level: "5" }, { id: `${templateId}-l2`, hidden: false, language: "زبان دربار", fluency: "روان", level: "4" }, { id: `${templateId}-l3`, hidden: false, language: "زبان میدان", fluency: "کاری", level: "4" }]
+      : [{ id: `${templateId}-l1`, hidden: false, language: "Persian", fluency: "Epic tradition", level: "5" }, { id: `${templateId}-l2`, hidden: false, language: "Court speech", fluency: "Fluent", level: "4" }, { id: `${templateId}-l3`, hidden: false, language: "Battlefield signals", fluency: "Working", level: "4" }],
+    interests: data.interests.map((name, i) => ({ id: `${templateId}-i${i}`, hidden: false, name, keywords: [] })),
+    publications: data.publications.map((p, i) => ({ id: `${templateId}-pub${i}`, hidden: false, title: p[0], publisher: p[1], date: p[2], description: p[3] })),
+    achievements: data.achievements.map((a, i) => ({ id: `${templateId}-a${i}`, hidden: false, title: a[0], description: a[1] })),
+    customSections: [{
+      id: `${templateId}-custom`,
+      hidden: false,
+      title: locale === "fa" ? "یادداشت روایی" : "Narrative Note",
+      items: [
+        { id: `${templateId}-custom-1`, hidden: false, title: data.quote, subtitle: data.location, period: data.experience[0][2], bullets: [data.summary] }
+      ]
+    }]
+  };
+}
+
+export function sampleForTemplate(templateId, locale = "en") {
+  const safeLocale = locale === "fa" ? "fa" : "en";
+  const persona = resolvePersona(templateId);
+  return {
+    resume: buildResume(templateId, safeLocale),
+    templateId,
+    pageSize: persona.pageSize,
+    locale: safeLocale
+  };
+}
+
 export const RESUME_PAYLOAD = {
-  ...SHAHNAMEH_SAMPLES["dark-sidebar"],
+  ...sampleForTemplate("dark-sidebar", "en"),
   templateId: "teal-pro"
 };

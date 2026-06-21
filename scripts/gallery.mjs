@@ -1,27 +1,25 @@
 /**
- * Renders every résumé template with its Shahnameh character sample and saves a
- * thumbnail per template to assets/templates/<id>.png for the README gallery.
+ * Renders every resume template with localized sample data.
+ *
+ * Outputs:
+ * - assets/templates/<id>.en.png
+ * - assets/templates/<id>.fa.png
  *
  * Usage: node scripts/gallery.mjs
- * Requires: a static server on 4173 serving dist/ (e.g. `npm run serve`).
+ * Requires: a built dist/ directory and a static server on 4173 for assets.
  */
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer-core";
-import { sampleForTemplate } from "./sample-resume.mjs";
+import { sampleForTemplate, TEMPLATE_IDS } from "./sample-resume.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
 const DIST_DIR = path.join(ROOT, "dist");
 const OUT_DIR = path.join(ROOT, "assets", "templates");
-
-const TEMPLATES = [
-  "dark-sidebar", "classic-blue-lines", "purple-compact", "modern-minimal",
-  "executive", "teal-pro", "warm-earth", "ats-clean",
-  "gordafarid-defender", "rudabeh-heritage"
-];
+const LOCALES = ["en", "fa"];
 
 const BROWSERS = [
   process.env.CVLITE_BROWSER,
@@ -35,8 +33,8 @@ function findBrowser() {
   return BROWSERS.find((b) => { try { fs.accessSync(b); return true; } catch { return false; } });
 }
 
-function buildHtml(template, templateId) {
-  const payload = { ...sampleForTemplate(templateId), templateId };
+function buildHtml(template, templateId, locale) {
+  const payload = sampleForTemplate(templateId, locale);
   const safe = JSON.stringify(payload).replace(/<\/script>/gi, "<\\/script>");
   const inject = `<script>window.__CVLITE_PAYLOAD__ = ${safe}; window.__CVLITE_RENDER_TOKEN__ = "preview";</script>`;
   return template.replace("<!--CVLITE_PAYLOAD-->", inject);
@@ -91,14 +89,16 @@ async function main() {
   try {
     const page = await pup.newPage();
     await page.setViewport({ width: 900, height: 1200, deviceScaleFactor: 2 });
-    for (const id of TEMPLATES) {
-      currentHtml = buildHtml(template, id);
-      await page.goto(`http://127.0.0.1:${port}/render/preview`, { waitUntil: "networkidle0", timeout: 20000 });
-      await new Promise((r) => setTimeout(r, 1200)); // fonts settle
-      const el = await page.$("#render-root .resume") || await page.$("#render-root");
-      const out = path.join(OUT_DIR, `${id}.png`);
-      await el.screenshot({ path: out });
-      console.log(`  ${id} -> ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)}KB)`);
+    for (const id of TEMPLATE_IDS) {
+      for (const locale of LOCALES) {
+        currentHtml = buildHtml(template, id, locale);
+        await page.goto(`http://127.0.0.1:${port}/render/preview`, { waitUntil: "networkidle0", timeout: 20000 });
+        await new Promise((r) => setTimeout(r, 1200));
+        const el = await page.$("#render-root .resume") || await page.$("#render-root");
+        const out = path.join(OUT_DIR, `${id}.${locale}.png`);
+        await el.screenshot({ path: out });
+        console.log(`  ${id}.${locale} -> ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)}KB)`);
+      }
     }
   } finally {
     await pup.close();

@@ -145,6 +145,7 @@ export type TemplateId =
   | "gordafarid-defender"
   | "rudabeh-heritage";
 export type PageSize = "A4" | "Letter";
+export type ResumeLocale = "en" | "fa";
 
 export interface TemplateMeta {
   id: TemplateId;
@@ -186,20 +187,20 @@ export const TEMPLATES: TemplateMeta[] = [
   },
   {
     id: "teal-pro",
-    name: "Product & Design",
-    description: "Balanced sidebar resume for product, design, and hybrid roles.",
+    name: "Product Case Study",
+    description: "Portfolio-style resume with case-study cards, skills matrix, and impact metrics.",
     pageSize: "A4"
   },
   {
     id: "warm-earth",
-    name: "Creative Editorial",
-    description: "Warm visual layout for creative and storytelling-heavy profiles.",
+    name: "Editorial Timeline",
+    description: "Magazine-like masthead with narrative summary and story-driven timeline.",
     pageSize: "A4"
   },
   {
     id: "ats-clean",
     name: "ATS Plain Text",
-    description: "Plain, parser-friendly structure for applicant tracking systems.",
+    description: "Modern single-column structure that stays parser-friendly and no-photo.",
     pageSize: "Letter"
   },
   {
