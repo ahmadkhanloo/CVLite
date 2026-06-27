@@ -14,10 +14,22 @@ export function TemplatePicker() {
   const setPageSize = useEditor((s) => s.setPageSize);
   const language = useSettings((s) => s.language);
 
+  const PERSIAN_FIRST = ["gordafarid-defender", "rudabeh-heritage"];
+  const sortedTemplates = language === "fa"
+    ? [...EXTENDED_TEMPLATES].sort((a, b) => {
+        const ai = PERSIAN_FIRST.indexOf(a.id);
+        const bi = PERSIAN_FIRST.indexOf(b.id);
+        if (ai !== -1 && bi !== -1) return ai - bi;
+        if (ai !== -1) return -1;
+        if (bi !== -1) return 1;
+        return 0;
+      })
+    : EXTENDED_TEMPLATES;
+
   return (
     <>
       <div className="template-grid">
-        {EXTENDED_TEMPLATES.map((template) => (
+        {sortedTemplates.map((template) => (
           <button
             key={template.id}
             type="button"

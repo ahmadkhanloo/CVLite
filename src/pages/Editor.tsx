@@ -55,6 +55,13 @@ function useApplySettings() {
       root.dir = language === "fa" ? "rtl" : "ltr";
       root.dataset.theme = theme === "system" ? (media.matches ? "dark" : "light") : theme;
       root.dataset.pageSize = pageSize;
+      let pageStyle = document.getElementById("cvlite-page-style");
+      if (!pageStyle) {
+        pageStyle = document.createElement("style");
+        pageStyle.id = "cvlite-page-style";
+        document.head.appendChild(pageStyle);
+      }
+      pageStyle.textContent = `@page { size: ${pageSize}; margin: 0; }`;
     };
     apply();
     media.addEventListener("change", apply);
@@ -89,8 +96,18 @@ export function EditorPage() {
   const [notFound, setNotFound] = useState(false);
   const [zoom, setZoom] = useState(1);
   const [mobilePane, setMobilePane] = useState<MobilePane>("edit");
+  const [fullscreen, setFullscreen] = useState(false);
+  const [lastSavedAt, setLastSavedAt] = useState<number | null>(null);
 
   useAutoSave(id);
+
+  // Escape exits fullscreen preview.
+  useEffect(() => {
+    if (!fullscreen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setFullscreen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [fullscreen]);
 
   // Load doc from local IndexedDB.
   useEffect(() => {
@@ -104,7 +121,12 @@ export function EditorPage() {
   }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
-    setStatus({ text: isDirty ? t("saving") : t("saved"), danger: false });
+    if (isDirty) {
+      setStatus({ text: t("saving"), danger: false });
+    } else {
+      setLastSavedAt(Date.now());
+      setStatus({ text: t("saved"), danger: false });
+    }
   }, [isDirty, t]);
 
   async function saveBeforeExport(): Promise<boolean> {
@@ -150,7 +172,10 @@ export function EditorPage() {
       downloadBlob(fileName, await res.blob());
       setStatus({ text: t("pdfReady"), danger: false });
     } catch {
-      setStatus({ text: t("savingPdf"), danger: true });
+      // No PDF server available (dev / static hosting): fall back to the
+      // browser's own print-to-PDF, which respects the injected @page size.
+      setStatus({ text: t("savingPdf"), danger: false });
+      window.print();
     }
   }
 
@@ -217,9 +242,18 @@ export function EditorPage() {
               {t("import")}
               <input type="file" accept=".json,.md,.markdown" onChange={handleImport} />
             </label>
-            <button className="icon-button" type="button" title="Export CVLite JSON" onClick={handleExportJson}>JSON</button>
-            <button className="icon-button" type="button" title="Export Markdown" onClick={handleExportMd}>MD</button>
-            <button className="icon-button" type="button" title="Export JSON Resume" onClick={handleExportJr}>JR</button>
+            <button className="icon-button" type="button" title="Export CVLite JSON" onClick={handleExportJson}>
+              <Icon name="file-json" />
+              JSON
+            </button>
+            <button className="icon-button" type="button" title="Export Markdown" onClick={handleExportMd}>
+              <Icon name="file-code" />
+              MD
+            </button>
+            <button className="icon-button" type="button" title="Export JSON Resume" onClick={handleExportJr}>
+              <Icon name="braces" />
+              JR
+            </button>
           </div>
 
           <div className="tb-group">
@@ -272,7 +306,7 @@ export function EditorPage() {
           {tab === "ai" && <AIPanel />}
         </aside>
 
-        <section className={`preview-panel mobile-${mobilePane === "preview" ? "active" : "hidden"}`}>
+        <section className={`preview-panel mobile-${mobilePane === "preview" ? "active" : "hidden"}${fullscreen ? " fullscreen" : ""}`}>
           <div className="preview-toolbar">
             <div>
               <p className="eyebrow">{t("preview")}</p>
@@ -284,7 +318,13 @@ export function EditorPage() {
                 <button className="zoom-value" type="button" title={t("fitToWidth")} onClick={() => setZoom(1)}>{Math.round(zoom * 100)}%</button>
                 <button className="tb-icon-btn" type="button" title={t("zoomIn")} onClick={() => setZoom((z) => Math.min(1.5, Math.round((z + 0.1) * 10) / 10))}>+</button>
               </div>
-              <div className={`status${status.danger ? " danger" : ""}`}>{status.text}</div>
+              <button className="tb-icon-btn" type="button" title={fullscreen ? t("exitFullscreen") : t("fullscreen")} onClick={() => setFullscreen((f) => !f)}>
+                <Icon name={fullscreen ? "minimize" : "maximize"} />
+              </button>
+              <div className={`status${status.danger ? " danger" : ""}`}>
+                {status.text}
+                {lastSavedAt && !isDirty ? <time className="save-time">{new Date(lastSavedAt).toLocaleTimeString(language === "fa" ? "fa-IR" : undefined, { hour: "2-digit", minute: "2-digit" })}</time> : null}
+              </div>
             </div>
           </div>
           <div id="preview" className="preview-frame" dir="ltr">

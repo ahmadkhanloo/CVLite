@@ -41,6 +41,49 @@ function isResumeEmpty(r: Resume): boolean {
 
 const dirFor = (locale: ResumeLocale) => locale === "fa" ? "rtl" : "ltr";
 
+// Decorative copy + defaults for the Shahnameh-themed templates, per locale.
+const HERITAGE: Record<ResumeLocale, Record<string, string | string[]>> = {
+  fa: {
+    contactBirthplace: "زادگاه",
+    contactRole: "نقش",
+    contactEmail: "ایمیل",
+    contactWeb: "وب",
+    gordName: "گردآفرید",
+    gordHeadline: "استراتژیست دفاعی، رهبر میدانی و الهام بخش",
+    gordQuote: "من به نام خویش، به نام ایران می جنگم و پاسدار مرزهایم.",
+    gordFooter: "برای ایران، با ایمان، تا پای جان.",
+    gordStrengths: ["شجاعت و تعهد", "تفکر استراتژیک", "رهبری الهام بخش", "مدافع مرزها"],
+    gordValues: ["هدف محور", "مردم محور", "عادل و منصف", "پایدار و مقاوم"],
+    rudName: "رودابه",
+    rudHeadline: "بانوی دیپلماسی فرهنگی و پیوندساز خاندان ها",
+    rudQuote: "عشق را با خرد درآمیختم تا پیوندی بسازم که دو خاندان را یکی کند.",
+    rudFooter: "هر پیوندی که بر پایه احترام، عشق و خرد بنا شود، جاودانه خواهد ماند.",
+    rudStrengths: ["بلندهمتی و اصالت", "خردمندی و آینده نگری", "وفاداری به ارزش ها", "توانایی ایجاد اتحاد"],
+    rudSkills: ["دیپلماسی و مذاکره", "ارتباط بین فرهنگی", "نفوذ کلام", "مدیریت روابط"]
+  },
+  en: {
+    contactBirthplace: "Origin",
+    contactRole: "Role",
+    contactEmail: "Email",
+    contactWeb: "Web",
+    gordName: "Gordafarid",
+    gordHeadline: "Defense strategist, field leader, and inspiring force",
+    gordQuote: "I fight in my own name, in the name of my homeland, and I guard its borders.",
+    gordFooter: "For my homeland, with faith, to the very end.",
+    gordStrengths: ["Courage & commitment", "Strategic thinking", "Inspiring leadership", "Border defender"],
+    gordValues: ["Purpose-driven", "People-first", "Just & fair", "Resilient"],
+    rudName: "Rudabeh",
+    rudHeadline: "Lady of cultural diplomacy and uniter of houses",
+    rudQuote: "I blended love with wisdom to build a bond that unites two houses as one.",
+    rudFooter: "Any bond built on respect, love, and wisdom will endure forever.",
+    rudStrengths: ["Ambition & authenticity", "Wisdom & foresight", "Loyalty to values", "Building alliances"],
+    rudSkills: ["Diplomacy & negotiation", "Cross-cultural communication", "Persuasion", "Relationship management"]
+  }
+};
+
+const ht = (locale: ResumeLocale, key: string): string => (HERITAGE[locale][key] as string) ?? (HERITAGE.en[key] as string);
+const htList = (locale: ResumeLocale, key: string): string[] => (HERITAGE[locale][key] as string[]) ?? (HERITAGE.en[key] as string[]);
+
 function EmptyTemplateHint() {
   return (
     <div className="template-empty">
@@ -73,12 +116,12 @@ function cleanList(items: Array<string | undefined>, fallback: string[]) {
   return values.length ? values : fallback;
 }
 
-function TemplateContact({ r }: { r: Resume }) {
+function TemplateContact({ r, locale }: { r: Resume; locale: ResumeLocale }) {
   const rows = [
-    ["زادگاه", r.basics.location],
-    ["نقش", r.basics.extra || r.basics.headline],
-    ["ایمیل", r.basics.email],
-    ["وب", r.basics.website || r.basics.linkedin]
+    [ht(locale, "contactBirthplace"), r.basics.location],
+    [ht(locale, "contactRole"), r.basics.extra || r.basics.headline],
+    [ht(locale, "contactEmail"), r.basics.email],
+    [ht(locale, "contactWeb"), r.basics.website || r.basics.linkedin]
   ].filter((row) => row[1]);
   if (!rows.length) return null;
   return (
@@ -93,12 +136,12 @@ function TemplateContact({ r }: { r: Resume }) {
   );
 }
 
-function SkillBars({ skills }: { skills: Resume["skills"] }) {
+function SkillBars({ skills, locale }: { skills: Resume["skills"]; locale: ResumeLocale }) {
   const visible = (skills || []).filter((skill) => !skill.hidden && skill.name);
   if (!visible.length) return null;
   return (
     <section className="heritage-skillbars">
-      <h2>مهارت ها</h2>
+      <h2>{label(locale, "skills")}</h2>
       {visible.flatMap((skill) => {
         const words = skill.keywords.length ? skill.keywords : [skill.name];
         const level = Math.max(62, Math.min(98, (Number(skill.level) || 4) * 18 + 8));
@@ -126,12 +169,12 @@ function MiniIconList({ items }: { items: string[] }) {
   );
 }
 
-function HeritageTimeline({ items }: { items: Resume["experience"] }) {
+function HeritageTimeline({ items, locale }: { items: Resume["experience"]; locale: ResumeLocale }) {
   const visible = (items || []).filter((item) => !item.hidden && (item.organization || item.title));
   if (!visible.length) return null;
   return (
     <section className="heritage-timeline">
-      <h2>مسیر زندگی و تجربه</h2>
+      <h2>{label(locale, "lifePath")}</h2>
       <div>
         {visible.slice(0, 4).map((item) => (
           <article key={item.id}>
@@ -480,25 +523,25 @@ function ATSClean({ r, locale }: { r: Resume; design?: DesignTokens; locale: Res
 }
 
 // ── Template 9: Gordafarid Defender ─────────────────────────────────────────
-function GordafaridDefender({ r, design }: { r: Resume; design?: DesignTokens }) {
+function GordafaridDefender({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const accent = design?.accentColor || "#c99b4a";
   const style = designStyle(design, { "--gd-accent": accent });
   const empty = isResumeEmpty(r);
   if (empty) {
-    return <article className="resume resume-gordafarid" style={style} dir="rtl"><EmptyTemplateHint /></article>;
+    return <article className="resume resume-gordafarid" style={style} dir={dirFor(locale)}><EmptyTemplateHint /></article>;
   }
-  const strengths = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), ["شجاعت و تعهد", "تفکر استراتژیک", "رهبری الهام بخش", "مدافع مرزها"]);
-  const values = cleanList(r.interests.map((i) => i.name), ["هدف محور", "مردم محور", "عادل و منصف", "پایدار و مقاوم"]);
+  const strengths = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), htList(locale, "gordStrengths"));
+  const values = cleanList(r.interests.map((i) => i.name), htList(locale, "gordValues"));
   return (
-    <article className="resume resume-gordafarid" style={style} dir="rtl">
+    <article className="resume resume-gordafarid" style={style} dir={dirFor(locale)}>
       <header className="gord-hero-exact">
         <div className="gord-photo-panel">
           {r.basics.photo ? <img src={r.basics.photo} alt="" /> : <div className="gord-hero-placeholder" />}
         </div>
         <div className="gord-title-panel">
           <div className="ornament">◇</div>
-          <h1><span>{r.basics.firstName || "گردآفرید"}</span><span>{r.basics.lastName || ""}</span></h1>
-          <p>{r.basics.headline || "استراتژیست دفاعی، رهبر میدانی و الهام بخش"}</p>
+          <h1><span>{r.basics.firstName || ht(locale, "gordName")}</span><span>{r.basics.lastName || ""}</span></h1>
+          <p>{r.basics.headline || ht(locale, "gordHeadline")}</p>
           <i />
           {r.summary ? <strong>{r.summary}</strong> : null}
           <div className="gord-traits">
@@ -513,33 +556,33 @@ function GordafaridDefender({ r, design }: { r: Resume; design?: DesignTokens })
         <div className="gord-body-exact">
           <aside className="gord-info-card">
             <section>
-              <h2>اطلاعات فردی</h2>
-              <TemplateContact r={r} />
+              <h2>{label(locale, "personalInfo")}</h2>
+              <TemplateContact r={r} locale={locale} />
             </section>
-            <SkillBars skills={r.skills} />
-            <blockquote>{r.basics.extra || "من به نام خویش، به نام ایران می جنگم و پاسدار مرزهایم."}</blockquote>
+            <SkillBars skills={r.skills} locale={locale} />
+            <blockquote>{r.basics.extra || ht(locale, "gordQuote")}</blockquote>
           </aside>
           <main className="gord-content-exact">
-            <TextSection title="درباره من" text={r.summary} />
+            <TextSection title={label(locale, "aboutMe")} text={r.summary} />
             <div className="gord-two-cols">
               <section>
-                <h2>دستاوردها و تاثیرگذاری</h2>
-                <AchievementCards items={r.achievements} />
-                <Projects items={r.projects} />
+                <h2>{label(locale, "achievementsImpact")}</h2>
+                <AchievementCards items={r.achievements} locale={locale} />
+                <Projects items={r.projects} locale={locale} />
               </section>
               <section>
-                <h2>تجربه و نقش آفرینی</h2>
+                <h2>{label(locale, "experienceRole")}</h2>
                 <Timeline title="" items={r.experience} />
               </section>
             </div>
             <section className="gord-values">
-              <h2>نگرش و رویکرد</h2>
+              <h2>{label(locale, "approach")}</h2>
               <MiniIconList items={values.slice(0, 4)} />
             </section>
           </main>
         </div>
         <footer className="gord-footer">
-          <span>برای ایران، با ایمان، تا پای جان.</span>
+          <span>{ht(locale, "gordFooter")}</span>
           <b>{strengths.slice(0, 3).join("   ·   ")}</b>
         </footer>
         </>
@@ -549,52 +592,52 @@ function GordafaridDefender({ r, design }: { r: Resume; design?: DesignTokens })
 }
 
 // ── Template 10: Rudabeh Heritage ───────────────────────────────────────────
-function RudabehHeritage({ r, design }: { r: Resume; design?: DesignTokens }) {
+function RudabehHeritage({ r, design, locale }: { r: Resume; design?: DesignTokens; locale: ResumeLocale }) {
   const accent = design?.accentColor || "#8f4a63";
   const style = designStyle(design, { "--rh-accent": accent });
   const empty = isResumeEmpty(r);
   if (empty) {
-    return <article className="resume resume-rudabeh" style={style} dir="rtl"><EmptyTemplateHint /></article>;
+    return <article className="resume resume-rudabeh" style={style} dir={dirFor(locale)}><EmptyTemplateHint /></article>;
   }
-  const strengths = cleanList(r.interests.map((i) => i.name), ["بلندهمتی و اصالت", "خردمندی و آینده نگری", "وفاداری به ارزش ها", "توانایی ایجاد اتحاد"]);
-  const skills = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), ["دیپلماسی و مذاکره", "ارتباط بین فرهنگی", "نفوذ کلام", "مدیریت روابط"]);
+  const strengths = cleanList(r.interests.map((i) => i.name), htList(locale, "rudStrengths"));
+  const skills = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), htList(locale, "rudSkills"));
   return (
-    <article className="resume resume-rudabeh" style={style} dir="rtl">
+    <article className="resume resume-rudabeh" style={style} dir={dirFor(locale)}>
       <aside className="rudabeh-side-exact">
         <div className="rudabeh-arch">
           {r.basics.photo ? <img src={r.basics.photo} alt="" /> : <div />}
         </div>
-        <blockquote>{r.basics.extra || "عشق را با خرد درآمیختم تا پیوندی بسازم که دو خاندان را یکی کند."}</blockquote>
-        <TemplateContact r={r} />
+        <blockquote>{r.basics.extra || ht(locale, "rudQuote")}</blockquote>
+        <TemplateContact r={r} locale={locale} />
       </aside>
       <main className="rudabeh-main-exact">
         <header className="rudabeh-head-exact">
           <div className="ornament">❧</div>
-          <h1><span>{r.basics.firstName || "رودابه"}</span><span>{r.basics.lastName || ""}</span></h1>
-          <p>{r.basics.headline || "بانوی دیپلماسی فرهنگی و پیوندساز خاندان ها"}</p>
+          <h1><span>{r.basics.firstName || ht(locale, "rudName")}</span><span>{r.basics.lastName || ""}</span></h1>
+          <p>{r.basics.headline || ht(locale, "rudHeadline")}</p>
         </header>
         {empty ? <EmptyTemplateHint /> : (
           <>
-            <TextSection title="خلاصه" text={r.summary} />
+            <TextSection title={label(locale, "summary")} text={r.summary} />
             <div className="rudabeh-columns">
               <section>
-                <h2>نقاط قوت</h2>
+                <h2>{label(locale, "strengths")}</h2>
                 <MiniIconList items={strengths.slice(0, 6)} />
               </section>
               <section>
-                <h2>مهارت ها و توانمندی ها</h2>
+                <h2>{label(locale, "skillsAbilities")}</h2>
                 <MiniIconList items={skills.slice(0, 8)} />
               </section>
             </div>
-            <AchievementCards items={r.achievements} />
-            <Projects items={r.projects} />
-            <HeritageTimeline items={r.experience} />
-            <Education items={r.education} />
+            <AchievementCards items={r.achievements} locale={locale} />
+            <Projects items={r.projects} locale={locale} />
+            <HeritageTimeline items={r.experience} locale={locale} />
+            <Education items={r.education} locale={locale} />
             <CustomSections sections={r.customSections} />
           </>
         )}
       </main>
-      <footer className="rudabeh-footer">هر پیوندی که بر پایه احترام، عشق و خرد بنا شود، جاودانه خواهد ماند.</footer>
+      <footer className="rudabeh-footer">{ht(locale, "rudFooter")}</footer>
     </article>
   );
 }
@@ -617,7 +660,7 @@ export function ResumeView({ resume, templateId, design, locale = "en" }: { resu
   if (id === "teal-pro") return <TealPro r={r} design={design} locale={locale} />;
   if (id === "warm-earth") return <WarmEarth r={r} design={design} locale={locale} />;
   if (id === "ats-clean") return <ATSClean r={r} design={design} locale={locale} />;
-  if (id === "gordafarid-defender") return <GordafaridDefender r={r} design={design} />;
-  if (id === "rudabeh-heritage") return <RudabehHeritage r={r} design={design} />;
+  if (id === "gordafarid-defender") return <GordafaridDefender r={r} design={design} locale={locale} />;
+  if (id === "rudabeh-heritage") return <RudabehHeritage r={r} design={design} locale={locale} />;
   return <DarkSidebar r={r} design={design} locale={locale} />;
 }

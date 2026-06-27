@@ -157,6 +157,8 @@ export const dictionaries = {
     zoomOut: "کوچک‌نمایی",
     mobileViewMode: "حالت نمایش موبایل",
     savingPdf: "برای PDF واقعی، برنامه را با npm start یا npm run serve اجرا کنید.",
+    fullscreen: "تمام‌صفحه",
+    exitFullscreen: "خروج از تمام‌صفحه",
     // Welcome / landing page
     welcomeKicker: "رزومه‌ساز خصوصی و آفلاین",
     welcomeTitle: "رزومه‌ای بساز که شایستهٔ توست.",
@@ -334,6 +336,8 @@ export const dictionaries = {
     zoomOut: "Zoom out",
     mobileViewMode: "Mobile view mode",
     savingPdf: "Real PDF export requires running npm start or npm run serve.",
+    fullscreen: "Fullscreen",
+    exitFullscreen: "Exit fullscreen",
     // Welcome / landing page
     welcomeKicker: "Private, offline résumé builder",
     welcomeTitle: "Build a résumé worthy of you.",

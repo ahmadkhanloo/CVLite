@@ -1,13 +1,19 @@
 import {
   ArrowLeft,
   BookOpen,
+  Braces,
   Download,
   ExternalLink,
+  FileCode2,
+  FileJson,
   FileText,
   Globe2,
   Import,
   Library,
   Lock,
+  Maximize,
+  Minimize,
+  Monitor,
   Moon,
   Paintbrush,
   Plane,
@@ -17,19 +23,23 @@ import {
   Sparkles,
   Sun,
   Trash2,
-  Upload,
-  Monitor
+  Upload
 } from "lucide-react";
 
 type IconName =
   | "arrow-left"
+  | "braces"
   | "download"
   | "external"
   | "file"
+  | "file-code"
+  | "file-json"
   | "github"
   | "import"
   | "library"
   | "lock"
+  | "maximize"
+  | "minimize"
   | "moon"
   | "paint"
   | "plane"
@@ -45,13 +55,18 @@ type IconName =
 
 const ICONS = {
   "arrow-left": ArrowLeft,
+  braces: Braces,
   download: Download,
   external: ExternalLink,
   file: FileText,
+  "file-code": FileCode2,
+  "file-json": FileJson,
   github: BookOpen,
   import: Import,
   library: Library,
   lock: Lock,
+  maximize: Maximize,
+  minimize: Minimize,
   moon: Moon,
   paint: Paintbrush,
   plane: Plane,

@@ -606,6 +606,29 @@ button {
   color: var(--danger);
 }
 
+.save-time {
+  display: block;
+  font-size: 9px;
+  font-weight: 400;
+  opacity: 0.7;
+  margin-top: 1px;
+}
+
+.preview-panel.fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.preview-panel.fullscreen .preview-frame {
+  flex: 1;
+  border: none;
+  border-radius: 0;
+}
+
 .preview-frame {
   overflow: auto;
   min-height: 0;
@@ -1396,9 +1419,9 @@ input[type="range"] {
 
 /* ── Print — show only resume in print mode ───────────────────────────────── */
 @media print {
-  .topbar, .control-panel, .preview-toolbar, .editor-tabs { display: none !important; }
+  .topbar, .control-panel, .preview-toolbar, .editor-tabs, .mobile-pane-switch { display: none !important; }
   .app-shell { display: block !important; padding: 0 !important; }
-  .preview-panel { display: block !important; min-height: auto !important; }
+  .preview-panel, .preview-panel.fullscreen { position: static !important; display: block !important; min-height: auto !important; }
   .preview-frame { overflow: visible !important; border: none !important; padding: 0 !important; background: #fff !important; }
   .preview-frame .resume { box-shadow: none !important; margin: 0 !important; }
   .zoom-wrap { transform: none !important; width: auto !important; }

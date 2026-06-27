@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Info, Link2, Mail, MapPin, Phone } from "lucide-react";
 import type {
   CustomSection,
   EducationItem,
@@ -33,7 +34,15 @@ export const SECTION_LABELS: Record<ResumeLocale, Record<string, string>> = {
     projects: "PROJECTS",
     publications: "PUBLICATIONS",
     skills: "SKILLS",
-    summary: "SUMMARY"
+    summary: "SUMMARY",
+    personalInfo: "PERSONAL INFO",
+    aboutMe: "ABOUT ME",
+    achievementsImpact: "ACHIEVEMENTS & IMPACT",
+    experienceRole: "EXPERIENCE",
+    approach: "APPROACH",
+    strengths: "STRENGTHS",
+    skillsAbilities: "SKILLS & ABILITIES",
+    lifePath: "CAREER PATH"
   },
   fa: {
     about: "درباره",
@@ -51,7 +60,15 @@ export const SECTION_LABELS: Record<ResumeLocale, Record<string, string>> = {
     projects: "پروژه ها",
     publications: "انتشارات",
     skills: "مهارت ها",
-    summary: "خلاصه"
+    summary: "خلاصه",
+    personalInfo: "اطلاعات فردی",
+    aboutMe: "درباره من",
+    achievementsImpact: "دستاوردها و تاثیرگذاری",
+    experienceRole: "تجربه و نقش آفرینی",
+    approach: "نگرش و رویکرد",
+    strengths: "نقاط قوت",
+    skillsAbilities: "مهارت ها و توانمندی ها",
+    lifePath: "مسیر زندگی و تجربه"
   }
 };
 
@@ -88,24 +105,29 @@ export function InlineContact({ r }: { r: Resume }) {
   return <p className="inline-contact">{parts.join(" · ")}</p>;
 }
 
+const CONTACT_ICONS = { mail: Mail, pin: MapPin, phone: Phone, in: Link2, info: Info } as const;
+
 export function Contact({ r }: { r: Resume }) {
-  const fields: Array<[string, string]> = (
+  const fields: Array<[keyof typeof CONTACT_ICONS, string]> = (
     [
       ["mail", r.basics.email],
       ["pin", r.basics.location],
       ["phone", r.basics.phone],
       ["in", r.basics.linkedin],
       ["info", r.basics.extra]
-    ] as Array<[string, string]>
+    ] as Array<[keyof typeof CONTACT_ICONS, string]>
   ).filter((entry) => entry[1]);
   return (
     <div className="contact">
-      {fields.map(([icon, value]) => (
-        <span key={icon}>
-          <b>{icon}</b>
-          {value}
-        </span>
-      ))}
+      {fields.map(([icon, value]) => {
+        const Icon = CONTACT_ICONS[icon];
+        return (
+          <span key={icon}>
+            <b><Icon size={9} strokeWidth={2.4} aria-hidden /></b>
+            {value}
+          </span>
+        );
+      })}
     </div>
   );
 }

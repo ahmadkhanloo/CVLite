@@ -8,5 +8,10 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS"
+  },
+  // Optional: enable Cloudflare Browser Rendering for server-side PDF export.
+  // Requires a Workers Paid plan. Remove this block if not needed.
+  "browser": {
+    "binding": "BROWSER"
   }
 }
