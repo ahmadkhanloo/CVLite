@@ -84,11 +84,40 @@ const HERITAGE: Record<ResumeLocale, Record<string, string | string[]>> = {
 const ht = (locale: ResumeLocale, key: string): string => (HERITAGE[locale][key] as string) ?? (HERITAGE.en[key] as string);
 const htList = (locale: ResumeLocale, key: string): string[] => (HERITAGE[locale][key] as string[]) ?? (HERITAGE.en[key] as string[]);
 
-function EmptyTemplateHint() {
+const TEMPLATE_COPY: Record<ResumeLocale, Record<TemplateId, { name: string; description: string }>> = {
+  en: Object.fromEntries(TEMPLATES.map((template) => [template.id, { name: template.name, description: template.description }])) as Record<TemplateId, { name: string; description: string }>,
+  fa: {
+    "dark-sidebar": { name: "ستون فنی", description: "چیدمان دو ستونه و فشرده برای نقش های مهندسی و فنی." },
+    "classic-blue-lines": { name: "کلاسیک سازمانی", description: "رزومه رسمی و پروفایل محور برای درخواست های سازمانی." },
+    "purple-compact": { name: "حرفه ای فشرده", description: "چیدمان کم جا برای رزومه های کوتاه و یک صفحه ای." },
+    "modern-minimal": { name: "مینیمال مدرن", description: "ساختار تمیز و تحریریه ای برای استفاده حرفه ای عمومی." },
+    executive: { name: "رهبری اجرایی", description: "قالب صیقلی برای مدیران ارشد و نقش های رهبری." },
+    "teal-pro": { name: "مطالعه موردی محصول", description: "رزومه پورتفولیو محور با پروژه ها، مهارت ها و شاخص های اثرگذاری." },
+    "warm-earth": { name: "خط زمانی تحریریه ای", description: "چیدمان مجله ای با خلاصه روایی و خط زمانی داستان محور." },
+    "ats-clean": { name: "متن ساده ATS", description: "ساختار تک ستونه و خوانا برای سیستم های غربالگری رزومه." },
+    "gordafarid-defender": { name: "گردآفرید مدافع", description: "قالب A4 تیره و طلایی با تصویر شاخص، ستون کناری و دستاوردها." },
+    "rudabeh-heritage": { name: "رودابه میراثی", description: "قالب A4 تزئینی با ستون پرتره، نقاط قوت، دستاوردها و خط زمانی." }
+  }
+};
+
+export function templateCopy(id: TemplateId, locale: ResumeLocale) {
+  return TEMPLATE_COPY[locale]?.[id] || TEMPLATE_COPY.en[id];
+}
+
+function EmptyTemplateHint({ locale }: { locale: ResumeLocale }) {
+  const copy = locale === "fa"
+    ? {
+        title: "رزومه را شروع کن",
+        body: "نام، تیتر حرفه ای، تجربه و مهارت ها را در ویرایشگر وارد کن تا این قالب با داده های تو پر شود."
+      }
+    : {
+        title: "Start your resume",
+        body: "Add your name, headline, experience, and skills in the editor. This template will fill itself from your data."
+      };
   return (
     <div className="template-empty">
-      <h2>Start your resume</h2>
-      <p>Add your name, headline, experience, and skills in the editor. This template will fill itself from your data.</p>
+      <h2>{copy.title}</h2>
+      <p>{copy.body}</p>
     </div>
   );
 }
@@ -528,7 +557,7 @@ function GordafaridDefender({ r, design, locale }: { r: Resume; design?: DesignT
   const style = designStyle(design, { "--gd-accent": accent });
   const empty = isResumeEmpty(r);
   if (empty) {
-    return <article className="resume resume-gordafarid" style={style} dir={dirFor(locale)}><EmptyTemplateHint /></article>;
+    return <article className="resume resume-gordafarid" style={style} dir={dirFor(locale)}><EmptyTemplateHint locale={locale} /></article>;
   }
   const strengths = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), htList(locale, "gordStrengths"));
   const values = cleanList(r.interests.map((i) => i.name), htList(locale, "gordValues"));
@@ -551,7 +580,7 @@ function GordafaridDefender({ r, design, locale }: { r: Resume; design?: DesignT
           </div>
         </div>
       </header>
-      {empty ? <EmptyTemplateHint /> : (
+      {empty ? <EmptyTemplateHint locale={locale} /> : (
         <>
         <div className="gord-body-exact">
           <aside className="gord-info-card">
@@ -597,7 +626,7 @@ function RudabehHeritage({ r, design, locale }: { r: Resume; design?: DesignToke
   const style = designStyle(design, { "--rh-accent": accent });
   const empty = isResumeEmpty(r);
   if (empty) {
-    return <article className="resume resume-rudabeh" style={style} dir={dirFor(locale)}><EmptyTemplateHint /></article>;
+    return <article className="resume resume-rudabeh" style={style} dir={dirFor(locale)}><EmptyTemplateHint locale={locale} /></article>;
   }
   const strengths = cleanList(r.interests.map((i) => i.name), htList(locale, "rudStrengths"));
   const skills = cleanList(r.skills.flatMap((s) => s.keywords).slice(0, 8), htList(locale, "rudSkills"));
@@ -616,7 +645,7 @@ function RudabehHeritage({ r, design, locale }: { r: Resume; design?: DesignToke
           <h1><span>{r.basics.firstName || ht(locale, "rudName")}</span><span>{r.basics.lastName || ""}</span></h1>
           <p>{r.basics.headline || ht(locale, "rudHeadline")}</p>
         </header>
-        {empty ? <EmptyTemplateHint /> : (
+        {empty ? <EmptyTemplateHint locale={locale} /> : (
           <>
             <TextSection title={label(locale, "summary")} text={r.summary} />
             <div className="rudabeh-columns">

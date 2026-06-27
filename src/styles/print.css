@@ -1431,9 +1431,7 @@
   display: grid;
   grid-template-columns: 34% 66%;
   grid-template-rows: 1fr auto;
-  background:
-    radial-gradient(circle at 100% 0%, rgba(190,151,88,0.09), transparent 26%),
-    linear-gradient(90deg, #f3eadc 0 34%, #fffbf4 34%);
+  background: linear-gradient(90deg, #f1e5d4 0 34%, #fffbf4 34%);
   color: #102338;
   border: 1px solid #c49a58;
   font-size: 10.4px;
@@ -1446,9 +1444,7 @@
   direction: rtl;
   padding: 18px 16px 12px;
   border-left: 1px solid #caa262;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,0.2), rgba(233,219,197,0.55)),
-    #f1e5d4;
+  background: #f1e5d4;
 }
 
 .rudabeh-arch {
@@ -1486,8 +1482,10 @@
 
 .rudabeh-main-exact {
   grid-column: 2;
+  grid-row: 1;
   direction: rtl;
   padding: 18px 22px 10px;
+  background: #fffbf4;
 }
 
 .rudabeh-head-exact {
@@ -1613,10 +1611,11 @@
 
 .rudabeh-footer {
   grid-column: 2;
+  grid-row: 2;
   min-height: 15mm;
   border-top: 1px solid #c49a58;
-  background: #102338;
-  color: #e8cf9f;
+  background: #fffbf4;
+  color: #a17a3c;
 }
 
 /* ── Design-token overrides (applied via inline style on .resume) ───────────── */

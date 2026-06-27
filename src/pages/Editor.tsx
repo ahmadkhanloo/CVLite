@@ -172,10 +172,7 @@ export function EditorPage() {
       downloadBlob(fileName, await res.blob());
       setStatus({ text: t("pdfReady"), danger: false });
     } catch {
-      // No PDF server available (dev / static hosting): fall back to the
-      // browser's own print-to-PDF, which respects the injected @page size.
-      setStatus({ text: t("savingPdf"), danger: false });
-      window.print();
+      setStatus({ text: t("savingPdf"), danger: true });
     }
   }
 

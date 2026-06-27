@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLibrary } from "../store/library";
 import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
-import { EXTENDED_TEMPLATES } from "../templates";
+import { EXTENDED_TEMPLATES, templateCopy } from "../templates";
 import { Icon } from "../components/Icon";
 import type { ResumeLocale, TemplateId } from "../types/resume";
 
@@ -117,7 +117,7 @@ export function Welcome() {
             <span className="welcome-templates-label">{t("welcomeSeeTemplates")}</span>
             <div className="welcome-template-chips">
               {EXTENDED_TEMPLATES.map((tpl) => (
-                <span key={tpl.id} className="welcome-template-chip">{tpl.name}</span>
+                <span key={tpl.id} className="welcome-template-chip">{templateCopy(tpl.id as TemplateId, language).name}</span>
               ))}
             </div>
           </div>
@@ -126,12 +126,13 @@ export function Welcome() {
         <section className="welcome-gallery" aria-label={t("welcomeGalleryLabel")}>
           {TEMPLATE_PREVIEWS.map((item) => {
             const template = EXTENDED_TEMPLATES.find((tpl) => tpl.id === item.id);
+            const copy = template ? templateCopy(template.id as TemplateId, language) : null;
             return (
               <article className="welcome-gallery-card" key={item.id}>
-                <img src={previewFor(item.id, language)} alt={`${template?.name || item.id} - ${item.persona[language]}`} loading="lazy" />
+                <img src={previewFor(item.id, language)} alt={`${copy?.name || item.id} - ${item.persona[language]}`} loading="lazy" />
                 <div>
                   <strong>{item.persona[language]}</strong>
-                  <span>{template?.name || item.id}</span>
+                  <span>{copy?.name || item.id}</span>
                 </div>
               </article>
             );

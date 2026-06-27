@@ -1,7 +1,7 @@
 import { useEditor } from "../store/resume";
 import { useSettings } from "../store/settings";
 import { useT } from "../i18n/useT";
-import { EXTENDED_TEMPLATES } from "../templates";
+import { EXTENDED_TEMPLATES, templateCopy } from "../templates";
 import type { PageSize, ResumeLocale, TemplateId } from "../types/resume";
 
 const previewFor = (id: TemplateId, locale: ResumeLocale) => new URL(`../../assets/templates/${id}.${locale}.png`, import.meta.url).href;
@@ -29,23 +29,26 @@ export function TemplatePicker() {
   return (
     <>
       <div className="template-grid">
-        {sortedTemplates.map((template) => (
-          <button
-            key={template.id}
-            type="button"
-            className={`template-card${template.id === templateId ? " active" : ""}`}
-            onClick={() => setTemplate(template.id as TemplateId)}
-            aria-pressed={template.id === templateId}
-          >
-            <span className="template-card-preview">
-              <img src={previewFor(template.id as TemplateId, language)} alt="" loading="lazy" />
-            </span>
-            <span className="template-card-copy">
-              <span className="template-card-name">{template.name}</span>
-              <span className="template-card-desc">{template.description}</span>
-            </span>
-          </button>
-        ))}
+        {sortedTemplates.map((template) => {
+          const copy = templateCopy(template.id as TemplateId, language);
+          return (
+            <button
+              key={template.id}
+              type="button"
+              className={`template-card${template.id === templateId ? " active" : ""}`}
+              onClick={() => setTemplate(template.id as TemplateId)}
+              aria-pressed={template.id === templateId}
+            >
+              <span className="template-card-preview">
+                <img src={previewFor(template.id as TemplateId, language)} alt="" loading="lazy" />
+              </span>
+              <span className="template-card-copy">
+                <span className="template-card-name">{copy.name}</span>
+                <span className="template-card-desc">{copy.description}</span>
+              </span>
+            </button>
+          );
+        })}
       </div>
       <label className="field compact-field" style={{ marginTop: 8 }}>
         <span>{t("pageSize")}</span>
