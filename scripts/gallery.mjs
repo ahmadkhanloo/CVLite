@@ -40,13 +40,37 @@ function buildHtml(template, templateId, locale) {
   return template.replace("<!--CVLITE_PAYLOAD-->", inject);
 }
 
+async function writeFileWithRetry(filePath, data, attempts = 6) {
+  for (let i = 0; i < attempts; i += 1) {
+    try {
+      fs.writeFileSync(filePath, data);
+      return;
+    } catch (err) {
+      if (i === attempts - 1) throw err;
+      await new Promise((r) => setTimeout(r, 250 + i * 250));
+    }
+  }
+}
+
 function serveLocalAsset(urlPath, res) {
-  if (!urlPath.startsWith("/assets/")) return false;
-  const filePath = path.join(ROOT, urlPath.replace(/^\//, ""));
-  if (!filePath.startsWith(path.join(ROOT, "assets"))) return false;
+  if (!urlPath.startsWith("/assets/") && !urlPath.startsWith("/fonts/")) return false;
+  const relPath = urlPath.replace(/^\//, "");
+  const distPath = path.join(DIST_DIR, relPath);
+  const sourcePath = path.join(ROOT, urlPath.startsWith("/fonts/") ? "static" : "", relPath);
+  const filePath = fs.existsSync(distPath) ? distPath : sourcePath;
+  const distAssets = path.join(DIST_DIR, "assets");
+  const distFonts = path.join(DIST_DIR, "fonts");
+  const sourceAssets = path.join(ROOT, "assets");
+  const sourceFonts = path.join(ROOT, "static", "fonts");
+  if (!filePath.startsWith(distAssets) && !filePath.startsWith(distFonts) && !filePath.startsWith(sourceAssets) && !filePath.startsWith(sourceFonts)) return false;
   if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) return false;
   const ext = path.extname(filePath).toLowerCase();
-  const type = ext === ".png" ? "image/png" : "application/octet-stream";
+  const type =
+    ext === ".png" ? "image/png" :
+    ext === ".css" ? "text/css; charset=utf-8" :
+    ext === ".js" ? "text/javascript; charset=utf-8" :
+    ext === ".woff2" ? "font/woff2" :
+    "application/octet-stream";
   res.writeHead(200, { "content-type": type });
   fs.createReadStream(filePath).pipe(res);
   return true;
@@ -88,15 +112,20 @@ async function main() {
 
   try {
     const page = await pup.newPage();
+    page.on("pageerror", (err) => console.error("Page error:", err.message));
+    page.on("console", (msg) => {
+      if (msg.type() === "error") console.error("Browser console:", msg.text());
+    });
     await page.setViewport({ width: 900, height: 1200, deviceScaleFactor: 2 });
     for (const id of TEMPLATE_IDS) {
       for (const locale of LOCALES) {
         currentHtml = buildHtml(template, id, locale);
         await page.goto(`http://127.0.0.1:${port}/render/preview`, { waitUntil: "networkidle0", timeout: 20000 });
-        await new Promise((r) => setTimeout(r, 1200));
+        await page.waitForFunction(() => window.__CVLITE_READY__ === true, { timeout: 20000 });
         const el = await page.$("#render-root .resume") || await page.$("#render-root");
         const out = path.join(OUT_DIR, `${id}.${locale}.png`);
-        await el.screenshot({ path: out });
+        const png = await el.screenshot({ type: "png" });
+        await writeFileWithRetry(out, png);
         console.log(`  ${id}.${locale} -> ${path.relative(ROOT, out)} (${Math.round(fs.statSync(out).size / 1024)}KB)`);
       }
     }

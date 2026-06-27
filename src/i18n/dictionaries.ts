@@ -140,7 +140,7 @@ export const dictionaries = {
     importBackup: "بازیابی پشتیبان",
     backupReady: "پشتیبان آماده شد",
     // Library hero / search
-    librarySubtitle: "رزومه‌های حرفه‌ای بساز، طراحی کن و خروجی بگیر — کاملاً آفلاین و خصوصی.",
+    librarySubtitle: "رزومه‌هات رو مرتب، خوش‌فرم و امن بساز؛ همه‌چیز همین‌جا روی دستگاه خودته",
     localFirstNote: "همه رزومه‌ها فقط در IndexedDB همین مرورگر ذخیره می‌شوند؛ CVLite حساب کاربری، دیتابیس سرور یا analytics ندارد.",
     searchResumes: "جستجوی رزومه...",
     resumesCount_one: "۱ رزومه",
@@ -161,8 +161,8 @@ export const dictionaries = {
     exitFullscreen: "خروج از تمام‌صفحه",
     // Welcome / landing page
     welcomeKicker: "رزومه‌ساز خصوصی و آفلاین",
-    welcomeTitle: "رزومه‌ای بساز که شایستهٔ توست.",
-    welcomeLead: "CVLite یک رزومه‌ساز سریع، دوزبانه و کاملاً خصوصی است. همه‌چیز روی همین مرورگر می‌ماند — بدون ثبت‌نام، بدون سرور، بدون ردیابی.",
+    welcomeTitle: "رزومه‌ای بساز که خودت دوستش داشته باشی",
+    welcomeLead: "CVLite کمک می‌کند رزومه‌ات را سریع، تمیز و دو زبانه بسازی؛ همه‌چیز روی همین مرورگر می‌ماند، بدون ثبت‌نام، بدون سرور، بدون ردگیری",
     welcomeStart: "ساختن رزومه",
     welcomeLibrary: "رزومه‌های من",
     welcomeSeeTemplates: "۱۰ قالب حرفه‌ای",
@@ -174,7 +174,7 @@ export const dictionaries = {
     featBilingualTitle: "دوزبانه",
     featBilingualDesc: "فارسی و انگلیسی با چیدمان راست‌به‌چپ و فونت بومی.",
     featTemplatesTitle: "۱۰ قالب",
-    featTemplatesDesc: "قالب‌های مدرن، قابل‌سفارشی‌سازی و دو قالب شاهنامه‌ای تازه.",
+    featTemplatesDesc: "قالب‌های مدرن و فارسی‌پسند، با چند چیدمان متفاوت برای عکس و متن.",
     featExportTitle: "خروجی PDF",
     featExportDesc: "چاپ مستقیم به PDF، یا خروجی JSON و Markdown.",
     featAiTitle: "دستیار هوشمند",

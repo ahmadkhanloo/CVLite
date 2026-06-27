@@ -26,11 +26,8 @@ function useApplyShell() {
 
 const FEATURES = [
   { icon: "lock", title: "featPrivacyTitle", desc: "featPrivacyDesc" },
-  { icon: "plane", title: "featOfflineTitle", desc: "featOfflineDesc" },
-  { icon: "world", title: "featBilingualTitle", desc: "featBilingualDesc" },
   { icon: "paint", title: "featTemplatesTitle", desc: "featTemplatesDesc" },
-  { icon: "file", title: "featExportTitle", desc: "featExportDesc" },
-  { icon: "sparkles", title: "featAiTitle", desc: "featAiDesc" }
+  { icon: "file", title: "featExportTitle", desc: "featExportDesc" }
 ] as const;
 
 const GITHUB_URL = "https://github.com/ahmadkhanloo/CVLite";
@@ -72,27 +69,31 @@ export function Welcome() {
   return (
     <div className="welcome-page">
       <header className="topbar">
-        <div className="topbar-brand">
+        <button className="topbar-brand brand-home" type="button" onClick={() => navigate("/")} title="CVLite">
           <div className="brand-mark">CV</div>
           <span style={{ fontWeight: 700, fontSize: 15, color: "var(--ink)" }}>CVLite</span>
-        </div>
+        </button>
         <div className="topbar-actions">
-          <div className="tb-group" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
-            <button className="tb-badge" type="button" onClick={() => setLanguage(language === "fa" ? "en" : "fa")} title={t("language")}>
-              {language === "fa" ? "FA" : "EN"}
-            </button>
+          <div className="tb-group topbar-compact" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
+            <label className="language-select" title={t("language")}>
+              <span aria-hidden="true">{language === "fa" ? "🇮🇷" : "🇬🇧"}</span>
+              <select value={language} onChange={(e) => setLanguage(e.target.value as ResumeLocale)} aria-label={t("language")}>
+                <option value="fa">فارسی</option>
+                <option value="en">English</option>
+              </select>
+            </label>
             <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
               <Icon name={themeIcon} />
             </button>
           </div>
-          <div className="tb-group">
+          <div className="tb-group topbar-secondary">
             <a className="icon-button" href={GITHUB_URL} target="_blank" rel="noreferrer noopener">
               <Icon name="github" />
               GitHub
               <Icon name="external" size={14} />
             </a>
           </div>
-          <div className="tb-group">
+          <div className="tb-group topbar-primary">
             <button className="icon-button" type="button" onClick={() => navigate("/library")}>{t("welcomeLibrary")}</button>
           </div>
         </div>
@@ -112,14 +113,6 @@ export function Welcome() {
               <Icon name="library" />
               {t("welcomeLibrary")}
             </button>
-          </div>
-          <div className="welcome-templates" aria-hidden="true">
-            <span className="welcome-templates-label">{t("welcomeSeeTemplates")}</span>
-            <div className="welcome-template-chips">
-              {EXTENDED_TEMPLATES.map((tpl) => (
-                <span key={tpl.id} className="welcome-template-chip">{templateCopy(tpl.id as TemplateId, language).name}</span>
-              ))}
-            </div>
           </div>
         </section>
 

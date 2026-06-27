@@ -10,9 +10,9 @@
 
 Hosted free on Cloudflare (accessible from inside Iran). See [DEPLOY.md](DEPLOY.md) to host your own.
 
-![CVLite résumé preview — Rostam-e Dastan in the Product & Design template](assets/preview.png)
+![CVLite résumé preview — Rudabeh Heritage Persian template](assets/preview.png)
 
-> The main preview features **Rostam-e Dastan** from Ferdowsi's *Shahnameh*.
+> The main preview features **Rudabeh** from Ferdowsi's *Shahnameh* in the Persian Heritage template.
 > The gallery below renders every template with a different Shahnameh character.
 
 ---

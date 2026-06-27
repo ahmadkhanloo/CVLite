@@ -15,7 +15,7 @@
 }
 
 :root {
-  --resume-font: "Inter", "Vazirmatn", Arial, Helvetica, sans-serif;
+  --resume-font: "Vazirmatn", Arial, Helvetica, sans-serif;
 }
 
 [data-page-size="Letter"] .resume,
@@ -45,7 +45,7 @@
 
 .resume[dir="rtl"] {
   direction: rtl;
-  font-family: "Vazirmatn", "Inter", Arial, Helvetica, sans-serif;
+  font-family: "Vazirmatn", Arial, Helvetica, sans-serif;
 }
 
 .resume[dir="rtl"] ul {
@@ -293,7 +293,7 @@
 }
 
 .classic-head h1 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: inherit;
   font-size: 27px;
 }
 
@@ -313,6 +313,7 @@
   justify-self: end;
   width: 78px;
   height: 78px;
+  border-radius: 18px;
   border: 3px solid #f2f4f5;
 }
 
@@ -399,6 +400,7 @@
   width: 88px;
   height: 88px;
   margin: 0 auto 8px;
+  border-radius: 24px 24px 50% 50%;
 }
 
 .resume-purple h2 {
@@ -442,15 +444,23 @@
 
 .minimal-head {
   grid-area: head;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  display: grid;
+  grid-template-columns: 1fr 76px auto;
+  gap: 14px;
+  align-items: end;
   padding-bottom: 10px;
   margin-bottom: 14px;
   border-bottom: 2px solid var(--mm-accent, #0a7ea4);
 }
 
 .minimal-head h1 { font-size: 26px; }
+.minimal-head .photo {
+  width: 64px;
+  height: 64px;
+  justify-self: end;
+  border-radius: 18px;
+  border: 2px solid color-mix(in srgb, var(--mm-accent, #0a7ea4) 25%, white);
+}
 .minimal-last { color: var(--mm-accent, #0a7ea4); }
 .minimal-headline { color: #555; font-size: 11px; margin-top: 4px; }
 
@@ -540,11 +550,19 @@
 
 .teal-case-head {
   display: grid;
-  grid-template-columns: 58% 42%;
-  gap: 18px;
+  grid-template-columns: 1fr 78px 34%;
+  gap: 14px;
   align-items: end;
   padding-bottom: 14px;
   border-bottom: 3px solid var(--tp-accent, #0d9488);
+}
+
+.teal-case-head .photo {
+  width: 68px;
+  height: 68px;
+  justify-self: center;
+  border-radius: 16px 50% 16px 50%;
+  border: 2px solid color-mix(in srgb, var(--tp-accent, #0d9488) 28%, white);
 }
 
 .teal-kicker {
@@ -679,6 +697,14 @@
   text-align: center;
 }
 
+.warm-masthead .photo {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 2px;
+  border-radius: 22px;
+  border: 3px solid #ead8c2;
+}
+
 .warm-masthead > p {
   color: var(--we-accent, #b45309);
   font-size: 9px;
@@ -689,7 +715,6 @@
 
 .warm-masthead h1 {
   color: #3a2415;
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 35px;
   line-height: 1;
   text-transform: none;
@@ -718,7 +743,6 @@
   border-bottom: 1px solid #e4d3bf;
   padding: 0 8mm 13px;
   color: #4f3928;
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 13px;
   line-height: 1.45;
   text-align: center;
@@ -753,7 +777,6 @@
 
 .warm-timeline time {
   color: var(--we-accent, #b45309);
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 10px;
   font-weight: 700;
   line-height: 1.25;
@@ -766,7 +789,6 @@
 
 .warm-timeline h3 {
   color: #342217;
-  font-family: Georgia, "Times New Roman", serif;
   font-size: 12px;
 }
 
@@ -784,16 +806,84 @@
 .resume-ats {
   padding: 28px 34px 24px;
   color: #111827;
-  font-family: "Inter", "Vazirmatn", Arial, Helvetica, sans-serif;
+  font-family: "Vazirmatn", Arial, Helvetica, sans-serif;
   font-size: 10.2px;
   line-height: 1.36;
 }
 
 .ats-head {
+  display: grid;
+  grid-template-columns: 68px 1fr;
+  gap: 14px;
+  align-items: center;
   margin-bottom: 15px;
   border-bottom: 2px solid #111827;
   padding-bottom: 9px;
-  text-align: center;
+  text-align: left;
+}
+
+.ats-head .photo {
+  width: 58px;
+  height: 58px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+}
+
+.resume-ats[dir="rtl"] .ats-head {
+  text-align: right;
+}
+
+.resume-classic[dir="rtl"] {
+  --cb-accent: #007f86;
+}
+
+.resume-purple[dir="rtl"] {
+  border-color: #5b2a86;
+}
+
+.resume-purple[dir="rtl"] h2 {
+  background: #f3edf8;
+  color: #5b2a86;
+}
+
+.resume-minimal[dir="rtl"] {
+  --mm-accent: #007f86;
+}
+
+.resume-executive[dir="rtl"] {
+  --ex-accent: #122f45;
+}
+
+.resume-teal[dir="rtl"] {
+  --tp-accent: #0a7f73;
+}
+
+.resume-warm[dir="rtl"] {
+  --we-accent: #b45309;
+  background: #fff8ee;
+}
+
+.resume-gordafarid[dir="rtl"] {
+  --gd-accent: #c9943f;
+}
+
+.resume-rudabeh[dir="rtl"] {
+  --rh-accent: #b86f86;
+}
+
+.resume-classic[dir="rtl"] h3,
+.resume-classic[dir="rtl"] .classic-head p,
+.resume-classic[dir="rtl"] .language-dots b {
+  color: #007f86;
+}
+
+.resume-classic[dir="rtl"] h2 {
+  border-bottom-color: #122f45;
+}
+
+.resume-ats[dir="rtl"] .ats-head,
+.resume-ats[dir="rtl"] .ats-section h2 {
+  border-color: #122f45;
 }
 
 .ats-head h1 {
@@ -1096,35 +1186,40 @@
 /* ── Reference-faithful Shahnameh layouts ─────────────────────────────────── */
 .resume-gordafarid,
 .resume-rudabeh {
-  direction: rtl;
-  font-family: "Vazirmatn", "Inter", Arial, sans-serif;
   position: relative;
+}
+
+.resume-gordafarid[dir="rtl"],
+.resume-rudabeh[dir="rtl"] {
+  font-family: "Vazirmatn", Arial, sans-serif;
 }
 
 .resume-gordafarid {
   display: flex;
   flex-direction: column;
-  background: #fbf7ef;
+  background: #fbf8f1;
   color: #26201a;
   font-size: 10.8px;
   line-height: 1.5;
+  border: 1px solid #d7bd8b;
 }
 
 .gord-hero-exact {
-  direction: ltr;
   display: grid;
-  grid-template-columns: 45% 55%;
-  min-height: 105mm;
-  background: linear-gradient(120deg, #0d1820, #14202a 54%, #10161d);
+  grid-template-columns: 43% 57%;
+  min-height: 103mm;
+  background: linear-gradient(105deg, #0b1b24, #102b35 56%, #0b151d);
   color: #f7f1e8;
+  border-bottom: 4px solid #b88943;
 }
 
 .gord-photo-panel {
   grid-column: 1;
   position: relative;
   overflow: hidden;
-  min-height: 105mm;
+  min-height: 103mm;
   background: #111820;
+  border-inline-end: 1px solid rgba(184,137,67,0.55);
 }
 
 .gord-photo-panel img,
@@ -1140,13 +1235,12 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(15,22,29,0.04), rgba(15,22,29,0.92));
+  background: linear-gradient(90deg, rgba(15,22,29,0.02), rgba(12,27,36,0.82));
 }
 
 .gord-title-panel {
   grid-column: 2;
-  direction: rtl;
-  padding: 20mm 18mm 11mm;
+  padding: 18mm 17mm 10mm;
   text-align: center;
 }
 
@@ -1159,7 +1253,7 @@
 
 .gord-title-panel h1 {
   color: var(--gd-accent, #c9a166);
-  font-size: 34px;
+  font-size: 38px;
   line-height: 1.15;
   letter-spacing: 0;
 }
@@ -1196,13 +1290,15 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 0;
-  margin-top: 16px;
+  margin-top: 17px;
+  border-block: 1px solid rgba(184,137,67,0.42);
 }
 
 .gord-traits span {
   display: grid;
   gap: 4px;
-  min-height: 32px;
+  min-height: 38px;
+  padding: 7px 5px;
   border-inline-start: 1px solid rgba(201,161,102,0.38);
   color: #f5ead8;
   font-size: 9px;
@@ -1219,38 +1315,59 @@
 }
 
 .gord-body-exact {
-  direction: ltr;
   display: grid;
   grid-template-columns: 31% 69%;
   flex: 1;
-  gap: 10px;
-  padding: 16px 18px 12px;
+  gap: 14px;
+  padding: 14px 18px 12px;
+  background:
+    linear-gradient(90deg, rgba(28,158,153,0.08) 0 31%, transparent 31%),
+    #fbf8f1;
 }
 
 .gord-info-card {
   grid-column: 1;
-  direction: rtl;
-  border: 1px solid #dccaa8;
-  padding: 16px 14px;
-  background: linear-gradient(180deg, #fffaf2, #f5ecdc);
+  border: 1px solid #d9bf8d;
+  border-radius: 0;
+  padding: 15px 13px;
+  background: linear-gradient(180deg, #fffaf2, #f4ead8);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.72);
 }
 
 .gord-content-exact {
   grid-column: 2;
-  direction: rtl;
   padding: 4px 6px 0;
+}
+
+.resume-gordafarid[dir="rtl"] .gord-hero-exact,
+.resume-gordafarid[dir="rtl"] .gord-body-exact {
+  direction: ltr;
+}
+
+.resume-gordafarid[dir="rtl"] .gord-title-panel,
+.resume-gordafarid[dir="rtl"] .gord-info-card,
+.resume-gordafarid[dir="rtl"] .gord-content-exact {
+  direction: rtl;
+}
+
+.resume-gordafarid[dir="ltr"] .gord-title-panel,
+.resume-gordafarid[dir="ltr"] .gord-info-card,
+.resume-gordafarid[dir="ltr"] .gord-content-exact {
+  direction: ltr;
 }
 
 .gord-content-exact > .resume-section:first-child {
   text-align: center;
   margin-bottom: 14px;
+  border: 1px solid #eadac0;
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.55);
 }
 
 .gord-content-exact h2,
 .gord-info-card h2,
 .resume-rudabeh h2 {
-  color: #1e2c3a;
+  color: #102b35;
   font-size: 14px;
   text-align: right;
   border-bottom: 1px solid #d7bd8b;
@@ -1260,7 +1377,17 @@
 .gord-two-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 0;
+  border: 1px solid #eadac0;
+  background: rgba(255,255,255,0.4);
+}
+
+.gord-two-cols > section {
+  padding: 12px;
+}
+
+.gord-two-cols > section + section {
+  border-inline-start: 1px solid #eadac0;
 }
 
 .gord-two-cols .timeline h2:empty {
@@ -1287,6 +1414,9 @@
 
 .gord-values {
   margin-top: 12px;
+  border: 1px solid #eadac0;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.46);
 }
 
 .mini-icon-list {
@@ -1307,9 +1437,9 @@
   justify-content: center;
   width: 23px;
   height: 23px;
-  border: 1px solid #c49a58;
+  border: 1px solid #1c9e99;
   border-radius: 50%;
-  color: #b98b45;
+  color: #147f7b;
   font-size: 12px;
 }
 
@@ -1350,8 +1480,8 @@
   min-width: 32px;
   min-height: 22px;
   border-radius: 99px;
-  background: #102338;
-  color: #d7ac62;
+  background: #102b35;
+  color: #5fc8c1;
   font-size: 7.5px;
   font-weight: 800;
 }
@@ -1383,7 +1513,7 @@
 .heritage-skillbars i b {
   display: block;
   height: 2px;
-  background: #b98b45;
+  background: #1c9e99;
 }
 
 .heritage-skillbars i::after {
@@ -1405,12 +1535,13 @@
   color: #2c2925;
   text-align: center;
   line-height: 1.75;
+  background: rgba(255,255,255,0.44);
 }
 
 .gord-footer,
 .rudabeh-footer {
   margin-top: auto;
-  background: #0f1b25;
+  background: #0b1b24;
   color: #d8b06a;
   min-height: 18mm;
   display: flex;
@@ -1427,13 +1558,12 @@
 }
 
 .resume-rudabeh {
-  direction: ltr;
   display: grid;
   grid-template-columns: 34% 66%;
   grid-template-rows: 1fr auto;
-  background: linear-gradient(90deg, #f1e5d4 0 34%, #fffbf4 34%);
-  color: #102338;
-  border: 1px solid #c49a58;
+  background: linear-gradient(90deg, #f4efe5 0 34%, #fffdf8 34%);
+  color: #152236;
+  border: 1px solid #bb965c;
   font-size: 10.4px;
   line-height: 1.65;
 }
@@ -1441,22 +1571,32 @@
 .rudabeh-side-exact {
   grid-column: 1;
   grid-row: 1 / 3;
-  direction: rtl;
-  padding: 18px 16px 12px;
-  border-left: 1px solid #caa262;
-  background: #f1e5d4;
+  padding: 16px 14px 12px;
+  border-left: 1px solid #bb965c;
+  background:
+    linear-gradient(180deg, rgba(16,54,78,0.04), rgba(187,150,92,0.1)),
+    #f4efe5;
 }
 
 .rudabeh-arch {
   position: relative;
-  width: 78%;
-  height: 105mm;
+  width: 82%;
+  height: 102mm;
   margin: 0 auto 15px;
   overflow: hidden;
-  border: 3px solid #b98b45;
-  border-radius: 50% 50% 8px 8px / 18% 18% 8px 8px;
-  box-shadow: 0 0 0 4px #f8efe1, 0 0 0 6px #c49a58;
-  background: #ded2c0;
+  border: 3px solid #bb965c;
+  border-radius: 28px 28px 4px 4px;
+  box-shadow: 0 0 0 5px #fffdf8, 0 0 0 7px #12364e;
+  background: #e7d7bf;
+}
+
+.rudabeh-arch::before {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid rgba(255,255,255,0.72);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .rudabeh-arch img,
@@ -1465,27 +1605,36 @@
   height: 100%;
   object-fit: cover;
   object-position: center top;
-  background: linear-gradient(135deg, #d9c7aa, #fff8ed);
+  background: linear-gradient(135deg, #e7d7bf, #fffdf8);
 }
 
 .rudabeh-side-exact blockquote {
   margin: 0 0 18px;
-  background: rgba(255,255,255,0.38);
-  color: #102338;
+  background: rgba(255,255,255,0.52);
+  color: #12364e;
   font-size: 12px;
 }
 
 .rudabeh-side-exact .heritage-contact span {
-  background: #102338;
+  background: #12364e;
   color: #d8b06a;
 }
 
 .rudabeh-main-exact {
   grid-column: 2;
   grid-row: 1;
-  direction: rtl;
   padding: 18px 22px 10px;
-  background: #fffbf4;
+  background: #fffdf8;
+}
+
+.resume-rudabeh[dir="rtl"] .rudabeh-side-exact,
+.resume-rudabeh[dir="rtl"] .rudabeh-main-exact {
+  direction: rtl;
+}
+
+.resume-rudabeh[dir="ltr"] .rudabeh-side-exact,
+.resume-rudabeh[dir="ltr"] .rudabeh-main-exact {
+  direction: ltr;
 }
 
 .rudabeh-head-exact {
@@ -1495,11 +1644,11 @@
 }
 
 .rudabeh-head-exact .ornament {
-  color: #b98b45;
+  color: #bb965c;
 }
 
 .rudabeh-head-exact h1 {
-  color: #102338;
+  color: #12364e;
   font-size: 42px;
   line-height: 1.05;
   letter-spacing: 0;
@@ -1507,7 +1656,7 @@
 
 .rudabeh-head-exact p {
   margin-top: 8px;
-  color: #a17a3c;
+  color: #9a7134;
   font-size: 15px;
   font-weight: 700;
 }
@@ -1517,8 +1666,8 @@
   display: block;
   width: 58%;
   margin: 12px auto 0;
-  border-top: 1px solid #caa262;
-  color: #b98b45;
+  border-top: 1px solid #bb965c;
+  color: #bb965c;
   line-height: 0;
 }
 
@@ -1535,13 +1684,19 @@
 .rudabeh-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14px;
+  gap: 0;
   margin-bottom: 14px;
+  border: 1px solid #e2cda9;
+  background: rgba(255,255,255,0.42);
+}
+
+.rudabeh-columns > section {
+  padding: 11px 12px;
 }
 
 .rudabeh-columns > section + section {
-  border-right: 1px solid #d7bd8b;
-  padding-right: 14px;
+  border-right: 1px solid #e2cda9;
+  padding-right: 12px;
 }
 
 .rudabeh-columns .mini-icon-list p {
@@ -1552,7 +1707,7 @@
   width: auto;
   height: auto;
   border: 0;
-  color: #b98b45;
+  color: #0f8f89;
 }
 
 .resume-rudabeh .achievement-cards > div {
@@ -1563,10 +1718,11 @@
 .resume-rudabeh .achievement-cards article {
   min-height: 28mm;
   text-align: center;
-  border: 1px solid #d7bd8b;
-  border-top: 0;
-  border-left: 1px solid #d7bd8b;
-  background: rgba(255,255,255,0.56);
+  border: 1px solid #e2cda9;
+  border-top: 3px solid #bb965c;
+  border-left: 1px solid #e2cda9;
+  background: #fffaf0;
+  border-radius: 0;
 }
 
 .heritage-timeline {
@@ -1577,7 +1733,7 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-  border-top: 2px solid #c49a58;
+  border-top: 2px solid #bb965c;
   margin-top: 14px;
   padding-top: 12px;
 }
@@ -1593,13 +1749,13 @@
   right: calc(50% - 5px);
   width: 10px;
   height: 10px;
-  border: 2px solid #102338;
+  border: 2px solid #12364e;
   border-radius: 50%;
-  background: #c49a58;
+  background: #0f8f89;
 }
 
 .heritage-timeline h3 {
-  color: #102338;
+  color: #12364e;
   font-size: 10.8px;
 }
 
@@ -1613,9 +1769,9 @@
   grid-column: 2;
   grid-row: 2;
   min-height: 15mm;
-  border-top: 1px solid #c49a58;
-  background: #fffbf4;
-  color: #a17a3c;
+  border-top: 1px solid #bb965c;
+  background: #12364e;
+  color: #f2d6a2;
 }
 
 /* ── Design-token overrides (applied via inline style on .resume) ───────────── */

@@ -18,6 +18,7 @@ import { exportJsonResume } from "../data/exporters/jsonresume";
 import { downloadBlob, downloadText, readFile } from "../lib/files";
 import { resumeExportName } from "../lib/filenames";
 import { Icon } from "../components/Icon";
+import type { ResumeLocale } from "../types/resume";
 
 type Tab = "edit" | "design" | "cover" | "ai";
 type MobilePane = "edit" | "preview";
@@ -214,7 +215,9 @@ export function EditorPage() {
           <button className="tb-icon-btn" type="button" onClick={() => navigate("/library")} title={t("backToLibrary")} style={{ fontSize: 18 }}>
             <Icon name="arrow-left" />
           </button>
-          <div className="brand-mark">CV</div>
+          <button className="brand-home editor-brand-home" type="button" onClick={() => navigate("/")} title="CVLite">
+            <div className="brand-mark">CV</div>
+          </button>
           <input
             className="doc-name-input"
             value={docName}
@@ -224,16 +227,20 @@ export function EditorPage() {
         </div>
 
         <div className="topbar-actions">
-          <div className="tb-group" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
-            <button className="tb-badge" type="button" onClick={() => setLanguage(language === "fa" ? "en" : "fa")} title={t("language")}>
-              {language === "fa" ? "FA" : "EN"}
-            </button>
+          <div className="tb-group topbar-compact" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
+            <label className="language-select" title={t("language")}>
+              <span aria-hidden="true">{language === "fa" ? "🇮🇷" : "🇬🇧"}</span>
+              <select value={language} onChange={(e) => setLanguage(e.target.value as ResumeLocale)} aria-label={t("language")}>
+                <option value="fa">فارسی</option>
+                <option value="en">English</option>
+              </select>
+            </label>
             <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
               <Icon name={themeIcon} />
             </button>
           </div>
 
-          <div className="tb-group">
+          <div className="tb-group topbar-secondary">
             <label className="icon-button" title={t("importTitle")} style={{ cursor: "pointer" }}>
               <Icon name="upload" />
               {t("import")}
@@ -253,7 +260,7 @@ export function EditorPage() {
             </button>
           </div>
 
-          <div className="tb-group">
+          <div className="tb-group topbar-primary">
             <button className="icon-button" type="button" onClick={printPdf} title={t("printPdf")}>
               <Icon name="print" />
               {t("printPdf")}

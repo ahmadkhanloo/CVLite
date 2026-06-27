@@ -1,16 +1,16 @@
 /**
- * Screenshots the Teal Pro resume template for use in the README.
+ * Screenshots a polished resume template for use in the README.
  * Uses puppeteer-core with system Edge/Chrome.
  *
  * Usage: node scripts/screenshot.mjs
- * Requires: npm start (server on 4173)
+ * Requires: a built dist/ directory.
  */
 import fs from "node:fs";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import puppeteer from "puppeteer-core";
-import { RESUME_PAYLOAD } from "./sample-resume.mjs";
+import { sampleForTemplate } from "./sample-resume.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -30,13 +30,27 @@ function findBrowser() {
   return BROWSERS.find((b) => { try { fs.accessSync(b); return true; } catch { return false; } });
 }
 
+const PREVIEW_PAYLOAD = sampleForTemplate("rudabeh-heritage", "fa");
+
 function serveLocalAsset(urlPath, res) {
-  if (!urlPath.startsWith("/assets/")) return false;
-  const filePath = path.join(ROOT, urlPath.replace(/^\//, ""));
-  if (!filePath.startsWith(path.join(ROOT, "assets"))) return false;
+  if (!urlPath.startsWith("/assets/") && !urlPath.startsWith("/fonts/")) return false;
+  const relPath = urlPath.replace(/^\//, "");
+  const distPath = path.join(DIST_DIR, relPath);
+  const sourcePath = path.join(ROOT, urlPath.startsWith("/fonts/") ? "static" : "", relPath);
+  const filePath = fs.existsSync(distPath) ? distPath : sourcePath;
+  const distAssets = path.join(DIST_DIR, "assets");
+  const distFonts = path.join(DIST_DIR, "fonts");
+  const sourceAssets = path.join(ROOT, "assets");
+  const sourceFonts = path.join(ROOT, "static", "fonts");
+  if (!filePath.startsWith(distAssets) && !filePath.startsWith(distFonts) && !filePath.startsWith(sourceAssets) && !filePath.startsWith(sourceFonts)) return false;
   if (!fs.existsSync(filePath) || !fs.statSync(filePath).isFile()) return false;
   const ext = path.extname(filePath).toLowerCase();
-  const type = ext === ".png" ? "image/png" : "application/octet-stream";
+  const type =
+    ext === ".png" ? "image/png" :
+    ext === ".css" ? "text/css; charset=utf-8" :
+    ext === ".js" ? "text/javascript; charset=utf-8" :
+    ext === ".woff2" ? "font/woff2" :
+    "application/octet-stream";
   res.writeHead(200, { "content-type": type });
   fs.createReadStream(filePath).pipe(res);
   return true;
@@ -50,7 +64,7 @@ async function main() {
 
   // Build the render HTML with payload injected
   const template = fs.readFileSync(path.join(DIST_DIR, "render.html"), "utf8");
-  const safePayload = JSON.stringify(RESUME_PAYLOAD).replace(/<\/script>/gi, "<\\/script>");
+  const safePayload = JSON.stringify(PREVIEW_PAYLOAD).replace(/<\/script>/gi, "<\\/script>");
   const inject = `<script>window.__CVLITE_PAYLOAD__ = ${safePayload}; window.__CVLITE_RENDER_TOKEN__ = "preview";</script>`;
   const html = template.replace("<!--CVLITE_PAYLOAD-->", inject);
 
@@ -62,7 +76,7 @@ async function main() {
       return res.end(html);
     }
     if (serveLocalAsset(urlPath, res)) return;
-    // Proxy to the running server at 4173 for assets/fonts
+    // Nothing else is needed for README screenshots.
     const proxy = http.request(
       { hostname: "127.0.0.1", port: 4173, path: req.url, method: "GET" },
       (pr) => { res.writeHead(pr.statusCode, pr.headers); pr.pipe(res); }
@@ -84,9 +98,13 @@ async function main() {
 
   try {
     const page = await pup.newPage();
+    page.on("pageerror", (err) => console.error("Page error:", err.message));
+    page.on("console", (msg) => {
+      if (msg.type() === "error") console.error("Browser console:", msg.text());
+    });
     await page.setViewport({ width: 794, height: 1123, deviceScaleFactor: 2 });
     await page.goto(url, { waitUntil: "networkidle0", timeout: 20000 });
-    await new Promise(r => setTimeout(r, 2000)); // wait for fonts
+    await page.waitForFunction(() => window.__CVLITE_READY__ === true, { timeout: 20000 });
 
     // Get actual rendered height
     const bodyH = await page.evaluate(() => document.body.scrollHeight);

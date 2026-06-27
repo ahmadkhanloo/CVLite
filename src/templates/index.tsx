@@ -295,7 +295,9 @@ function PurpleCompact({ r, design, locale }: { r: Resume; design?: DesignTokens
           <LanguagesInline items={r.languages} locale={locale} />
           <Pills title={label(locale, "interests")} items={r.interests.map((i) => i.name)} />
           <Projects items={r.projects} locale={locale} />
+          <AchievementCards items={r.achievements} locale={locale} />
           <Publications items={r.publications} locale={locale} />
+          <CustomSections sections={r.customSections} />
         </section>
       </div>
     </article>
@@ -313,6 +315,7 @@ function ModernMinimal({ r, design, locale }: { r: Resume; design?: DesignTokens
           <h1><span>{r.basics.firstName}</span> <span className="minimal-last">{r.basics.lastName}</span></h1>
           <p className="minimal-headline">{r.basics.headline}</p>
         </div>
+        <Photo r={r} />
         <div className="minimal-contact">
           {[r.basics.email, r.basics.phone, r.basics.location, r.basics.linkedin].filter(Boolean).map((v, i) => (
             <span key={i}>{v}</span>
@@ -395,6 +398,7 @@ function TealPro({ r, design, locale }: { r: Resume; design?: DesignTokens; loca
           <Name r={r} />
           <p>{r.basics.headline}</p>
         </div>
+        <Photo r={r} />
         <div className="teal-contact-strip">
           {[r.basics.email, r.basics.phone, r.basics.location, r.basics.website || r.basics.linkedin].filter(Boolean).map((v, i) => (
             <span key={i}>{v}</span>
@@ -449,6 +453,7 @@ function WarmEarth({ r, design, locale }: { r: Resume; design?: DesignTokens; lo
   return (
     <article className="resume resume-warm" style={style} dir={dirFor(locale)}>
       <header className="warm-masthead">
+        <Photo r={r} />
         <p>{r.basics.location || r.basics.website || label(locale, "profile")}</p>
         <h1><span>{r.basics.firstName}</span> <span>{r.basics.lastName}</span></h1>
         <div>
@@ -496,11 +501,14 @@ function ATSClean({ r, locale }: { r: Resume; design?: DesignTokens; locale: Res
   return (
     <article className="resume resume-ats" dir={dirFor(locale)}>
       <header className="ats-head">
-        <h1>{[r.basics.firstName, r.basics.lastName].join(" ")}</h1>
-        <p className="ats-headline">{r.basics.headline}</p>
-        <p className="ats-contact">
-          {[r.basics.email, r.basics.phone, r.basics.location, r.basics.linkedin].filter(Boolean).join("  |  ")}
-        </p>
+        <Photo r={r} />
+        <div>
+          <h1>{[r.basics.firstName, r.basics.lastName].join(" ")}</h1>
+          <p className="ats-headline">{r.basics.headline}</p>
+          <p className="ats-contact">
+            {[r.basics.email, r.basics.phone, r.basics.location, r.basics.linkedin].filter(Boolean).join("  |  ")}
+          </p>
+        </div>
       </header>
       {r.summary ? (
         <section className="ats-section">
@@ -569,7 +577,7 @@ function GordafaridDefender({ r, design, locale }: { r: Resume; design?: DesignT
         </div>
         <div className="gord-title-panel">
           <div className="ornament">◇</div>
-          <h1><span>{r.basics.firstName || ht(locale, "gordName")}</span><span>{r.basics.lastName || ""}</span></h1>
+          <h1><span>{r.basics.firstName || ht(locale, "gordName")}</span>{r.basics.lastName ? " " : ""}<span>{r.basics.lastName || ""}</span></h1>
           <p>{r.basics.headline || ht(locale, "gordHeadline")}</p>
           <i />
           {r.summary ? <strong>{r.summary}</strong> : null}
@@ -642,7 +650,7 @@ function RudabehHeritage({ r, design, locale }: { r: Resume; design?: DesignToke
       <main className="rudabeh-main-exact">
         <header className="rudabeh-head-exact">
           <div className="ornament">❧</div>
-          <h1><span>{r.basics.firstName || ht(locale, "rudName")}</span><span>{r.basics.lastName || ""}</span></h1>
+          <h1><span>{r.basics.firstName || ht(locale, "rudName")}</span>{r.basics.lastName ? " " : ""}<span>{r.basics.lastName || ""}</span></h1>
           <p>{r.basics.headline || ht(locale, "rudHeadline")}</p>
         </header>
         {empty ? <EmptyTemplateHint locale={locale} /> : (

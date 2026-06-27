@@ -10,6 +10,7 @@ import { normalizeRxResume } from "../data/importers/rxresume";
 import { parseMarkdown } from "../data/importers/markdown";
 import { uid } from "../data/defaults";
 import { Icon } from "../components/Icon";
+import type { ResumeLocale } from "../types/resume";
 
 function relativeTime(ts: number, lang: string): string {
   const diff = Date.now() - ts;
@@ -205,22 +206,26 @@ export function Library() {
   return (
     <div className="library-page">
       <header className="topbar">
-        <div className="topbar-brand">
+        <button className="topbar-brand brand-home" type="button" onClick={() => navigate("/")} title="CVLite">
           <div className="brand-mark">CV</div>
           <span style={{ fontWeight: 700, fontSize: 15, color: "var(--ink)" }}>CVLite</span>
-        </div>
+        </button>
 
         <div className="topbar-actions">
-          <div className="tb-group" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
-            <button className="tb-badge" type="button" onClick={() => setLanguage(language === "fa" ? "en" : "fa")} title={t("language")}>
-              {language === "fa" ? "FA" : "EN"}
-            </button>
+          <div className="tb-group topbar-compact" style={{ paddingInlineStart: 0, borderInlineStart: "none" }}>
+            <label className="language-select" title={t("language")}>
+              <span aria-hidden="true">{language === "fa" ? "🇮🇷" : "🇬🇧"}</span>
+              <select value={language} onChange={(e) => setLanguage(e.target.value as ResumeLocale)} aria-label={t("language")}>
+                <option value="fa">فارسی</option>
+                <option value="en">English</option>
+              </select>
+            </label>
             <button className="tb-icon-btn" type="button" title={t("theme")} onClick={() => setTheme(theme === "system" ? "light" : theme === "light" ? "dark" : "system")}>
               <Icon name={themeIcon} />
             </button>
           </div>
 
-          <div className="tb-group">
+          <div className="tb-group topbar-secondary">
             <label className="icon-button" title={t("importTitle")} style={{ cursor: "pointer" }}>
               <Icon name="upload" />
               {t("import")}
@@ -241,7 +246,7 @@ export function Library() {
             </button>
           </div>
 
-          <div className="tb-group">
+          <div className="tb-group topbar-primary">
             <button className="primary-button" type="button" onClick={handleCreate}>
               <Icon name="plus" />
               {t("newResume")}
